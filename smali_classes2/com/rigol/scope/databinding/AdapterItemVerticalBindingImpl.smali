@@ -707,7 +707,8 @@
 
 # changed added
     const v48, 0x7fffffff
-    const v48, 0x0
+    const v49, 0x0
+    const-string v50, "--"
 # /added
 
     if-eqz v6, :cond_2f
@@ -1450,6 +1451,20 @@
 
     move-result-object v4
 
+# changed added
+    move-object/16 v49, v1
+    invoke-virtual {v0}, Lcom/rigol/scope/data/VerticalParam;->getProbeRatio()Lcom/rigol/scope/cil/ServiceEnum$ProbeX;
+    move-result-object v1
+    if-eqz v1, :cond1_3c
+    iget-object v1, v1, Lcom/rigol/scope/cil/ServiceEnum$ProbeX;->value2:Ljava/lang/String;
+    goto :goto1_2e
+    :cond1_3c
+    const-string v1, "--"
+    :goto1_2e
+    move-object/16 v50, v1
+    move-object/16 v1, v49
+# /added
+
     goto :goto_24
 
     :cond_2c
@@ -1929,6 +1944,27 @@
     move-object/from16 v4, v42
 
     invoke-static {v0, v4}, Landroidx/databinding/adapters/TextViewBindingAdapter;->setText(Landroid/widget/TextView;Ljava/lang/CharSequence;)V
+
+# changed added
+# save v1
+    move-object/16 v48, v1
+# build new string
+    new-instance v0, Ljava/lang/StringBuilder;
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+# add probe attenuate value string to new string 
+    move-object/16 v4, v50
+    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+# add 'x' symbol
+    const-string v1, "x"
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+#convert to string
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result-object v4
+#restore v1
+    move-object/from16 v1, v48
+    iget-object v0, v1, Lcom/rigol/scope/databinding/AdapterItemVerticalBindingImpl;->probe_atten:Landroid/widget/TextView;
+    invoke-static {v0, v4}, Landroidx/databinding/adapters/TextViewBindingAdapter;->setText(Landroid/widget/TextView;Ljava/lang/CharSequence;)V
+# /added
 
     :cond_3f
     const-wide/16 v4, 0x2002

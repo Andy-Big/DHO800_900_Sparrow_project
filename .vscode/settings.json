@@ -1,5 +1,11 @@
 {
     "apklab.keystorePath": "D:\\Install\\Rigol\\DHO800_900\\_AppDecompile\\Sparrow\\my-release-key.keystore",
     "apklab.keystorePassword": "prollp",
-    "apklab.keyAlias": "alias_name"
+    "apklab.keyAlias": "alias_name",
+    "editor.inlineSuggest.enabled": false,
+    "editor.inlineSuggest.suppressSuggestions": true,
+    "editor.inlineSuggest.showToolbar": "never",
+    "editor.quickSuggestionsDelay": 2000,
+    "editor.suggestOnTriggerCharacters": false,
+    "editor.acceptSuggestionOnCommitCharacter": false
 }
