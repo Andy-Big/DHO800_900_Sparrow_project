@@ -4,6 +4,7 @@ isFrameworkApk: false
 usesFramework:
   ids:
   - 1
+  
   tag: null
 sdkInfo:
   minSdkVersion: 25
