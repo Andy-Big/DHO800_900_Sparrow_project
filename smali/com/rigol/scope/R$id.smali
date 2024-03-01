@@ -3392,6 +3392,10 @@
 
 .field public static final nothing_view:I = 0x7f0a0698
 
+.field public static final nothing_view1:I = 0x7f0a1001
+
+.field public static final nothing_view2:I = 0x7f0a1002
+
 .field public static final notice:I = 0x7f0a0699
 
 .field public static final notice_content:I = 0x7f0a069a
@@ -3663,6 +3667,8 @@
 .field public static final prefix_edit_text:I = 0x7f0a071f
 
 .field public static final preset_btn:I = 0x7f0a0720
+
+.field public static final probe_atten:I = 0x7f0a1000
 
 .field public static final probe_bias:I = 0x7f0a0721
 

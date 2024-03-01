@@ -287,7 +287,7 @@
 
     const/16 v16, 0x0
 
-    if-eqz v8, :cond_d
+    if-eqz v8, :cond_c
 
     if-eqz v0, :cond_0
 
@@ -315,32 +315,32 @@
     const/4 v15, 0x0
 
     :goto_1
-    if-eqz v13, :cond_2
+    goto :goto_2
 
     move v13, v14
 
-    goto :goto_2
-
-    :cond_2
-    move/from16 v13, v16
+    goto :goto_3
 
     :goto_2
-    if-eqz v8, :cond_4
+    move/from16 v13, v16
 
-    if-eqz v13, :cond_3
+    :goto_3
+    if-eqz v8, :cond_3
+
+    if-eqz v13, :cond_2
 
     or-long/2addr v2, v11
 
-    goto :goto_3
+    goto :goto_4
 
-    :cond_3
+    :cond_2
     const-wide/16 v19, 0x8
 
     or-long v2, v2, v19
 
     .line 164
-    :cond_4
-    :goto_3
+    :cond_3
+    :goto_4
     invoke-virtual/range {p0 .. p0}, Lcom/rigol/scope/databinding/AdapterItemResultMeasureBindingImpl;->getRoot()Landroid/view/View;
 
     move-result-object v8
@@ -357,9 +357,9 @@
 
     cmp-long v15, v19, v4
 
-    if-eqz v15, :cond_c
+    if-eqz v15, :cond_b
 
-    if-eqz v0, :cond_5
+    if-eqz v0, :cond_4
 
     .line 169
     invoke-virtual {v0}, Lcom/rigol/scope/data/MeasureResultParam;->getCur()Ljava/lang/String;
@@ -371,27 +371,27 @@
 
     move-result v0
 
-    goto :goto_4
+    goto :goto_5
 
-    :cond_5
+    :cond_4
     move/from16 v0, v16
 
     const/16 v18, 0x0
 
-    :goto_4
-    if-ne v0, v14, :cond_6
+    :goto_5
+    if-ne v0, v14, :cond_5
 
     move v0, v14
 
-    goto :goto_5
+    goto :goto_6
 
-    :cond_6
+    :cond_5
     move/from16 v0, v16
 
-    :goto_5
-    if-eqz v15, :cond_8
+    :goto_6
+    if-eqz v15, :cond_7
 
-    if-eqz v0, :cond_7
+    if-eqz v0, :cond_6
 
     const-wide/16 v19, 0x40
 
@@ -403,9 +403,9 @@
 
     const-wide/16 v19, 0x400
 
-    goto :goto_6
+    goto :goto_7
 
-    :cond_7
+    :cond_6
     const-wide/16 v19, 0x20
 
     or-long v2, v2, v19
@@ -416,11 +416,11 @@
 
     const-wide/16 v19, 0x200
 
-    :goto_6
+    :goto_7
     or-long v2, v2, v19
 
-    :cond_8
-    if-eqz v0, :cond_9
+    :cond_7
+    if-eqz v0, :cond_8
 
     .line 192
     iget-object v15, v1, Lcom/rigol/scope/databinding/AdapterItemResultMeasureBindingImpl;->arrow:Landroid/widget/ImageView;
@@ -435,9 +435,9 @@
 
     move-result-object v14
 
-    goto :goto_7
+    goto :goto_8
 
-    :cond_9
+    :cond_8
     iget-object v14, v1, Lcom/rigol/scope/databinding/AdapterItemResultMeasureBindingImpl;->arrow:Landroid/widget/ImageView;
 
     invoke-virtual {v14}, Landroid/widget/ImageView;->getContext()Landroid/content/Context;
@@ -450,29 +450,29 @@
 
     move-result-object v14
 
-    :goto_7
+    :goto_8
     move-object v15, v14
 
-    if-eqz v0, :cond_a
+    if-eqz v0, :cond_9
 
     move/from16 v14, v16
 
-    goto :goto_8
+    goto :goto_9
 
-    :cond_a
+    :cond_9
     const/16 v14, 0x8
 
-    :goto_8
-    if-eqz v0, :cond_b
+    :goto_9
+    if-eqz v0, :cond_a
 
     const/16 v0, 0x8
 
-    goto :goto_9
+    goto :goto_a
 
-    :cond_b
+    :cond_a
     move/from16 v0, v16
 
-    :goto_9
+    :goto_a
     move-object/from16 v21, v18
 
     move-object/from16 v22, v15
@@ -481,9 +481,9 @@
 
     move-object/from16 v8, v22
 
-    goto :goto_b
+    goto :goto_c
 
-    :cond_c
+    :cond_b
     move-object v15, v8
 
     move/from16 v0, v16
@@ -492,9 +492,9 @@
 
     const/4 v8, 0x0
 
-    goto :goto_a
+    goto :goto_b
 
-    :cond_d
+    :cond_c
     move/from16 v0, v16
 
     move v13, v0
@@ -505,74 +505,74 @@
 
     const/4 v15, 0x0
 
-    :goto_a
+    :goto_b
     const/16 v21, 0x0
 
-    :goto_b
+    :goto_c
     and-long/2addr v11, v2
 
     cmp-long v11, v11, v4
 
-    if-eqz v11, :cond_e
+    if-eqz v11, :cond_d
 
-    if-eqz v15, :cond_e
+    if-eqz v15, :cond_d
 
     const/16 v19, 0x1
 
-    goto :goto_c
+    goto :goto_d
 
-    :cond_e
+    :cond_d
     move/from16 v19, v16
 
-    :goto_c
+    :goto_d
     and-long v11, v2, v6
 
     cmp-long v11, v11, v4
 
-    if-eqz v11, :cond_13
+    if-eqz v11, :cond_12
 
-    if-eqz v13, :cond_f
-
-    goto :goto_d
-
-    :cond_f
-    move/from16 v19, v16
-
-    :goto_d
-    if-eqz v11, :cond_11
-
-    if-eqz v19, :cond_10
-
-    const-wide/16 v11, 0x1000
+    if-eqz v13, :cond_e
 
     goto :goto_e
 
-    :cond_10
-    const-wide/16 v11, 0x800
+    :cond_e
+    move/from16 v19, v16
 
     :goto_e
-    or-long/2addr v2, v11
+    if-eqz v11, :cond_10
 
-    :cond_11
-    if-eqz v19, :cond_12
+    if-eqz v19, :cond_f
+
+    const-wide/16 v11, 0x1000
 
     goto :goto_f
 
-    :cond_12
-    const/16 v13, 0x8
+    :cond_f
+    const-wide/16 v11, 0x800
+
+    :goto_f
+    or-long/2addr v2, v11
+
+    :cond_10
+    if-eqz v19, :cond_11
 
     goto :goto_10
 
-    :cond_13
-    :goto_f
+    :cond_11
+    const/16 v13, 0x8
+
+    goto :goto_11
+
+    :cond_12
+    :goto_10
     move/from16 v13, v16
 
-    :goto_10
+    :goto_11
     and-long/2addr v9, v2
 
     cmp-long v9, v9, v4
 
-    if-eqz v9, :cond_14
+    if-eqz v9, :cond_13
 
     .line 228
     iget-object v9, v1, Lcom/rigol/scope/databinding/AdapterItemResultMeasureBindingImpl;->arrow:Landroid/widget/ImageView;
@@ -596,12 +596,12 @@
 
     invoke-virtual {v0, v14}, Lcom/rigol/scope/views/DisableTouchEventRecyclerView;->setVisibility(I)V
 
-    :cond_14
+    :cond_13
     and-long/2addr v2, v6
 
     cmp-long v0, v2, v4
 
-    if-eqz v0, :cond_15
+    if-eqz v0, :cond_14
 
     .line 236
     iget-object v0, v1, Lcom/rigol/scope/databinding/AdapterItemResultMeasureBindingImpl;->icon:Landroid/widget/ImageView;
@@ -613,7 +613,7 @@
 
     invoke-virtual {v0, v13}, Landroid/widget/ImageView;->setVisibility(I)V
 
-    :cond_15
+    :cond_14
     return-void
 
     :catchall_0

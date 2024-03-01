@@ -308,12 +308,18 @@
 
     move-result-object v3
 
-    const/16 v5, 0x9
+    const/16 v5, 0xf
 
     .line 135
+# changed added
+    const/16 v4, 0x11
+
     invoke-virtual {v3, v5, v4}, Ljava/lang/String;->substring(II)Ljava/lang/String;
 
     move-result-object v9
+
+# changed added
+    const/16 v4, 0xb
 
     const-string v10, "00"
 
@@ -321,7 +327,7 @@
 
     move-result v9
 
-    const/16 v10, 0x8
+    const/16 v10, 0xe
 
     if-nez v9, :cond_3
 

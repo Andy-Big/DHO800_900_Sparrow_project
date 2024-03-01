@@ -29,6 +29,7 @@
 .method static constructor <clinit>()V
     .locals 3
 
+
     .line 16
     new-instance v0, Landroid/util/SparseIntArray;
 
@@ -1175,6 +1176,10 @@
     :try_start_0
     iget-wide v2, v1, Lcom/rigol/scope/databinding/FragmentSettingsBarBindingImpl;->mDirtyFlags:J
 
+    const-wide/16 v4, 0x2
+
+    add-long/2addr v2, v4
+
     const-wide/16 v4, 0x0
 
     .line 353
@@ -1253,6 +1258,8 @@
     invoke-virtual {v0}, Lcom/rigol/scope/data/UtilityParam;->getShowTime()Z
 
     move-result v26
+
+    const v26, 0x1
 
     goto :goto_1
 

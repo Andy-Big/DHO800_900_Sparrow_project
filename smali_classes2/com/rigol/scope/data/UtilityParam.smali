@@ -352,7 +352,7 @@
     .line 372
     iput-object v0, p0, Lcom/rigol/scope/data/UtilityParam;->hardVersion:Ljava/lang/String;
 
-    const-string v0, "2024/01/03 20:10:46"
+    const-string v0, "2024/02/28 20:10:46"
 
     .line 383
     iput-object v0, p0, Lcom/rigol/scope/data/UtilityParam;->miscBuild:Ljava/lang/String;
@@ -696,14 +696,26 @@
 .end method
 
 .method public final getSoftVersion()Ljava/lang/String;
-    .locals 1
+    .locals 2
     .annotation runtime Landroidx/databinding/Bindable;
     .end annotation
 
     .line 361
-    iget-object v0, p0, Lcom/rigol/scope/data/UtilityParam;->softVersion:Ljava/lang/String;
+# changed deleted
+#    iget-object v0, p0, Lcom/rigol/scope/data/UtilityParam;->softVersion:Ljava/lang/String;
 
-    return-object v0
+# changed added
+    new-instance v0, Ljava/lang/StringBuilder;
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+    const-string v1, "(a001)"
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    iget-object v1, p0, Lcom/rigol/scope/data/UtilityParam;->softVersion:Ljava/lang/String;
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result-object v0
+# /changed
+
+   return-object v0
 .end method
 
 .method public final getStatReset()Lcom/rigol/scope/cil/ServiceEnum$UtilityQuickStatReset;

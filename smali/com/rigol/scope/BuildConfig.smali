@@ -14,7 +14,7 @@
 
 .field public static final VERSION_NAME:Ljava/lang/String; = "00.01.02.00.02"
 
-.field public static final releaseTime:Ljava/lang/String; = "2024/01/03 20:10:46"
+.field public static final releaseTime:Ljava/lang/String; = "2024/02/23 08:45:46"
 
 
 # direct methods
