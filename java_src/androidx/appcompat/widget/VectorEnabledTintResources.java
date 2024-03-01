@@ -8,7 +8,7 @@ import java.lang.ref.WeakReference;
 /* loaded from: classes.dex */
 public class VectorEnabledTintResources extends Resources {
     public static final int MAX_SDK_WHERE_REQUIRED = 20;
-    private static boolean sCompatVectorFromResourcesEnabled = false;
+    private static boolean sCompatVectorFromResourcesEnabled;
     private final WeakReference<Context> mContextRef;
 
     public static boolean shouldBeUsed() {

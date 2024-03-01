@@ -41,29 +41,13 @@ public final class SubSequence$iterator$1<T> implements Iterator<T>, KMappedMark
     /* JADX WARN: Incorrect condition in loop: B:3:0x0008 */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
     private final void drop() {
-        /*
-            r2 = this;
-        L0:
-            int r0 = r2.position
-            kotlin.sequences.SubSequence r1 = r2.this$0
-            int r1 = kotlin.sequences.SubSequence.access$getStartIndex$p(r1)
-            if (r0 >= r1) goto L1e
-            java.util.Iterator<T> r0 = r2.iterator
-            boolean r0 = r0.hasNext()
-            if (r0 == 0) goto L1e
-            java.util.Iterator<T> r0 = r2.iterator
-            r0.next()
-            int r0 = r2.position
-            int r0 = r0 + 1
-            r2.position = r0
-            goto L0
-        L1e:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlin.sequences.SubSequence$iterator$1.drop():void");
+        int i;
+        while (r0 < i && this.iterator.hasNext()) {
+            this.iterator.next();
+            this.position++;
+        }
     }
 
     @Override // java.util.Iterator

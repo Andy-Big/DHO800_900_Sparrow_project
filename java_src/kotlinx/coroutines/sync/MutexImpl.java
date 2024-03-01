@@ -2,13 +2,17 @@ package kotlinx.coroutines.sync;
 
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import kotlin.Metadata;
+import kotlin.Result;
 import kotlin.TypeCastException;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
 import kotlin.coroutines.ContinuationKt;
+import kotlin.coroutines.intrinsics.IntrinsicsKt;
 import kotlin.jvm.functions.Function2;
 import kotlin.jvm.internal.Intrinsics;
 import kotlinx.coroutines.CancellableContinuation;
+import kotlinx.coroutines.CancellableContinuationImpl;
+import kotlinx.coroutines.CancellableContinuationKt;
 import kotlinx.coroutines.DebugKt;
 import kotlinx.coroutines.DisposableHandle;
 import kotlinx.coroutines.internal.AtomicDesc;
@@ -407,14 +411,75 @@ public final class MutexImpl implements Mutex, SelectClause2<Object, Mutex> {
      */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    final /* synthetic */ java.lang.Object lockSuspend(final java.lang.Object r18, kotlin.coroutines.Continuation<? super kotlin.Unit> r19) {
-        /*
-            Method dump skipped, instructions count: 243
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.sync.MutexImpl.lockSuspend(java.lang.Object, kotlin.coroutines.Continuation):java.lang.Object");
+    final /* synthetic */ Object lockSuspend(final Object obj, Continuation<? super Unit> continuation) {
+        Symbol symbol;
+        boolean z = false;
+        CancellableContinuationImpl cancellableContinuationImpl = new CancellableContinuationImpl(IntrinsicsKt.intercepted(continuation), 0);
+        final CancellableContinuationImpl cancellableContinuationImpl2 = cancellableContinuationImpl;
+        final LockCont lockCont = new LockCont(obj, cancellableContinuationImpl2);
+        while (true) {
+            final Object obj2 = this._state;
+            if (obj2 instanceof Empty) {
+                Empty empty = (Empty) obj2;
+                Object obj3 = empty.locked;
+                symbol = MutexKt.UNLOCKED;
+                if (obj3 != symbol) {
+                    _state$FU.compareAndSet(this, obj2, new LockedQueue(empty.locked));
+                } else {
+                    if (_state$FU.compareAndSet(this, obj2, obj == null ? MutexKt.EMPTY_LOCKED : new Empty(obj))) {
+                        Unit unit = Unit.INSTANCE;
+                        Result.Companion companion = Result.Companion;
+                        cancellableContinuationImpl2.resumeWith(Result.m28constructorimpl(unit));
+                        break;
+                    }
+                }
+                z = false;
+            } else {
+                if (obj2 instanceof LockedQueue) {
+                    LockedQueue lockedQueue = (LockedQueue) obj2;
+                    boolean z2 = true;
+                    if (!(lockedQueue.owner != obj ? true : z)) {
+                        throw new IllegalStateException(("Already locked by " + obj).toString());
+                    }
+                    final LockCont lockCont2 = lockCont;
+                    LockFreeLinkedListNode.CondAddOp condAddOp = new LockFreeLinkedListNode.CondAddOp(lockCont2) { // from class: kotlinx.coroutines.sync.MutexImpl$lockSuspend$$inlined$suspendAtomicCancellableCoroutine$lambda$1
+                        @Override // kotlinx.coroutines.internal.AtomicOp
+                        public Object prepare(LockFreeLinkedListNode affected) {
+                            Intrinsics.checkParameterIsNotNull(affected, "affected");
+                            if (this._state == obj2) {
+                                return null;
+                            }
+                            return LockFreeLinkedListKt.getCONDITION_FALSE();
+                        }
+                    };
+                    while (true) {
+                        Object prev = lockedQueue.getPrev();
+                        if (prev == null) {
+                            throw new TypeCastException("null cannot be cast to non-null type kotlinx.coroutines.internal.Node /* = kotlinx.coroutines.internal.LockFreeLinkedListNode */");
+                        }
+                        int tryCondAddNext = ((LockFreeLinkedListNode) prev).tryCondAddNext(lockCont2, lockedQueue, condAddOp);
+                        if (tryCondAddNext != 1) {
+                            if (tryCondAddNext == 2) {
+                                z2 = false;
+                                break;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                    if (z2) {
+                        CancellableContinuationKt.removeOnCancellation(cancellableContinuationImpl2, lockCont2);
+                        break;
+                    }
+                } else if (!(obj2 instanceof OpDescriptor)) {
+                    throw new IllegalStateException(("Illegal state " + obj2).toString());
+                } else {
+                    ((OpDescriptor) obj2).perform(this);
+                }
+                z = false;
+            }
+        }
     }
 
     @Override // kotlinx.coroutines.sync.Mutex

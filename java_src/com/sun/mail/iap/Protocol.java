@@ -19,6 +19,7 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -220,78 +221,75 @@ public class Protocol {
     /* JADX WARN: Unsupported multi-entry loop pattern (BACK_EDGE: B:12:0x0023 -> B:13:0x0024). Please submit an issue!!! */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public synchronized com.sun.mail.iap.Response[] command(java.lang.String r8, com.sun.mail.iap.Argument r9) {
-        /*
-            r7 = this;
-            monitor-enter(r7)
-            r7.commandStart(r8)     // Catch: java.lang.Throwable -> L72
-            java.util.ArrayList r0 = new java.util.ArrayList     // Catch: java.lang.Throwable -> L72
-            r0.<init>()     // Catch: java.lang.Throwable -> L72
-            r1 = 0
-            r2 = 0
-            r3 = 1
-            java.lang.String r8 = r7.writeCommand(r8, r9)     // Catch: java.lang.Exception -> L11 com.sun.mail.iap.LiteralException -> L1a java.lang.Throwable -> L72
-            goto L24
-        L11:
-            r8 = move-exception
-            com.sun.mail.iap.Response r8 = com.sun.mail.iap.Response.byeResponse(r8)     // Catch: java.lang.Throwable -> L72
-            r0.add(r8)     // Catch: java.lang.Throwable -> L72
-            goto L22
-        L1a:
-            r8 = move-exception
-            com.sun.mail.iap.Response r8 = r8.getResponse()     // Catch: java.lang.Throwable -> L72
-            r0.add(r8)     // Catch: java.lang.Throwable -> L72
-        L22:
-            r8 = r2
-        L23:
-            r1 = r3
-        L24:
-            if (r1 != 0) goto L59
-            com.sun.mail.iap.Response r9 = r7.readResponse()     // Catch: com.sun.mail.iap.ProtocolException -> L46 java.io.IOException -> L51 java.lang.Throwable -> L72
-            boolean r4 = r9.isBYE()     // Catch: java.lang.Throwable -> L72
-            if (r4 == 0) goto L32
-            r2 = r9
-            goto L24
-        L32:
-            r0.add(r9)     // Catch: java.lang.Throwable -> L72
-            boolean r4 = r9.isTagged()     // Catch: java.lang.Throwable -> L72
-            if (r4 == 0) goto L24
-            java.lang.String r9 = r9.getTag()     // Catch: java.lang.Throwable -> L72
-            boolean r9 = r9.equals(r8)     // Catch: java.lang.Throwable -> L72
-            if (r9 == 0) goto L24
-            goto L23
-        L46:
-            r9 = move-exception
-            com.sun.mail.util.MailLogger r4 = r7.logger     // Catch: java.lang.Throwable -> L72
-            java.util.logging.Level r5 = java.util.logging.Level.FINE     // Catch: java.lang.Throwable -> L72
-            java.lang.String r6 = "ignoring bad response"
-            r4.log(r5, r6, r9)     // Catch: java.lang.Throwable -> L72
-            goto L24
-        L51:
-            r8 = move-exception
-            if (r2 != 0) goto L59
-            com.sun.mail.iap.Response r8 = com.sun.mail.iap.Response.byeResponse(r8)     // Catch: java.lang.Throwable -> L72
-            r2 = r8
-        L59:
-            if (r2 == 0) goto L5e
-            r0.add(r2)     // Catch: java.lang.Throwable -> L72
-        L5e:
-            int r8 = r0.size()     // Catch: java.lang.Throwable -> L72
-            com.sun.mail.iap.Response[] r8 = new com.sun.mail.iap.Response[r8]     // Catch: java.lang.Throwable -> L72
-            r0.toArray(r8)     // Catch: java.lang.Throwable -> L72
-            long r0 = java.lang.System.currentTimeMillis()     // Catch: java.lang.Throwable -> L72
-            r7.timestamp = r0     // Catch: java.lang.Throwable -> L72
-            r7.commandEnd()     // Catch: java.lang.Throwable -> L72
-            monitor-exit(r7)
-            return r8
-        L72:
-            r8 = move-exception
-            monitor-exit(r7)
-            throw r8
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.sun.mail.iap.Protocol.command(java.lang.String, com.sun.mail.iap.Argument):com.sun.mail.iap.Response[]");
+    public synchronized Response[] command(String str, Argument argument) {
+        String str2;
+        commandStart(str);
+        ArrayList arrayList = new ArrayList();
+        boolean z = false;
+        Response response = null;
+        try {
+            try {
+                str2 = writeCommand(str, argument);
+            } catch (LiteralException e) {
+                arrayList.add(e.getResponse());
+                str2 = null;
+                z = true;
+                while (!z) {
+                }
+                if (response != null) {
+                }
+                Response[] responseArr = new Response[arrayList.size()];
+                arrayList.toArray(responseArr);
+                this.timestamp = System.currentTimeMillis();
+                commandEnd();
+                return responseArr;
+            }
+        } catch (Exception e2) {
+            arrayList.add(Response.byeResponse(e2));
+            str2 = null;
+            z = true;
+            while (!z) {
+            }
+            if (response != null) {
+            }
+            Response[] responseArr2 = new Response[arrayList.size()];
+            arrayList.toArray(responseArr2);
+            this.timestamp = System.currentTimeMillis();
+            commandEnd();
+            return responseArr2;
+        }
+        while (!z) {
+            try {
+                try {
+                    Response readResponse = readResponse();
+                    if (readResponse.isBYE()) {
+                        response = readResponse;
+                    } else {
+                        arrayList.add(readResponse);
+                        if (readResponse.isTagged() && readResponse.getTag().equals(str2)) {
+                            z = true;
+                            while (!z) {
+                            }
+                        }
+                    }
+                } catch (IOException e3) {
+                    if (response == null) {
+                        response = Response.byeResponse(e3);
+                    }
+                }
+            } catch (ProtocolException e4) {
+                this.logger.log(Level.FINE, "ignoring bad response", (Throwable) e4);
+            }
+        }
+        if (response != null) {
+            arrayList.add(response);
+        }
+        Response[] responseArr22 = new Response[arrayList.size()];
+        arrayList.toArray(responseArr22);
+        this.timestamp = System.currentTimeMillis();
+        commandEnd();
+        return responseArr22;
     }
 
     public void handleResult(Response response) throws ProtocolException {

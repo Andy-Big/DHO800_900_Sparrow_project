@@ -10,6 +10,10 @@ import android.net.ProxyInfo;
 import android.net.StaticIpConfiguration;
 import android.text.TextUtils;
 import android.util.Log;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
@@ -123,14 +127,250 @@ public class EthernetUtil {
     /* JADX WARN: Removed duplicated region for block: B:89:0x0115 A[Catch: IOException -> 0x010c, TRY_LEAVE, TryCatch #10 {IOException -> 0x010c, blocks: (B:83:0x0108, B:87:0x0110, B:89:0x0115), top: B:117:0x0108 }] */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public static boolean checkConflict(java.lang.String r10) {
-        /*
-            Method dump skipped, instructions count: 333
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.rigol.util.EthernetUtil.checkConflict(java.lang.String):boolean");
+    public static boolean checkConflict(String str) {
+        Process process;
+        BufferedReader bufferedReader;
+        BufferedReader bufferedReader2;
+        Exception e;
+        StringBuilder sb;
+        IOException e2;
+        Object obj;
+        Object obj2;
+        String[] strArr = {"/system/bin/arping -c 3 -f -D " + str};
+        DataOutputStream dataOutputStream = null;
+        try {
+            try {
+                process = Runtime.getRuntime().exec("su");
+            } catch (Throwable th) {
+                th = th;
+            }
+            try {
+                DataOutputStream dataOutputStream2 = new DataOutputStream(process.getOutputStream());
+                for (int i = 0; i < 1; i++) {
+                    try {
+                        try {
+                            String str2 = strArr[i];
+                            if (str2 != null) {
+                                dataOutputStream2.write(str2.getBytes());
+                                dataOutputStream2.writeBytes("\n");
+                                dataOutputStream2.flush();
+                            }
+                        } catch (Throwable th2) {
+                            th = th2;
+                            bufferedReader = null;
+                            bufferedReader2 = null;
+                            dataOutputStream = dataOutputStream2;
+                            if (dataOutputStream != null) {
+                                try {
+                                    dataOutputStream.close();
+                                } catch (IOException e3) {
+                                    e3.printStackTrace();
+                                    if (process != null) {
+                                        process.destroy();
+                                    }
+                                    throw th;
+                                }
+                            }
+                            if (bufferedReader != null) {
+                                bufferedReader.close();
+                            }
+                            if (bufferedReader2 != null) {
+                                bufferedReader2.close();
+                            }
+                            if (process != null) {
+                            }
+                            throw th;
+                        }
+                    } catch (IOException e4) {
+                        bufferedReader = null;
+                        bufferedReader2 = null;
+                        e2 = e4;
+                        obj2 = null;
+                        dataOutputStream = dataOutputStream2;
+                        sb = obj2;
+                        e2.printStackTrace();
+                        if (dataOutputStream != null) {
+                        }
+                        if (bufferedReader != null) {
+                        }
+                        if (bufferedReader2 != null) {
+                        }
+                    } catch (Exception e5) {
+                        bufferedReader = null;
+                        bufferedReader2 = null;
+                        e = e5;
+                        obj = null;
+                        dataOutputStream = dataOutputStream2;
+                        sb = obj;
+                        e.printStackTrace();
+                        if (dataOutputStream != null) {
+                        }
+                        if (bufferedReader != null) {
+                        }
+                        if (bufferedReader2 != null) {
+                        }
+                    }
+                }
+                dataOutputStream2.writeBytes("exit\n");
+                dataOutputStream2.flush();
+                process.waitFor();
+                sb = new StringBuilder();
+                try {
+                    StringBuilder sb2 = new StringBuilder();
+                    bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    try {
+                        bufferedReader2 = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                        while (true) {
+                            try {
+                                String readLine = bufferedReader.readLine();
+                                if (readLine == null) {
+                                    break;
+                                }
+                                sb.append(readLine);
+                            } catch (IOException e6) {
+                                e2 = e6;
+                                obj2 = sb;
+                                dataOutputStream = dataOutputStream2;
+                                sb = obj2;
+                                e2.printStackTrace();
+                                if (dataOutputStream != null) {
+                                }
+                                if (bufferedReader != null) {
+                                }
+                                if (bufferedReader2 != null) {
+                                }
+                            } catch (Exception e7) {
+                                e = e7;
+                                obj = sb;
+                                dataOutputStream = dataOutputStream2;
+                                sb = obj;
+                                e.printStackTrace();
+                                if (dataOutputStream != null) {
+                                }
+                                if (bufferedReader != null) {
+                                }
+                                if (bufferedReader2 != null) {
+                                }
+                            } catch (Throwable th3) {
+                                th = th3;
+                                dataOutputStream = dataOutputStream2;
+                                if (dataOutputStream != null) {
+                                }
+                                if (bufferedReader != null) {
+                                }
+                                if (bufferedReader2 != null) {
+                                }
+                                if (process != null) {
+                                }
+                                throw th;
+                            }
+                        }
+                        while (true) {
+                            String readLine2 = bufferedReader2.readLine();
+                            if (readLine2 != null) {
+                                sb2.append(readLine2);
+                            } else {
+                                try {
+                                    break;
+                                } catch (IOException e8) {
+                                    e8.printStackTrace();
+                                }
+                            }
+                        }
+                        dataOutputStream2.close();
+                        bufferedReader.close();
+                        bufferedReader2.close();
+                    } catch (IOException e9) {
+                        e2 = e9;
+                        bufferedReader2 = null;
+                        obj2 = sb;
+                    } catch (Exception e10) {
+                        e = e10;
+                        bufferedReader2 = null;
+                        obj = sb;
+                    } catch (Throwable th4) {
+                        th = th4;
+                        bufferedReader2 = null;
+                    }
+                } catch (IOException e11) {
+                    e2 = e11;
+                    bufferedReader = null;
+                    bufferedReader2 = null;
+                    obj2 = sb;
+                } catch (Exception e12) {
+                    e = e12;
+                    bufferedReader = null;
+                    bufferedReader2 = null;
+                    obj = sb;
+                }
+            } catch (IOException e13) {
+                e = e13;
+                bufferedReader = null;
+                bufferedReader2 = bufferedReader;
+                e2 = e;
+                sb = bufferedReader2;
+                e2.printStackTrace();
+                if (dataOutputStream != null) {
+                    try {
+                        dataOutputStream.close();
+                    } catch (IOException e14) {
+                        e14.printStackTrace();
+                    }
+                }
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
+                if (bufferedReader2 != null) {
+                    bufferedReader2.close();
+                }
+            } catch (Exception e15) {
+                e = e15;
+                bufferedReader = null;
+                bufferedReader2 = bufferedReader;
+                e = e;
+                sb = bufferedReader2;
+                e.printStackTrace();
+                if (dataOutputStream != null) {
+                    try {
+                        dataOutputStream.close();
+                    } catch (IOException e16) {
+                        e16.printStackTrace();
+                    }
+                }
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
+                if (bufferedReader2 != null) {
+                    bufferedReader2.close();
+                }
+            } catch (Throwable th5) {
+                th = th5;
+                bufferedReader = null;
+                bufferedReader2 = bufferedReader;
+                if (dataOutputStream != null) {
+                }
+                if (bufferedReader != null) {
+                }
+                if (bufferedReader2 != null) {
+                }
+                if (process != null) {
+                }
+                throw th;
+            }
+        } catch (IOException e17) {
+            e = e17;
+            process = null;
+            bufferedReader = null;
+        } catch (Exception e18) {
+            e = e18;
+            process = null;
+            bufferedReader = null;
+        } catch (Throwable th6) {
+            th = th6;
+            process = null;
+            bufferedReader = null;
+        }
     }
 
     public static boolean checkInvalid(String str) throws Exception {

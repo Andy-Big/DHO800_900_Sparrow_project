@@ -6,5 +6,5 @@ public final class BuildConfig {
     public static final boolean DEBUG = false;
     public static final int VERSION_CODE = 1008000;
     public static final String VERSION_NAME = "00.01.02.00.02";
-    public static final String releaseTime = "2024/01/03 20:10:46";
+    public static final String releaseTime = "2024/02/23 08:45:46";
 }

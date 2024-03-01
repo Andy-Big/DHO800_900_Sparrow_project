@@ -621,28 +621,159 @@ public class TagView extends OrientationView {
     /* JADX WARN: Removed duplicated region for block: B:36:0x00c1  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    private final void drawVerticalTag(int r11, android.graphics.Canvas r12) {
-        /*
-            Method dump skipped, instructions count: 237
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.rigol.scope.views.TagView.drawVerticalTag(int, android.graphics.Canvas):void");
+    private final void drawVerticalTag(int i, Canvas canvas) {
+        int i2;
+        int position;
+        int height;
+        int height2;
+        int i3 = this.tagWidth >> 1;
+        if (!(getParent() instanceof ViewGroup)) {
+            return;
+        }
+        int i4 = 0;
+        if (getPosition() < this.positionEdgeWithView[0]) {
+            if (this.reverse) {
+                height2 = i3;
+            } else {
+                ViewParent parent = getParent();
+                if (parent == null) {
+                    throw new NullPointerException("null cannot be cast to non-null type android.view.ViewGroup");
+                }
+                height2 = ((ViewGroup) parent).getHeight() - i3;
+            }
+            turnLeft(canvas, getPath(), this.tagPaint, i, height2, this.tagHeight, this.tagWidth);
+        } else if (getPosition() > this.positionEdgeWithView[2]) {
+            if (this.reverse) {
+                height = 0;
+            } else {
+                ViewParent parent2 = getParent();
+                if (parent2 == null) {
+                    throw new NullPointerException("null cannot be cast to non-null type android.view.ViewGroup");
+                }
+                height = ((ViewGroup) parent2).getHeight() - this.tagWidth;
+            }
+            Path path = getPath();
+            Paint paint = this.tagPaint;
+            int i5 = this.tagHeight;
+            turnRight(canvas, path, paint, i - i5, height, i5, this.tagWidth);
+        } else {
+            int position2 = getPosition();
+            int[] iArr = this.positionEdgeWithTag;
+            if (position2 < iArr[0]) {
+                i2 = iArr[0];
+                position = getPosition();
+            } else {
+                int position3 = getPosition();
+                int[] iArr2 = this.positionEdgeWithTag;
+                if (position3 > iArr2[2]) {
+                    i2 = iArr2[2];
+                    position = getPosition();
+                }
+                int i6 = i - i3;
+                if (!this.reverse) {
+                    turnDown(canvas, getPath(), this.tagPaint, i6 + i4, 0, this.tagWidth, this.tagHeight);
+                    return;
+                }
+                Path path2 = getPath();
+                Paint paint2 = this.tagPaint;
+                int i7 = i6 + i4;
+                ViewParent parent3 = getParent();
+                if (parent3 != null) {
+                    int height3 = ((ViewGroup) parent3).getHeight();
+                    int i8 = this.tagHeight;
+                    turnUp(canvas, path2, paint2, i7, (height3 - i8) + i3, this.tagWidth, i8);
+                    return;
+                }
+                throw new NullPointerException("null cannot be cast to non-null type android.view.ViewGroup");
+            }
+            i4 = i2 - position;
+            int i62 = i - i3;
+            if (!this.reverse) {
+            }
+        }
     }
 
     /* JADX WARN: Removed duplicated region for block: B:33:0x00aa  */
     /* JADX WARN: Removed duplicated region for block: B:45:0x0101  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    private final void drawHorizontalTag(int r10, android.graphics.Canvas r11) {
-        /*
-            Method dump skipped, instructions count: 280
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.rigol.scope.views.TagView.drawHorizontalTag(int, android.graphics.Canvas):void");
+    private final void drawHorizontalTag(int i, Canvas canvas) {
+        int i2;
+        int position;
+        int i3 = this.tagHeight >> 1;
+        if (!(getParent() instanceof ViewGroup)) {
+            return;
+        }
+        int i4 = 0;
+        if (getPosition() < this.positionEdgeWithView[1]) {
+            if (this.reverse) {
+                ViewParent parent = getParent();
+                if (parent == null) {
+                    throw new NullPointerException("null cannot be cast to non-null type android.view.ViewGroup");
+                }
+                i4 = ((ViewGroup) parent).getWidth() - this.tagHeight;
+            }
+            turnUp(canvas, getPath(), this.tagPaint, i4, i3 + i, this.tagHeight, this.tagWidth);
+        } else if (getPosition() > this.positionEdgeWithView[3]) {
+            if (this.reverse) {
+                ViewParent parent2 = getParent();
+                if (parent2 == null) {
+                    throw new NullPointerException("null cannot be cast to non-null type android.view.ViewGroup");
+                }
+                i4 = ((ViewGroup) parent2).getWidth() - this.tagHeight;
+            }
+            Path path = getPath();
+            Paint paint = this.tagPaint;
+            int i5 = this.tagWidth;
+            turnDown(canvas, path, paint, i4, i - i5, this.tagHeight, i5);
+        } else {
+            int position2 = getPosition();
+            int[] iArr = this.positionEdgeWithTag;
+            if (position2 < iArr[1]) {
+                i2 = iArr[1];
+                position = getPosition();
+            } else {
+                int position3 = getPosition();
+                int[] iArr2 = this.positionEdgeWithTag;
+                if (position3 > iArr2[3]) {
+                    i2 = iArr2[3];
+                    position = getPosition();
+                }
+                int i6 = i - i3;
+                if (!this.reverse) {
+                    if (this.showBor) {
+                        Path path2 = getPath();
+                        Paint paint2 = this.tagPaint;
+                        ViewParent parent3 = getParent();
+                        if (parent3 != null) {
+                            int width = ((ViewGroup) parent3).getWidth();
+                            int i7 = this.tagWidth;
+                            turnLeft(canvas, path2, paint2, (width - i7) - 146, i + i4, i7, this.tagHeight);
+                            return;
+                        }
+                        throw new NullPointerException("null cannot be cast to non-null type android.view.ViewGroup");
+                    }
+                    Path path3 = getPath();
+                    Paint paint3 = this.tagPaint;
+                    ViewParent parent4 = getParent();
+                    if (parent4 != null) {
+                        int width2 = ((ViewGroup) parent4).getWidth();
+                        int i8 = this.tagWidth;
+                        turnLeft(canvas, path3, paint3, width2 - i8, i + i4, i8, this.tagHeight);
+                        return;
+                    }
+                    throw new NullPointerException("null cannot be cast to non-null type android.view.ViewGroup");
+                }
+                turnRight(canvas, getPath(), this.tagPaint, 0, i6 + i4, this.tagWidth, this.tagHeight);
+                return;
+            }
+            i4 = i2 - position;
+            int i62 = i - i3;
+            if (!this.reverse) {
+            }
+        }
     }
 
     private final void turnDown(Canvas canvas, Path path, Paint paint, int i, int i2, int i3, int i4) {

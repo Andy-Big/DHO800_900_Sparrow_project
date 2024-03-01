@@ -2,8 +2,10 @@ package kotlinx.coroutines.channels;
 
 import androidx.exifinterface.media.ExifInterface;
 import kotlin.Metadata;
+import kotlin.ResultKt;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
+import kotlin.coroutines.intrinsics.IntrinsicsKt;
 import kotlin.coroutines.jvm.internal.DebugMetadata;
 import kotlin.coroutines.jvm.internal.SuspendLambda;
 import kotlin.jvm.functions.Function2;
@@ -50,77 +52,62 @@ public final class BroadcastKt$broadcast$1<E> extends SuspendLambda implements F
     @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public final java.lang.Object invokeSuspend(java.lang.Object r8) {
-        /*
-            r7 = this;
-            java.lang.Object r0 = kotlin.coroutines.intrinsics.IntrinsicsKt.getCOROUTINE_SUSPENDED()
-            int r1 = r7.label
-            r2 = 2
-            r3 = 1
-            if (r1 == 0) goto L30
-            if (r1 == r3) goto L23
-            if (r1 != r2) goto L1b
-            java.lang.Object r1 = r7.L$2
-            kotlinx.coroutines.channels.ChannelIterator r1 = (kotlinx.coroutines.channels.ChannelIterator) r1
-            java.lang.Object r4 = r7.L$0
-            kotlinx.coroutines.channels.ProducerScope r4 = (kotlinx.coroutines.channels.ProducerScope) r4
-            kotlin.ResultKt.throwOnFailure(r8)
-            r8 = r4
-            goto L3b
-        L1b:
-            java.lang.IllegalStateException r8 = new java.lang.IllegalStateException
-            java.lang.String r0 = "call to 'resume' before 'invoke' with coroutine"
-            r8.<init>(r0)
-            throw r8
-        L23:
-            java.lang.Object r1 = r7.L$1
-            kotlinx.coroutines.channels.ChannelIterator r1 = (kotlinx.coroutines.channels.ChannelIterator) r1
-            java.lang.Object r4 = r7.L$0
-            kotlinx.coroutines.channels.ProducerScope r4 = (kotlinx.coroutines.channels.ProducerScope) r4
-            kotlin.ResultKt.throwOnFailure(r8)
-            r5 = r7
-            goto L4d
-        L30:
-            kotlin.ResultKt.throwOnFailure(r8)
-            kotlinx.coroutines.channels.ProducerScope r8 = r7.p$
-            kotlinx.coroutines.channels.ReceiveChannel r1 = r7.$this_broadcast
-            kotlinx.coroutines.channels.ChannelIterator r1 = r1.iterator()
-        L3b:
-            r4 = r7
-        L3c:
-            r4.L$0 = r8
-            r4.L$1 = r1
-            r4.label = r3
-            java.lang.Object r5 = r1.hasNext(r4)
-            if (r5 != r0) goto L49
-            return r0
-        L49:
-            r6 = r4
-            r4 = r8
-            r8 = r5
-            r5 = r6
-        L4d:
-            java.lang.Boolean r8 = (java.lang.Boolean) r8
-            boolean r8 = r8.booleanValue()
-            if (r8 == 0) goto L6b
-            java.lang.Object r8 = r1.next()
-            r5.L$0 = r4
-            r5.L$1 = r8
-            r5.L$2 = r1
-            r5.label = r2
-            java.lang.Object r8 = r4.send(r8, r5)
-            if (r8 != r0) goto L68
-            return r0
-        L68:
-            r8 = r4
-            r4 = r5
-            goto L3c
-        L6b:
-            kotlin.Unit r8 = kotlin.Unit.INSTANCE
-            return r8
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.channels.BroadcastKt$broadcast$1.invokeSuspend(java.lang.Object):java.lang.Object");
+    public final Object invokeSuspend(Object obj) {
+        ProducerScope producerScope;
+        ChannelIterator<E> it;
+        BroadcastKt$broadcast$1<E> broadcastKt$broadcast$1;
+        Object hasNext;
+        Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+        int i = this.label;
+        if (i == 0) {
+            ResultKt.throwOnFailure(obj);
+            producerScope = this.p$;
+            it = this.$this_broadcast.iterator();
+        } else if (i == 1) {
+            it = (ChannelIterator) this.L$1;
+            ProducerScope producerScope2 = (ProducerScope) this.L$0;
+            ResultKt.throwOnFailure(obj);
+            BroadcastKt$broadcast$1<E> broadcastKt$broadcast$12 = this;
+            if (!((Boolean) obj).booleanValue()) {
+                E next = it.next();
+                broadcastKt$broadcast$12.L$0 = producerScope2;
+                broadcastKt$broadcast$12.L$1 = next;
+                broadcastKt$broadcast$12.L$2 = it;
+                broadcastKt$broadcast$12.label = 2;
+                if (producerScope2.send(next, broadcastKt$broadcast$12) == coroutine_suspended) {
+                    return coroutine_suspended;
+                }
+                producerScope = producerScope2;
+                broadcastKt$broadcast$1 = broadcastKt$broadcast$12;
+                broadcastKt$broadcast$1.L$0 = producerScope;
+                broadcastKt$broadcast$1.L$1 = it;
+                broadcastKt$broadcast$1.label = 1;
+                hasNext = it.hasNext(broadcastKt$broadcast$1);
+                if (hasNext != coroutine_suspended) {
+                    return coroutine_suspended;
+                }
+                BroadcastKt$broadcast$1<E> broadcastKt$broadcast$13 = broadcastKt$broadcast$1;
+                producerScope2 = producerScope;
+                obj = hasNext;
+                broadcastKt$broadcast$12 = broadcastKt$broadcast$13;
+                if (!((Boolean) obj).booleanValue()) {
+                    return Unit.INSTANCE;
+                }
+            }
+        } else if (i != 2) {
+            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+        } else {
+            it = (ChannelIterator) this.L$2;
+            ResultKt.throwOnFailure(obj);
+            producerScope = (ProducerScope) this.L$0;
+        }
+        broadcastKt$broadcast$1 = this;
+        broadcastKt$broadcast$1.L$0 = producerScope;
+        broadcastKt$broadcast$1.L$1 = it;
+        broadcastKt$broadcast$1.label = 1;
+        hasNext = it.hasNext(broadcastKt$broadcast$1);
+        if (hasNext != coroutine_suspended) {
+        }
     }
 }

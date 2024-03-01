@@ -33,69 +33,36 @@ public final class Regex implements Serializable {
     /* JADX WARN: Illegal instructions before constructor call */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public Regex(java.lang.String r2) {
-        /*
-            r1 = this;
-            java.lang.String r0 = "pattern"
-            kotlin.jvm.internal.Intrinsics.checkNotNullParameter(r2, r0)
-            java.util.regex.Pattern r2 = java.util.regex.Pattern.compile(r2)
-            java.lang.String r0 = "Pattern.compile(pattern)"
-            kotlin.jvm.internal.Intrinsics.checkNotNullExpressionValue(r2, r0)
-            r1.<init>(r2)
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlin.text.Regex.<init>(java.lang.String):void");
+    public Regex(String pattern) {
+        this(r2);
+        Intrinsics.checkNotNullParameter(pattern, "pattern");
+        Pattern compile = Pattern.compile(pattern);
+        Intrinsics.checkNotNullExpressionValue(compile, "Pattern.compile(pattern)");
     }
 
     /* JADX WARN: Illegal instructions before constructor call */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public Regex(java.lang.String r2, kotlin.text.RegexOption r3) {
-        /*
-            r1 = this;
-            java.lang.String r0 = "pattern"
-            kotlin.jvm.internal.Intrinsics.checkNotNullParameter(r2, r0)
-            java.lang.String r0 = "option"
-            kotlin.jvm.internal.Intrinsics.checkNotNullParameter(r3, r0)
-            kotlin.text.Regex$Companion r0 = kotlin.text.Regex.Companion
-            int r3 = r3.getValue()
-            int r3 = kotlin.text.Regex.Companion.access$ensureUnicodeCase(r0, r3)
-            java.util.regex.Pattern r2 = java.util.regex.Pattern.compile(r2, r3)
-            java.lang.String r3 = "Pattern.compile(pattern,…nicodeCase(option.value))"
-            kotlin.jvm.internal.Intrinsics.checkNotNullExpressionValue(r2, r3)
-            r1.<init>(r2)
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlin.text.Regex.<init>(java.lang.String, kotlin.text.RegexOption):void");
+    public Regex(String pattern, RegexOption option) {
+        this(r2);
+        Intrinsics.checkNotNullParameter(pattern, "pattern");
+        Intrinsics.checkNotNullParameter(option, "option");
+        Pattern compile = Pattern.compile(pattern, Companion.ensureUnicodeCase(option.getValue()));
+        Intrinsics.checkNotNullExpressionValue(compile, "Pattern.compile(pattern,…nicodeCase(option.value))");
     }
 
     /* JADX WARN: Illegal instructions before constructor call */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public Regex(java.lang.String r2, java.util.Set<? extends kotlin.text.RegexOption> r3) {
-        /*
-            r1 = this;
-            java.lang.String r0 = "pattern"
-            kotlin.jvm.internal.Intrinsics.checkNotNullParameter(r2, r0)
-            java.lang.String r0 = "options"
-            kotlin.jvm.internal.Intrinsics.checkNotNullParameter(r3, r0)
-            kotlin.text.Regex$Companion r0 = kotlin.text.Regex.Companion
-            java.lang.Iterable r3 = (java.lang.Iterable) r3
-            int r3 = kotlin.text.RegexKt.access$toInt(r3)
-            int r3 = kotlin.text.Regex.Companion.access$ensureUnicodeCase(r0, r3)
-            java.util.regex.Pattern r2 = java.util.regex.Pattern.compile(r2, r3)
-            java.lang.String r3 = "Pattern.compile(pattern,…odeCase(options.toInt()))"
-            kotlin.jvm.internal.Intrinsics.checkNotNullExpressionValue(r2, r3)
-            r1.<init>(r2)
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlin.text.Regex.<init>(java.lang.String, java.util.Set):void");
+    public Regex(String pattern, Set<? extends RegexOption> options) {
+        this(r2);
+        Intrinsics.checkNotNullParameter(pattern, "pattern");
+        Intrinsics.checkNotNullParameter(options, "options");
+        Pattern compile = Pattern.compile(pattern, Companion.ensureUnicodeCase(RegexKt.access$toInt(options)));
+        Intrinsics.checkNotNullExpressionValue(compile, "Pattern.compile(pattern,…odeCase(options.toInt()))");
     }
 
     public final String getPattern() {

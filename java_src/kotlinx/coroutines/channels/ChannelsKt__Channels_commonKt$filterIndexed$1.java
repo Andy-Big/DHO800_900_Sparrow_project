@@ -2,8 +2,11 @@ package kotlinx.coroutines.channels;
 
 import androidx.exifinterface.media.ExifInterface;
 import kotlin.Metadata;
+import kotlin.ResultKt;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
+import kotlin.coroutines.intrinsics.IntrinsicsKt;
+import kotlin.coroutines.jvm.internal.Boxing;
 import kotlin.coroutines.jvm.internal.DebugMetadata;
 import kotlin.coroutines.jvm.internal.SuspendLambda;
 import kotlin.jvm.functions.Function2;
@@ -54,13 +57,112 @@ public final class ChannelsKt__Channels_commonKt$filterIndexed$1<E> extends Susp
     @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public final java.lang.Object invokeSuspend(java.lang.Object r12) {
-        /*
-            Method dump skipped, instructions count: 194
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.channels.ChannelsKt__Channels_commonKt$filterIndexed$1.invokeSuspend(java.lang.Object):java.lang.Object");
+    public final Object invokeSuspend(Object obj) {
+        ProducerScope producerScope;
+        ChannelsKt__Channels_commonKt$filterIndexed$1<E> channelsKt__Channels_commonKt$filterIndexed$1;
+        int i;
+        ChannelIterator<E> it;
+        ProducerScope producerScope2;
+        E e;
+        int i2;
+        ChannelIterator<E> channelIterator;
+        Object obj2;
+        ChannelsKt__Channels_commonKt$filterIndexed$1<E> channelsKt__Channels_commonKt$filterIndexed$12;
+        ProducerScope producerScope3;
+        int i3;
+        Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+        int i4 = this.label;
+        if (i4 == 0) {
+            ResultKt.throwOnFailure(obj);
+            producerScope = this.p$;
+            channelsKt__Channels_commonKt$filterIndexed$1 = this;
+            i = 0;
+            it = this.$this_filterIndexed.iterator();
+        } else if (i4 == 1) {
+            int i5 = this.I$0;
+            ResultKt.throwOnFailure(obj);
+            producerScope3 = (ProducerScope) this.L$0;
+            i3 = i5;
+            channelIterator = (ChannelIterator) this.L$1;
+            obj2 = coroutine_suspended;
+            channelsKt__Channels_commonKt$filterIndexed$12 = this;
+            if (((Boolean) obj).booleanValue()) {
+                return Unit.INSTANCE;
+            }
+            E next = channelIterator.next();
+            Function3 function3 = channelsKt__Channels_commonKt$filterIndexed$12.$predicate;
+            Integer boxInt = Boxing.boxInt(i3);
+            i2 = i3 + 1;
+            channelsKt__Channels_commonKt$filterIndexed$12.L$0 = producerScope3;
+            channelsKt__Channels_commonKt$filterIndexed$12.I$0 = i2;
+            channelsKt__Channels_commonKt$filterIndexed$12.L$1 = next;
+            channelsKt__Channels_commonKt$filterIndexed$12.L$2 = channelIterator;
+            channelsKt__Channels_commonKt$filterIndexed$12.label = 2;
+            Object invoke = function3.invoke(boxInt, next, channelsKt__Channels_commonKt$filterIndexed$12);
+            if (invoke == obj2) {
+                return obj2;
+            }
+            ProducerScope producerScope4 = producerScope3;
+            e = next;
+            obj = invoke;
+            producerScope2 = producerScope4;
+            if (((Boolean) obj).booleanValue()) {
+            }
+            channelsKt__Channels_commonKt$filterIndexed$1 = channelsKt__Channels_commonKt$filterIndexed$12;
+            coroutine_suspended = obj2;
+            it = channelIterator;
+            i = i2;
+            producerScope = producerScope2;
+        } else if (i4 == 2) {
+            Object obj3 = this.L$1;
+            i2 = this.I$0;
+            ResultKt.throwOnFailure(obj);
+            producerScope2 = (ProducerScope) this.L$0;
+            e = obj3;
+            channelIterator = (ChannelIterator) this.L$2;
+            obj2 = coroutine_suspended;
+            channelsKt__Channels_commonKt$filterIndexed$12 = this;
+            if (((Boolean) obj).booleanValue()) {
+                channelsKt__Channels_commonKt$filterIndexed$12.L$0 = producerScope2;
+                channelsKt__Channels_commonKt$filterIndexed$12.I$0 = i2;
+                channelsKt__Channels_commonKt$filterIndexed$12.L$1 = e;
+                channelsKt__Channels_commonKt$filterIndexed$12.L$2 = channelIterator;
+                channelsKt__Channels_commonKt$filterIndexed$12.label = 3;
+                if (producerScope2.send(e, channelsKt__Channels_commonKt$filterIndexed$12) == obj2) {
+                    return obj2;
+                }
+            }
+            channelsKt__Channels_commonKt$filterIndexed$1 = channelsKt__Channels_commonKt$filterIndexed$12;
+            coroutine_suspended = obj2;
+            it = channelIterator;
+            i = i2;
+            producerScope = producerScope2;
+        } else if (i4 != 3) {
+            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+        } else {
+            it = (ChannelIterator) this.L$2;
+            i = this.I$0;
+            producerScope = (ProducerScope) this.L$0;
+            ResultKt.throwOnFailure(obj);
+            channelsKt__Channels_commonKt$filterIndexed$1 = this;
+        }
+        channelsKt__Channels_commonKt$filterIndexed$1.L$0 = producerScope;
+        channelsKt__Channels_commonKt$filterIndexed$1.I$0 = i;
+        channelsKt__Channels_commonKt$filterIndexed$1.L$1 = it;
+        channelsKt__Channels_commonKt$filterIndexed$1.label = 1;
+        Object hasNext = it.hasNext(channelsKt__Channels_commonKt$filterIndexed$1);
+        if (hasNext == coroutine_suspended) {
+            return coroutine_suspended;
+        }
+        Object obj4 = coroutine_suspended;
+        channelsKt__Channels_commonKt$filterIndexed$12 = channelsKt__Channels_commonKt$filterIndexed$1;
+        obj = hasNext;
+        producerScope3 = producerScope;
+        i3 = i;
+        channelIterator = it;
+        obj2 = obj4;
+        if (((Boolean) obj).booleanValue()) {
+        }
     }
 }

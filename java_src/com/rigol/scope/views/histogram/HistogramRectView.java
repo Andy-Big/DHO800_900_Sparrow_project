@@ -4,10 +4,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import androidx.core.app.NotificationCompat;
+import com.blankj.utilcode.util.LogUtils;
 import com.rigol.scope.R;
 import kotlin.Metadata;
+import kotlin.Unit;
 import kotlin.jvm.internal.DefaultConstructorMarker;
 import kotlin.jvm.internal.Intrinsics;
 import timber.log.Timber;
@@ -332,14 +335,408 @@ public final class HistogramRectView extends View {
     @Override // android.view.View
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public boolean onTouchEvent(android.view.MotionEvent r15) {
-        /*
-            Method dump skipped, instructions count: 1760
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.rigol.scope.views.histogram.HistogramRectView.onTouchEvent(android.view.MotionEvent):boolean");
+    public boolean onTouchEvent(MotionEvent event) {
+        Callback callback;
+        Intrinsics.checkNotNullParameter(event, "event");
+        int action = event.getAction();
+        if (action == 0) {
+            this.downX = event.getX();
+            this.downY = event.getY();
+            this.lastDownX = event.getX();
+            this.lastDownY = event.getY();
+            this.lastDownTime = event.getEventTime();
+            Timber.d("lastDownX:" + this.lastDownX, new Object[0]);
+            float f = this.downX;
+            float f2 = this.rectLeft;
+            int i = this.distance;
+            if (f >= f2 - i) {
+                float f3 = this.rectRight;
+                if (f <= i + f3) {
+                    float f4 = this.downY;
+                    if (f4 >= this.rectTop - i && f4 <= this.rectBottom + i) {
+                        float f5 = 10;
+                        int i2 = (int) ((f3 - f2) / f5);
+                        if (f >= f2 - i && f <= f2 + i2) {
+                            this.isLeft = true;
+                        } else {
+                            float f6 = this.downX;
+                            float f7 = this.rectRight;
+                            if (f6 <= this.distance + f7 && f6 >= f7 - i2) {
+                                this.isRight = true;
+                            }
+                        }
+                        float f8 = this.rectBottom;
+                        float f9 = this.rectTop;
+                        int i3 = (int) ((f8 - f9) / f5);
+                        float f10 = this.downY;
+                        if (f10 >= f9 - this.distance && f10 <= f9 + i3) {
+                            this.isTop = true;
+                        } else {
+                            float f11 = this.downY;
+                            float f12 = this.rectBottom;
+                            if (f11 <= this.distance + f12 && f11 >= f12 - i3) {
+                                this.isBottom = true;
+                            }
+                        }
+                        if (!this.isLeft && !this.isTop && !this.isRight && !this.isBottom) {
+                            this.isMove = true;
+                        } else {
+                            this.isChangeSize = true;
+                        }
+                        invalidate();
+                        Callback callback2 = this.callback;
+                        if (callback2 != null) {
+                            callback2.onStart();
+                            Unit unit = Unit.INSTANCE;
+                        }
+                    }
+                }
+            }
+            return super.onTouchEvent(event);
+        }
+        if (action != 1) {
+            if (action == 2) {
+                float x = event.getX();
+                float y = event.getY();
+                float f13 = x - this.downX;
+                float f14 = y - this.downY;
+                LogUtils.e("rectLeftrectLeft", "边界", String.valueOf(this.rectLeft), Float.valueOf(f13), Float.valueOf(x), Float.valueOf(this.downX));
+                if (this.isMove) {
+                    setRectLeft(this.rectLeft + f13);
+                    setRectRight(this.rectRight + f13);
+                    setRectTop(this.rectTop + f14);
+                    setRectBottom(this.rectBottom + f14);
+                    float f15 = 0;
+                    if (this.rectLeft < f15 || this.rectRight > getMeasuredWidth()) {
+                        setRectLeft(this.rectLeft - f13);
+                        setRectRight(this.rectRight - f13);
+                    }
+                    if (this.rectTop < f15 || this.rectBottom > getMeasuredHeight()) {
+                        setRectTop(this.rectTop - f14);
+                        setRectBottom(this.rectBottom - f14);
+                    }
+                    invalidate();
+                    this.downX = x;
+                    this.downY = y;
+                } else if (this.aspect != -1.0f) {
+                    if (this.isLeft && (this.isTop || this.isBottom)) {
+                        if (!this.isSlideLeft && !this.isSlideTop && !this.isSlideBottom) {
+                            float abs = Math.abs(f13);
+                            float abs2 = Math.abs(f14);
+                            if (abs > abs2 && abs > 10) {
+                                this.isSlideLeft = true;
+                            } else if (abs < abs2 && abs2 > 10) {
+                                if (this.isTop) {
+                                    this.isSlideTop = true;
+                                } else {
+                                    this.isSlideBottom = true;
+                                }
+                            }
+                        }
+                    } else if (this.isRight && (this.isTop || this.isBottom)) {
+                        if (!this.isSlideRight && !this.isSlideTop && !this.isSlideBottom) {
+                            float abs3 = Math.abs(f13);
+                            float abs4 = Math.abs(f14);
+                            if (abs3 > abs4 && abs3 > 10) {
+                                this.isSlideRight = true;
+                            } else if (abs3 < abs4 && abs4 > 10) {
+                                if (this.isTop) {
+                                    this.isSlideTop = true;
+                                } else {
+                                    this.isSlideBottom = true;
+                                }
+                            }
+                        }
+                    } else if (this.isLeft && !this.isSlideLeft) {
+                        this.isSlideLeft = true;
+                    } else if (this.isRight && !this.isSlideLeft) {
+                        this.isSlideRight = true;
+                    } else if (this.isTop && !this.isSlideTop) {
+                        this.isSlideTop = true;
+                    } else if (this.isBottom && !this.isSlideBottom) {
+                        this.isSlideBottom = true;
+                    }
+                    if (this.isSlideLeft) {
+                        setRectLeft(this.rectLeft + f13);
+                        float f16 = 0;
+                        if (this.rectLeft < f16) {
+                            setRectLeft(0.0f);
+                        }
+                        float f17 = this.rectRight;
+                        float f18 = f17 - this.rectLeft;
+                        int i4 = this.cornerLength;
+                        if (f18 < i4 * 2) {
+                            f18 = i4 * 2;
+                            setRectLeft(f17 - f18);
+                        }
+                        float f19 = this.aspect;
+                        float f20 = f18 / f19;
+                        int i5 = this.cornerLength;
+                        if (f20 < i5 * 2) {
+                            f20 = i5 * 2;
+                            setRectLeft(this.rectRight - (f19 * f20));
+                        }
+                        if (this.isTop) {
+                            setRectBottom(this.rectTop + f20);
+                        } else if (this.isBottom) {
+                            setRectTop(this.rectBottom - f20);
+                        } else {
+                            float f21 = this.rectBottom;
+                            float f22 = this.rectTop;
+                            float f23 = ((f21 - f22) - f20) / 2;
+                            setRectTop(f22 + f23);
+                            setRectBottom(this.rectBottom - f23);
+                        }
+                        if (this.rectTop < f16) {
+                            setRectTop(0.0f);
+                            setRectBottom(f20);
+                            if (this.rectBottom > getMeasuredHeight()) {
+                                setRectBottom(getMeasuredHeight());
+                            }
+                            setRectLeft(this.rectRight - (this.rectBottom * this.aspect));
+                        } else if (this.rectBottom > getMeasuredHeight()) {
+                            setRectBottom(getMeasuredHeight());
+                            setRectTop(getMeasuredHeight() - f20);
+                            if (this.rectTop < f16) {
+                                setRectTop(0.0f);
+                            }
+                            setRectLeft(this.rectRight - ((this.rectBottom - this.rectTop) * this.aspect));
+                        }
+                        invalidate();
+                        this.downX = x;
+                        this.downY = y;
+                    } else if (this.isSlideRight) {
+                        setRectRight(this.rectRight + f13);
+                        if (this.rectRight > getMeasuredWidth()) {
+                            setRectRight(getMeasuredWidth());
+                        }
+                        float f24 = this.rectRight;
+                        float f25 = this.rectLeft;
+                        float f26 = f24 - f25;
+                        int i6 = this.cornerLength;
+                        if (f26 < i6 * 2) {
+                            f26 = i6 * 2;
+                            setRectRight(f25 + f26);
+                        }
+                        float f27 = this.aspect;
+                        float f28 = f26 / f27;
+                        int i7 = this.cornerLength;
+                        if (f28 < i7 * 2) {
+                            f28 = i7 * 2;
+                            setRectRight(this.rectLeft + (f27 * f28));
+                        }
+                        if (this.isTop) {
+                            setRectBottom(this.rectTop + f28);
+                        } else if (this.isBottom) {
+                            setRectTop(this.rectBottom - f28);
+                        } else {
+                            float f29 = this.rectBottom;
+                            float f30 = this.rectTop;
+                            float f31 = ((f29 - f30) - f28) / 2;
+                            setRectTop(f30 + f31);
+                            setRectBottom(this.rectBottom - f31);
+                        }
+                        float f32 = 0;
+                        if (this.rectTop < f32) {
+                            setRectTop(0.0f);
+                            setRectBottom(f28);
+                            if (this.rectBottom > getMeasuredHeight()) {
+                                setRectBottom(getMeasuredHeight());
+                            }
+                            setRectRight(this.rectLeft + (this.rectBottom * this.aspect));
+                        } else if (this.rectBottom > getMeasuredHeight()) {
+                            setRectBottom(getMeasuredHeight());
+                            setRectTop(getMeasuredHeight() - f28);
+                            if (this.rectTop < f32) {
+                                setRectTop(0.0f);
+                            }
+                            setRectRight(this.rectLeft + ((this.rectBottom - this.rectTop) * this.aspect));
+                        }
+                        invalidate();
+                        this.downX = x;
+                        this.downY = y;
+                    } else if (this.isSlideTop) {
+                        setRectTop(this.rectTop + f14);
+                        float f33 = 0;
+                        if (this.rectTop < f33) {
+                            setRectTop(0.0f);
+                        }
+                        float f34 = this.rectBottom;
+                        float f35 = f34 - this.rectTop;
+                        int i8 = this.cornerLength;
+                        if (f35 < i8 * 2) {
+                            f35 = i8 * 2;
+                            setRectTop(f34 - f35);
+                        }
+                        float f36 = this.aspect;
+                        float f37 = f35 * f36;
+                        int i9 = this.cornerLength;
+                        if (f37 < i9 * 2) {
+                            f37 = i9 * 2;
+                            setRectTop(this.rectBottom - (f37 / f36));
+                        }
+                        if (this.isLeft) {
+                            setRectRight(this.rectLeft + f37);
+                        } else if (this.isRight) {
+                            setRectLeft(this.rectRight - f37);
+                        } else {
+                            float f38 = this.rectRight;
+                            float f39 = this.rectLeft;
+                            float f40 = ((f38 - f39) - f37) / 2;
+                            setRectLeft(f39 + f40);
+                            setRectRight(this.rectRight - f40);
+                        }
+                        if (this.rectLeft < f33) {
+                            setRectLeft(0.0f);
+                            setRectRight(f37);
+                            if (this.rectRight > getMeasuredWidth()) {
+                                setRectRight(getMeasuredWidth());
+                            }
+                            setRectTop(this.rectBottom - (this.rectRight / this.aspect));
+                        } else if (this.rectRight > getMeasuredWidth()) {
+                            setRectRight(getMeasuredWidth());
+                            setRectLeft(getMeasuredWidth() - f37);
+                            if (this.rectLeft < f33) {
+                                setRectLeft(0.0f);
+                                f37 = getMeasuredWidth();
+                            }
+                            setRectTop(this.rectBottom - (f37 / this.aspect));
+                        }
+                        invalidate();
+                        this.downX = x;
+                        this.downY = y;
+                    } else if (this.isSlideBottom) {
+                        setRectBottom(this.rectBottom + f14);
+                        if (this.rectBottom > getMeasuredHeight()) {
+                            setRectBottom(getMeasuredHeight());
+                        }
+                        float f41 = this.rectBottom;
+                        float f42 = this.rectTop;
+                        float f43 = f41 - f42;
+                        int i10 = this.cornerLength;
+                        if (f43 < i10 * 2) {
+                            f43 = i10 * 2;
+                            setRectBottom(f42 + f43);
+                        }
+                        float f44 = this.aspect;
+                        float f45 = f43 * f44;
+                        int i11 = this.cornerLength;
+                        if (f45 < i11 * 2) {
+                            f45 = i11 * 2;
+                            setRectBottom(this.rectTop + (f45 / f44));
+                        }
+                        if (this.isLeft) {
+                            setRectRight(this.rectLeft + f45);
+                        } else if (this.isRight) {
+                            setRectLeft(this.rectRight - f45);
+                        } else {
+                            float f46 = this.rectRight;
+                            float f47 = this.rectLeft;
+                            float f48 = ((f46 - f47) - f45) / 2;
+                            setRectLeft(f47 + f48);
+                            setRectRight(this.rectRight - f48);
+                        }
+                        float f49 = 0;
+                        if (this.rectLeft < f49) {
+                            setRectLeft(0.0f);
+                            setRectRight(f45);
+                            if (this.rectRight > getMeasuredWidth()) {
+                                setRectRight(getMeasuredWidth());
+                            }
+                            setRectBottom(this.rectTop + (this.rectRight / this.aspect));
+                        } else if (this.rectRight > getMeasuredWidth()) {
+                            setRectRight(getMeasuredWidth());
+                            setRectLeft(getMeasuredWidth() - f45);
+                            if (this.rectLeft < f49) {
+                                setRectLeft(0.0f);
+                                f45 = getMeasuredWidth();
+                            }
+                            setRectBottom(this.rectTop + (f45 / this.aspect));
+                        }
+                        invalidate();
+                        this.downX = x;
+                        this.downY = y;
+                    }
+                } else {
+                    if (this.isLeft) {
+                        setRectLeft(this.rectLeft + f13);
+                        if (this.rectLeft < 0) {
+                            setRectLeft(0.0f);
+                        }
+                        float f50 = this.rectLeft;
+                        float f51 = this.rectRight;
+                        int i12 = this.cornerLength;
+                        if (f50 > f51 - (i12 * 2)) {
+                            setRectLeft(f51 - (i12 * 2));
+                        }
+                    } else if (this.isRight) {
+                        Timber.d("Rect:" + f13, new Object[0]);
+                        setRectRight(this.rectRight + f13);
+                        Timber.d("Rect:" + this.rectRight, new Object[0]);
+                        if (this.rectRight > getMeasuredWidth()) {
+                            setRectRight(getMeasuredWidth());
+                        }
+                        float f52 = this.rectRight;
+                        float f53 = this.rectLeft;
+                        int i13 = this.cornerLength;
+                        if (f52 < (i13 * 2) + f53) {
+                            setRectRight(f53 + (i13 * 2));
+                        }
+                        Timber.d("Rect:" + this.rectRight, new Object[0]);
+                    }
+                    if (this.isTop) {
+                        setRectTop(this.rectTop + f14);
+                        if (this.rectTop < 0) {
+                            setRectTop(0.0f);
+                        }
+                        float f54 = this.rectTop;
+                        float f55 = this.rectBottom;
+                        int i14 = this.cornerLength;
+                        if (f54 > f55 - (i14 * 2)) {
+                            setRectTop(f55 - (i14 * 2));
+                        }
+                    } else if (this.isBottom) {
+                        setRectBottom(this.rectBottom + f14);
+                        if (this.rectBottom > getMeasuredHeight()) {
+                            setRectBottom(getMeasuredHeight());
+                        }
+                        float f56 = this.rectBottom;
+                        float f57 = this.rectTop;
+                        int i15 = this.cornerLength;
+                        if (f56 < (i15 * 2) + f57) {
+                            setRectBottom(f57 + (i15 * 2));
+                        }
+                    }
+                    invalidate();
+                    this.downX = x;
+                    this.downY = y;
+                }
+            }
+        }
+        this.isLeft = false;
+        this.isRight = false;
+        this.isTop = false;
+        this.isBottom = false;
+        this.isMove = false;
+        this.isChangeSize = false;
+        this.isSlideLeft = false;
+        this.isSlideRight = false;
+        this.isSlideTop = false;
+        this.isSlideBottom = false;
+        float f58 = this.rectRight;
+        if (f58 < 1200) {
+            Callback callback3 = this.callback;
+            if (callback3 != null) {
+                callback3.onEnd(this.rectLeft, f58, this.rectTop, this.rectBottom);
+                Unit unit2 = Unit.INSTANCE;
+            }
+            if (isClick(this.lastDownX, this.lastDownY, event.getX(), event.getY(), this.lastDownTime, event.getEventTime(), 100L) && (callback = this.callback) != null) {
+                callback.onClick();
+                Unit unit3 = Unit.INSTANCE;
+            }
+        }
+        return true;
     }
 
     public final boolean isClick(float f, float f2, float f3, float f4, long j, long j2, long j3) {

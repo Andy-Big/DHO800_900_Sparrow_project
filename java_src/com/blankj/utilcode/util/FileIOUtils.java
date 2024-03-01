@@ -1,19 +1,26 @@
 package com.blankj.utilcode.util;
 
 import android.util.Log;
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 import java.util.List;
 /* loaded from: classes.dex */
 public final class FileIOUtils {
@@ -415,91 +422,71 @@ public final class FileIOUtils {
     /* JADX WARN: Removed duplicated region for block: B:51:0x006b A[EXC_TOP_SPLITTER, SYNTHETIC] */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public static java.util.List<java.lang.String> readFile2List(java.io.File r6, int r7, int r8, java.lang.String r9) {
-        /*
-            boolean r0 = com.blankj.utilcode.util.UtilsBridge.isFileExists(r6)
-            r1 = 0
-            if (r0 != 0) goto L8
-            return r1
-        L8:
-            if (r7 <= r8) goto Lb
-            return r1
-        Lb:
-            java.util.ArrayList r0 = new java.util.ArrayList     // Catch: java.lang.Throwable -> L55 java.io.IOException -> L57
-            r0.<init>()     // Catch: java.lang.Throwable -> L55 java.io.IOException -> L57
-            boolean r2 = com.blankj.utilcode.util.UtilsBridge.isSpace(r9)     // Catch: java.lang.Throwable -> L55 java.io.IOException -> L57
-            r3 = 1
-            if (r2 == 0) goto L27
-            java.io.BufferedReader r9 = new java.io.BufferedReader     // Catch: java.lang.Throwable -> L55 java.io.IOException -> L57
-            java.io.InputStreamReader r2 = new java.io.InputStreamReader     // Catch: java.lang.Throwable -> L55 java.io.IOException -> L57
-            java.io.FileInputStream r4 = new java.io.FileInputStream     // Catch: java.lang.Throwable -> L55 java.io.IOException -> L57
-            r4.<init>(r6)     // Catch: java.lang.Throwable -> L55 java.io.IOException -> L57
-            r2.<init>(r4)     // Catch: java.lang.Throwable -> L55 java.io.IOException -> L57
-            r9.<init>(r2)     // Catch: java.lang.Throwable -> L55 java.io.IOException -> L57
-            goto L37
-        L27:
-            java.io.BufferedReader r2 = new java.io.BufferedReader     // Catch: java.lang.Throwable -> L55 java.io.IOException -> L57
-            java.io.InputStreamReader r4 = new java.io.InputStreamReader     // Catch: java.lang.Throwable -> L55 java.io.IOException -> L57
-            java.io.FileInputStream r5 = new java.io.FileInputStream     // Catch: java.lang.Throwable -> L55 java.io.IOException -> L57
-            r5.<init>(r6)     // Catch: java.lang.Throwable -> L55 java.io.IOException -> L57
-            r4.<init>(r5, r9)     // Catch: java.lang.Throwable -> L55 java.io.IOException -> L57
-            r2.<init>(r4)     // Catch: java.lang.Throwable -> L55 java.io.IOException -> L57
-            r9 = r2
-        L37:
-            java.lang.String r6 = r9.readLine()     // Catch: java.io.IOException -> L53 java.lang.Throwable -> L67
-            if (r6 == 0) goto L4a
-            if (r3 <= r8) goto L40
-            goto L4a
-        L40:
-            if (r7 > r3) goto L47
-            if (r3 > r8) goto L47
-            r0.add(r6)     // Catch: java.io.IOException -> L53 java.lang.Throwable -> L67
-        L47:
-            int r3 = r3 + 1
-            goto L37
-        L4a:
-            r9.close()     // Catch: java.io.IOException -> L4e
-            goto L52
-        L4e:
-            r6 = move-exception
-            r6.printStackTrace()
-        L52:
-            return r0
-        L53:
-            r6 = move-exception
-            goto L59
-        L55:
-            r6 = move-exception
-            goto L69
-        L57:
-            r6 = move-exception
-            r9 = r1
-        L59:
-            r6.printStackTrace()     // Catch: java.lang.Throwable -> L67
-            if (r9 == 0) goto L66
-            r9.close()     // Catch: java.io.IOException -> L62
-            goto L66
-        L62:
-            r6 = move-exception
-            r6.printStackTrace()
-        L66:
-            return r1
-        L67:
-            r6 = move-exception
-            r1 = r9
-        L69:
-            if (r1 == 0) goto L73
-            r1.close()     // Catch: java.io.IOException -> L6f
-            goto L73
-        L6f:
-            r7 = move-exception
-            r7.printStackTrace()
-        L73:
-            throw r6
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.blankj.utilcode.util.FileIOUtils.readFile2List(java.io.File, int, int, java.lang.String):java.util.List");
+    public static List<String> readFile2List(File file, int i, int i2, String str) {
+        BufferedReader bufferedReader;
+        BufferedReader bufferedReader2 = null;
+        if (!UtilsBridge.isFileExists(file) || i > i2) {
+            return null;
+        }
+        try {
+            ArrayList arrayList = new ArrayList();
+            int i3 = 1;
+            if (UtilsBridge.isSpace(str)) {
+                bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+            } else {
+                bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), str));
+            }
+            while (true) {
+                try {
+                    try {
+                        String readLine = bufferedReader.readLine();
+                        if (readLine != null && i3 <= i2) {
+                            if (i <= i3 && i3 <= i2) {
+                                arrayList.add(readLine);
+                            }
+                            i3++;
+                        }
+                    } catch (IOException e) {
+                        e = e;
+                        e.printStackTrace();
+                        if (bufferedReader != null) {
+                            try {
+                                bufferedReader.close();
+                            } catch (IOException e2) {
+                                e2.printStackTrace();
+                            }
+                        }
+                        return null;
+                    }
+                } catch (Throwable th) {
+                    th = th;
+                    bufferedReader2 = bufferedReader;
+                    if (bufferedReader2 != null) {
+                        try {
+                            bufferedReader2.close();
+                        } catch (IOException e3) {
+                            e3.printStackTrace();
+                        }
+                    }
+                    throw th;
+                }
+            }
+            try {
+                bufferedReader.close();
+            } catch (IOException e4) {
+                e4.printStackTrace();
+            }
+            return arrayList;
+        } catch (IOException e5) {
+            e = e5;
+            bufferedReader = null;
+        } catch (Throwable th2) {
+            th = th2;
+            if (bufferedReader2 != null) {
+            }
+            throw th;
+        }
     }
 
     public static String readFile2String(String str) {
@@ -545,113 +532,101 @@ public final class FileIOUtils {
     /* JADX WARN: Removed duplicated region for block: B:71:0x0087 A[EXC_TOP_SPLITTER, SYNTHETIC] */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public static byte[] readFile2BytesByStream(java.io.File r10, com.blankj.utilcode.util.FileIOUtils.OnProgressUpdateListener r11) {
-        /*
-            boolean r0 = com.blankj.utilcode.util.UtilsBridge.isFileExists(r10)
-            r1 = 0
-            if (r0 != 0) goto L8
-            return r1
-        L8:
-            java.io.BufferedInputStream r0 = new java.io.BufferedInputStream     // Catch: java.io.FileNotFoundException -> L90
-            java.io.FileInputStream r2 = new java.io.FileInputStream     // Catch: java.io.FileNotFoundException -> L90
-            r2.<init>(r10)     // Catch: java.io.FileNotFoundException -> L90
-            int r10 = com.blankj.utilcode.util.FileIOUtils.sBufferSize     // Catch: java.io.FileNotFoundException -> L90
-            r0.<init>(r2, r10)     // Catch: java.io.FileNotFoundException -> L90
-            java.io.ByteArrayOutputStream r10 = new java.io.ByteArrayOutputStream     // Catch: java.lang.Throwable -> L61 java.io.IOException -> L64
-            r10.<init>()     // Catch: java.lang.Throwable -> L61 java.io.IOException -> L64
-            int r2 = com.blankj.utilcode.util.FileIOUtils.sBufferSize     // Catch: java.io.IOException -> L5f java.lang.Throwable -> L7c
-            byte[] r2 = new byte[r2]     // Catch: java.io.IOException -> L5f java.lang.Throwable -> L7c
-            r3 = -1
-            r4 = 0
-            if (r11 != 0) goto L2d
-        L21:
-            int r11 = com.blankj.utilcode.util.FileIOUtils.sBufferSize     // Catch: java.io.IOException -> L5f java.lang.Throwable -> L7c
-            int r11 = r0.read(r2, r4, r11)     // Catch: java.io.IOException -> L5f java.lang.Throwable -> L7c
-            if (r11 == r3) goto L4a
-            r10.write(r2, r4, r11)     // Catch: java.io.IOException -> L5f java.lang.Throwable -> L7c
-            goto L21
-        L2d:
-            int r5 = r0.available()     // Catch: java.io.IOException -> L5f java.lang.Throwable -> L7c
-            double r5 = (double) r5     // Catch: java.io.IOException -> L5f java.lang.Throwable -> L7c
-            r7 = 0
-            r11.onProgressUpdate(r7)     // Catch: java.io.IOException -> L5f java.lang.Throwable -> L7c
-            r7 = r4
-        L38:
-            int r8 = com.blankj.utilcode.util.FileIOUtils.sBufferSize     // Catch: java.io.IOException -> L5f java.lang.Throwable -> L7c
-            int r8 = r0.read(r2, r4, r8)     // Catch: java.io.IOException -> L5f java.lang.Throwable -> L7c
-            if (r8 == r3) goto L4a
-            r10.write(r2, r4, r8)     // Catch: java.io.IOException -> L5f java.lang.Throwable -> L7c
-            int r7 = r7 + r8
-            double r8 = (double) r7     // Catch: java.io.IOException -> L5f java.lang.Throwable -> L7c
-            double r8 = r8 / r5
-            r11.onProgressUpdate(r8)     // Catch: java.io.IOException -> L5f java.lang.Throwable -> L7c
-            goto L38
-        L4a:
-            byte[] r11 = r10.toByteArray()     // Catch: java.io.IOException -> L5f java.lang.Throwable -> L7c
-            r0.close()     // Catch: java.io.IOException -> L52
-            goto L56
-        L52:
-            r0 = move-exception
-            r0.printStackTrace()     // Catch: java.io.FileNotFoundException -> L90
-        L56:
-            r10.close()     // Catch: java.io.IOException -> L5a
-            goto L5e
-        L5a:
-            r10 = move-exception
-            r10.printStackTrace()     // Catch: java.io.FileNotFoundException -> L90
-        L5e:
-            return r11
-        L5f:
-            r11 = move-exception
-            goto L66
-        L61:
-            r11 = move-exception
-            r10 = r1
-            goto L7d
-        L64:
-            r11 = move-exception
-            r10 = r1
-        L66:
-            r11.printStackTrace()     // Catch: java.lang.Throwable -> L7c
-            r0.close()     // Catch: java.io.IOException -> L6d
-            goto L71
-        L6d:
-            r11 = move-exception
-            r11.printStackTrace()     // Catch: java.io.FileNotFoundException -> L90
-        L71:
-            if (r10 == 0) goto L7b
-            r10.close()     // Catch: java.io.IOException -> L77
-            goto L7b
-        L77:
-            r10 = move-exception
-            r10.printStackTrace()     // Catch: java.io.FileNotFoundException -> L90
-        L7b:
-            return r1
-        L7c:
-            r11 = move-exception
-        L7d:
-            r0.close()     // Catch: java.io.IOException -> L81
-            goto L85
-        L81:
-            r0 = move-exception
-            r0.printStackTrace()     // Catch: java.io.FileNotFoundException -> L90
-        L85:
-            if (r10 == 0) goto L8f
-            r10.close()     // Catch: java.io.IOException -> L8b
-            goto L8f
-        L8b:
-            r10 = move-exception
-            r10.printStackTrace()     // Catch: java.io.FileNotFoundException -> L90
-        L8f:
-            throw r11     // Catch: java.io.FileNotFoundException -> L90
-        L90:
-            r10 = move-exception
-            r10.printStackTrace()
-            return r1
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.blankj.utilcode.util.FileIOUtils.readFile2BytesByStream(java.io.File, com.blankj.utilcode.util.FileIOUtils$OnProgressUpdateListener):byte[]");
+    public static byte[] readFile2BytesByStream(File file, OnProgressUpdateListener onProgressUpdateListener) {
+        ByteArrayOutputStream byteArrayOutputStream;
+        if (!UtilsBridge.isFileExists(file)) {
+            return null;
+        }
+        try {
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file), sBufferSize);
+            try {
+                byteArrayOutputStream = new ByteArrayOutputStream();
+                try {
+                    try {
+                        byte[] bArr = new byte[sBufferSize];
+                        if (onProgressUpdateListener != null) {
+                            double available = bufferedInputStream.available();
+                            onProgressUpdateListener.onProgressUpdate(0.0d);
+                            int i = 0;
+                            while (true) {
+                                int read = bufferedInputStream.read(bArr, 0, sBufferSize);
+                                if (read == -1) {
+                                    break;
+                                }
+                                byteArrayOutputStream.write(bArr, 0, read);
+                                i += read;
+                                onProgressUpdateListener.onProgressUpdate(i / available);
+                            }
+                        } else {
+                            while (true) {
+                                int read2 = bufferedInputStream.read(bArr, 0, sBufferSize);
+                                if (read2 == -1) {
+                                    break;
+                                }
+                                byteArrayOutputStream.write(bArr, 0, read2);
+                            }
+                        }
+                        byte[] byteArray = byteArrayOutputStream.toByteArray();
+                        try {
+                            bufferedInputStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            byteArrayOutputStream.close();
+                        } catch (IOException e2) {
+                            e2.printStackTrace();
+                        }
+                        return byteArray;
+                    } catch (IOException e3) {
+                        e = e3;
+                        e.printStackTrace();
+                        try {
+                            bufferedInputStream.close();
+                        } catch (IOException e4) {
+                            e4.printStackTrace();
+                        }
+                        if (byteArrayOutputStream != null) {
+                            try {
+                                byteArrayOutputStream.close();
+                            } catch (IOException e5) {
+                                e5.printStackTrace();
+                            }
+                        }
+                        return null;
+                    }
+                } catch (Throwable th) {
+                    th = th;
+                    try {
+                        bufferedInputStream.close();
+                    } catch (IOException e6) {
+                        e6.printStackTrace();
+                    }
+                    if (byteArrayOutputStream != null) {
+                        try {
+                            byteArrayOutputStream.close();
+                        } catch (IOException e7) {
+                            e7.printStackTrace();
+                        }
+                    }
+                    throw th;
+                }
+            } catch (IOException e8) {
+                e = e8;
+                byteArrayOutputStream = null;
+            } catch (Throwable th2) {
+                th = th2;
+                byteArrayOutputStream = null;
+                bufferedInputStream.close();
+                if (byteArrayOutputStream != null) {
+                }
+                throw th;
+            }
+        } catch (FileNotFoundException e9) {
+            e9.printStackTrace();
+            return null;
+        }
     }
 
     public static byte[] readFile2BytesByChannel(String str) {

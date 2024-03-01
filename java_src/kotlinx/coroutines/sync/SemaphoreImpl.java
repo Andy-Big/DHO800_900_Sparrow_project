@@ -6,7 +6,10 @@ import kotlin.Metadata;
 import kotlin.Result;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
+import kotlin.coroutines.intrinsics.IntrinsicsKt;
+import kotlin.coroutines.jvm.internal.DebugProbesKt;
 import kotlinx.coroutines.CancellableContinuation;
+import kotlinx.coroutines.CancellableContinuationImpl;
 import kotlinx.coroutines.internal.SegmentQueue;
 import kotlinx.coroutines.internal.Symbol;
 /* JADX INFO: Access modifiers changed from: package-private */
@@ -123,59 +126,38 @@ public final class SemaphoreImpl extends SegmentQueue<SemaphoreSegment> implemen
     /* JADX WARN: Removed duplicated region for block: B:13:0x0065  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    final /* synthetic */ java.lang.Object addToQueueAndSuspend(kotlin.coroutines.Continuation<? super kotlin.Unit> r8) {
-        /*
-            r7 = this;
-            kotlinx.coroutines.CancellableContinuationImpl r0 = new kotlinx.coroutines.CancellableContinuationImpl
-            kotlin.coroutines.Continuation r1 = kotlin.coroutines.intrinsics.IntrinsicsKt.intercepted(r8)
-            r2 = 0
-            r0.<init>(r1, r2)
-            r1 = r0
-            kotlinx.coroutines.CancellableContinuation r1 = (kotlinx.coroutines.CancellableContinuation) r1
-            kotlinx.coroutines.sync.SemaphoreSegment r2 = access$getTail$p(r7)
-            java.util.concurrent.atomic.AtomicLongFieldUpdater r3 = kotlinx.coroutines.sync.SemaphoreImpl.enqIdx$FU
-            long r3 = r3.getAndIncrement(r7)
-            int r5 = kotlinx.coroutines.sync.SemaphoreKt.access$getSEGMENT_SIZE$p()
-            long r5 = (long) r5
-            long r5 = r3 / r5
-            kotlinx.coroutines.sync.SemaphoreSegment r2 = access$getSegment(r7, r2, r5)
-            int r5 = kotlinx.coroutines.sync.SemaphoreKt.access$getSEGMENT_SIZE$p()
-            long r5 = (long) r5
-            long r3 = r3 % r5
-            int r3 = (int) r3
-            if (r2 == 0) goto L4e
-            java.util.concurrent.atomic.AtomicReferenceArray r4 = r2.acquirers
-            java.lang.Object r4 = r4.get(r3)
-            kotlinx.coroutines.internal.Symbol r5 = kotlinx.coroutines.sync.SemaphoreKt.access$getRESUMED$p()
-            if (r4 == r5) goto L4e
-            r4 = 0
-            java.util.concurrent.atomic.AtomicReferenceArray r5 = r2.acquirers
-            boolean r4 = r5.compareAndSet(r3, r4, r1)
-            if (r4 != 0) goto L41
-            goto L4e
-        L41:
-            kotlinx.coroutines.sync.CancelSemaphoreAcquisitionHandler r4 = new kotlinx.coroutines.sync.CancelSemaphoreAcquisitionHandler
-            r4.<init>(r7, r2, r3)
-            kotlinx.coroutines.CancelHandlerBase r4 = (kotlinx.coroutines.CancelHandlerBase) r4
-            kotlin.jvm.functions.Function1 r4 = (kotlin.jvm.functions.Function1) r4
-            r1.invokeOnCancellation(r4)
-            goto L5b
-        L4e:
-            kotlin.coroutines.Continuation r1 = (kotlin.coroutines.Continuation) r1
-            kotlin.Unit r2 = kotlin.Unit.INSTANCE
-            kotlin.Result$Companion r3 = kotlin.Result.Companion
-            java.lang.Object r2 = kotlin.Result.m28constructorimpl(r2)
-            r1.resumeWith(r2)
-        L5b:
-            java.lang.Object r0 = r0.getResult()
-            java.lang.Object r1 = kotlin.coroutines.intrinsics.IntrinsicsKt.getCOROUTINE_SUSPENDED()
-            if (r0 != r1) goto L68
-            kotlin.coroutines.jvm.internal.DebugProbesKt.probeCoroutineSuspended(r8)
-        L68:
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.sync.SemaphoreImpl.addToQueueAndSuspend(kotlin.coroutines.Continuation):java.lang.Object");
+    final /* synthetic */ Object addToQueueAndSuspend(Continuation<? super Unit> continuation) {
+        int i;
+        int i2;
+        Object result;
+        Symbol symbol;
+        CancellableContinuationImpl cancellableContinuationImpl = new CancellableContinuationImpl(IntrinsicsKt.intercepted(continuation), 0);
+        CancellableContinuationImpl cancellableContinuationImpl2 = cancellableContinuationImpl;
+        SemaphoreSegment access$getTail$p = access$getTail$p(this);
+        long andIncrement = enqIdx$FU.getAndIncrement(this);
+        i = SemaphoreKt.SEGMENT_SIZE;
+        SemaphoreSegment access$getSegment = access$getSegment(this, access$getTail$p, andIncrement / i);
+        i2 = SemaphoreKt.SEGMENT_SIZE;
+        int i3 = (int) (andIncrement % i2);
+        if (access$getSegment != null) {
+            Object obj = access$getSegment.acquirers.get(i3);
+            symbol = SemaphoreKt.RESUMED;
+            if (obj != symbol && access$getSegment.acquirers.compareAndSet(i3, null, cancellableContinuationImpl2)) {
+                cancellableContinuationImpl2.invokeOnCancellation(new CancelSemaphoreAcquisitionHandler(this, access$getSegment, i3));
+                result = cancellableContinuationImpl.getResult();
+                if (result == IntrinsicsKt.getCOROUTINE_SUSPENDED()) {
+                    DebugProbesKt.probeCoroutineSuspended(continuation);
+                }
+                return result;
+            }
+        }
+        Unit unit = Unit.INSTANCE;
+        Result.Companion companion = Result.Companion;
+        cancellableContinuationImpl2.resumeWith(Result.m28constructorimpl(unit));
+        result = cancellableContinuationImpl.getResult();
+        if (result == IntrinsicsKt.getCOROUTINE_SUSPENDED()) {
+        }
+        return result;
     }
 }

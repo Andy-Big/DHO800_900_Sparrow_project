@@ -3,8 +3,10 @@ package kotlinx.coroutines.flow;
 import androidx.exifinterface.media.ExifInterface;
 import com.sun.mail.imap.IMAPStore;
 import kotlin.Metadata;
+import kotlin.ResultKt;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
+import kotlin.coroutines.intrinsics.IntrinsicsKt;
 import kotlin.coroutines.jvm.internal.ContinuationImpl;
 import kotlin.coroutines.jvm.internal.DebugMetadata;
 import kotlin.jvm.functions.Function2;
@@ -116,112 +118,103 @@ public final /* synthetic */ class FlowKt__MergeKt {
                 @Override // kotlinx.coroutines.flow.FlowCollector
                 /*
                     Code decompiled incorrectly, please refer to instructions dump.
-                    To view partially-correct add '--show-bad-code' argument
                 */
-                public java.lang.Object emit(java.lang.Object r11, kotlin.coroutines.Continuation r12) {
-                    /*
-                        r10 = this;
-                        boolean r0 = r12 instanceof kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1.AnonymousClass2.AnonymousClass1
-                        if (r0 == 0) goto L14
-                        r0 = r12
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1$2$1 r0 = (kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1.AnonymousClass2.AnonymousClass1) r0
-                        int r1 = r0.label
-                        r2 = -2147483648(0xffffffff80000000, float:-0.0)
-                        r1 = r1 & r2
-                        if (r1 == 0) goto L14
-                        int r12 = r0.label
-                        int r12 = r12 - r2
-                        r0.label = r12
-                        goto L19
-                    L14:
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1$2$1 r0 = new kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1$2$1
-                        r0.<init>(r12)
-                    L19:
-                        java.lang.Object r12 = r0.result
-                        java.lang.Object r1 = kotlin.coroutines.intrinsics.IntrinsicsKt.getCOROUTINE_SUSPENDED()
-                        int r2 = r0.label
-                        r3 = 2
-                        r4 = 1
-                        if (r2 == 0) goto L6a
-                        if (r2 == r4) goto L4c
-                        if (r2 != r3) goto L44
-                        java.lang.Object r11 = r0.L$6
-                        kotlinx.coroutines.flow.FlowCollector r11 = (kotlinx.coroutines.flow.FlowCollector) r11
-                        java.lang.Object r11 = r0.L$5
-                        java.lang.Object r11 = r0.L$4
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1$2$1 r11 = (kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1.AnonymousClass2.AnonymousClass1) r11
-                        java.lang.Object r11 = r0.L$3
-                        java.lang.Object r11 = r0.L$2
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1$2$1 r11 = (kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1.AnonymousClass2.AnonymousClass1) r11
-                        java.lang.Object r11 = r0.L$1
-                        java.lang.Object r11 = r0.L$0
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1$2 r11 = (kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1.AnonymousClass2) r11
-                        kotlin.ResultKt.throwOnFailure(r12)
-                        goto Lac
-                    L44:
-                        java.lang.IllegalStateException r11 = new java.lang.IllegalStateException
-                        java.lang.String r12 = "call to 'resume' before 'invoke' with coroutine"
-                        r11.<init>(r12)
-                        throw r11
-                    L4c:
-                        java.lang.Object r11 = r0.L$7
-                        kotlinx.coroutines.flow.FlowCollector r11 = (kotlinx.coroutines.flow.FlowCollector) r11
-                        java.lang.Object r2 = r0.L$6
-                        kotlinx.coroutines.flow.FlowCollector r2 = (kotlinx.coroutines.flow.FlowCollector) r2
-                        java.lang.Object r4 = r0.L$5
-                        java.lang.Object r5 = r0.L$4
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1$2$1 r5 = (kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1.AnonymousClass2.AnonymousClass1) r5
-                        java.lang.Object r6 = r0.L$3
-                        java.lang.Object r7 = r0.L$2
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1$2$1 r7 = (kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1.AnonymousClass2.AnonymousClass1) r7
-                        java.lang.Object r8 = r0.L$1
-                        java.lang.Object r9 = r0.L$0
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1$2 r9 = (kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1.AnonymousClass2) r9
-                        kotlin.ResultKt.throwOnFailure(r12)
-                        goto L95
-                    L6a:
-                        kotlin.ResultKt.throwOnFailure(r12)
-                        kotlinx.coroutines.flow.FlowCollector r12 = r10.$this_unsafeFlow$inlined
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1 r2 = r10.this$0
-                        kotlin.jvm.functions.Function2 r2 = r2
-                        r0.L$0 = r10
-                        r0.L$1 = r11
-                        r0.L$2 = r0
-                        r0.L$3 = r11
-                        r0.L$4 = r0
-                        r0.L$5 = r11
-                        r0.L$6 = r12
-                        r0.L$7 = r12
-                        r0.label = r4
-                        java.lang.Object r2 = r2.invoke(r11, r0)
-                        if (r2 != r1) goto L8c
-                        return r1
-                    L8c:
-                        r9 = r10
-                        r4 = r11
-                        r6 = r4
-                        r8 = r6
-                        r11 = r12
-                        r5 = r0
-                        r7 = r5
-                        r12 = r2
-                        r2 = r11
-                    L95:
-                        r0.L$0 = r9
-                        r0.L$1 = r8
-                        r0.L$2 = r7
-                        r0.L$3 = r6
-                        r0.L$4 = r5
-                        r0.L$5 = r4
-                        r0.L$6 = r2
-                        r0.label = r3
-                        java.lang.Object r12 = r11.emit(r12, r0)
-                        if (r12 != r1) goto Lac
-                        return r1
-                    Lac:
-                        return r12
-                    */
-                    throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapConcat$$inlined$map$1.AnonymousClass2.emit(java.lang.Object, kotlin.coroutines.Continuation):java.lang.Object");
+                public Object emit(Object obj, Continuation continuation) {
+                    AnonymousClass1 anonymousClass1;
+                    int i;
+                    AnonymousClass2<T> anonymousClass2;
+                    Object obj2;
+                    Object obj3;
+                    Object obj4;
+                    FlowCollector flowCollector;
+                    AnonymousClass1 anonymousClass12;
+                    AnonymousClass1 anonymousClass13;
+                    FlowCollector flowCollector2;
+                    if (continuation instanceof AnonymousClass1) {
+                        anonymousClass1 = (AnonymousClass1) continuation;
+                        if ((anonymousClass1.label & Integer.MIN_VALUE) != 0) {
+                            anonymousClass1.label -= Integer.MIN_VALUE;
+                            Object obj5 = anonymousClass1.result;
+                            Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+                            i = anonymousClass1.label;
+                            if (i != 0) {
+                                ResultKt.throwOnFailure(obj5);
+                                FlowCollector flowCollector3 = this.$this_unsafeFlow$inlined;
+                                Function2 function2 = transform;
+                                anonymousClass1.L$0 = this;
+                                anonymousClass1.L$1 = obj;
+                                anonymousClass1.L$2 = anonymousClass1;
+                                anonymousClass1.L$3 = obj;
+                                anonymousClass1.L$4 = anonymousClass1;
+                                anonymousClass1.L$5 = obj;
+                                anonymousClass1.L$6 = flowCollector3;
+                                anonymousClass1.L$7 = flowCollector3;
+                                anonymousClass1.label = 1;
+                                Object invoke = function2.invoke(obj, anonymousClass1);
+                                if (invoke == coroutine_suspended) {
+                                    return coroutine_suspended;
+                                }
+                                anonymousClass2 = this;
+                                obj2 = obj;
+                                obj3 = obj2;
+                                obj4 = obj3;
+                                flowCollector = flowCollector3;
+                                anonymousClass12 = anonymousClass1;
+                                anonymousClass13 = anonymousClass12;
+                                obj5 = invoke;
+                                flowCollector2 = flowCollector;
+                            } else if (i != 1) {
+                                if (i != 2) {
+                                    throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+                                }
+                                FlowCollector flowCollector4 = (FlowCollector) anonymousClass1.L$6;
+                                Object obj6 = anonymousClass1.L$5;
+                                AnonymousClass1 anonymousClass14 = (AnonymousClass1) anonymousClass1.L$4;
+                                Object obj7 = anonymousClass1.L$3;
+                                AnonymousClass1 anonymousClass15 = (AnonymousClass1) anonymousClass1.L$2;
+                                Object obj8 = anonymousClass1.L$1;
+                                AnonymousClass2 anonymousClass22 = (AnonymousClass2) anonymousClass1.L$0;
+                                ResultKt.throwOnFailure(obj5);
+                            } else {
+                                flowCollector = (FlowCollector) anonymousClass1.L$7;
+                                flowCollector2 = (FlowCollector) anonymousClass1.L$6;
+                                obj2 = anonymousClass1.L$5;
+                                anonymousClass12 = (AnonymousClass1) anonymousClass1.L$4;
+                                obj3 = anonymousClass1.L$3;
+                                anonymousClass13 = (AnonymousClass1) anonymousClass1.L$2;
+                                obj4 = anonymousClass1.L$1;
+                                anonymousClass2 = (AnonymousClass2) anonymousClass1.L$0;
+                                ResultKt.throwOnFailure(obj5);
+                            }
+                            anonymousClass1.L$0 = anonymousClass2;
+                            anonymousClass1.L$1 = obj4;
+                            anonymousClass1.L$2 = anonymousClass13;
+                            anonymousClass1.L$3 = obj3;
+                            anonymousClass1.L$4 = anonymousClass12;
+                            anonymousClass1.L$5 = obj2;
+                            anonymousClass1.L$6 = flowCollector2;
+                            anonymousClass1.label = 2;
+                            obj5 = flowCollector.emit(obj5, anonymousClass1);
+                            return obj5 != coroutine_suspended ? coroutine_suspended : obj5;
+                        }
+                    }
+                    anonymousClass1 = new AnonymousClass1(continuation);
+                    Object obj52 = anonymousClass1.result;
+                    Object coroutine_suspended2 = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+                    i = anonymousClass1.label;
+                    if (i != 0) {
+                    }
+                    anonymousClass1.L$0 = anonymousClass2;
+                    anonymousClass1.L$1 = obj4;
+                    anonymousClass1.L$2 = anonymousClass13;
+                    anonymousClass1.L$3 = obj3;
+                    anonymousClass1.L$4 = anonymousClass12;
+                    anonymousClass1.L$5 = obj2;
+                    anonymousClass1.L$6 = flowCollector2;
+                    anonymousClass1.label = 2;
+                    obj52 = flowCollector.emit(obj52, anonymousClass1);
+                    if (obj52 != coroutine_suspended2) {
+                    }
                 }
 
                 public AnonymousClass2(FlowCollector flowCollector, FlowKt__MergeKt$flatMapConcat$$inlined$map$1 flowKt__MergeKt$flatMapConcat$$inlined$map$1) {
@@ -287,112 +280,103 @@ public final /* synthetic */ class FlowKt__MergeKt {
                 @Override // kotlinx.coroutines.flow.FlowCollector
                 /*
                     Code decompiled incorrectly, please refer to instructions dump.
-                    To view partially-correct add '--show-bad-code' argument
                 */
-                public java.lang.Object emit(java.lang.Object r11, kotlin.coroutines.Continuation r12) {
-                    /*
-                        r10 = this;
-                        boolean r0 = r12 instanceof kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1.AnonymousClass2.AnonymousClass1
-                        if (r0 == 0) goto L14
-                        r0 = r12
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1$2$1 r0 = (kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1.AnonymousClass2.AnonymousClass1) r0
-                        int r1 = r0.label
-                        r2 = -2147483648(0xffffffff80000000, float:-0.0)
-                        r1 = r1 & r2
-                        if (r1 == 0) goto L14
-                        int r12 = r0.label
-                        int r12 = r12 - r2
-                        r0.label = r12
-                        goto L19
-                    L14:
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1$2$1 r0 = new kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1$2$1
-                        r0.<init>(r12)
-                    L19:
-                        java.lang.Object r12 = r0.result
-                        java.lang.Object r1 = kotlin.coroutines.intrinsics.IntrinsicsKt.getCOROUTINE_SUSPENDED()
-                        int r2 = r0.label
-                        r3 = 2
-                        r4 = 1
-                        if (r2 == 0) goto L6a
-                        if (r2 == r4) goto L4c
-                        if (r2 != r3) goto L44
-                        java.lang.Object r11 = r0.L$6
-                        kotlinx.coroutines.flow.FlowCollector r11 = (kotlinx.coroutines.flow.FlowCollector) r11
-                        java.lang.Object r11 = r0.L$5
-                        java.lang.Object r11 = r0.L$4
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1$2$1 r11 = (kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1.AnonymousClass2.AnonymousClass1) r11
-                        java.lang.Object r11 = r0.L$3
-                        java.lang.Object r11 = r0.L$2
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1$2$1 r11 = (kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1.AnonymousClass2.AnonymousClass1) r11
-                        java.lang.Object r11 = r0.L$1
-                        java.lang.Object r11 = r0.L$0
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1$2 r11 = (kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1.AnonymousClass2) r11
-                        kotlin.ResultKt.throwOnFailure(r12)
-                        goto Lac
-                    L44:
-                        java.lang.IllegalStateException r11 = new java.lang.IllegalStateException
-                        java.lang.String r12 = "call to 'resume' before 'invoke' with coroutine"
-                        r11.<init>(r12)
-                        throw r11
-                    L4c:
-                        java.lang.Object r11 = r0.L$7
-                        kotlinx.coroutines.flow.FlowCollector r11 = (kotlinx.coroutines.flow.FlowCollector) r11
-                        java.lang.Object r2 = r0.L$6
-                        kotlinx.coroutines.flow.FlowCollector r2 = (kotlinx.coroutines.flow.FlowCollector) r2
-                        java.lang.Object r4 = r0.L$5
-                        java.lang.Object r5 = r0.L$4
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1$2$1 r5 = (kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1.AnonymousClass2.AnonymousClass1) r5
-                        java.lang.Object r6 = r0.L$3
-                        java.lang.Object r7 = r0.L$2
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1$2$1 r7 = (kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1.AnonymousClass2.AnonymousClass1) r7
-                        java.lang.Object r8 = r0.L$1
-                        java.lang.Object r9 = r0.L$0
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1$2 r9 = (kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1.AnonymousClass2) r9
-                        kotlin.ResultKt.throwOnFailure(r12)
-                        goto L95
-                    L6a:
-                        kotlin.ResultKt.throwOnFailure(r12)
-                        kotlinx.coroutines.flow.FlowCollector r12 = r10.$this_unsafeFlow$inlined
-                        kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1 r2 = r10.this$0
-                        kotlin.jvm.functions.Function2 r2 = r2
-                        r0.L$0 = r10
-                        r0.L$1 = r11
-                        r0.L$2 = r0
-                        r0.L$3 = r11
-                        r0.L$4 = r0
-                        r0.L$5 = r11
-                        r0.L$6 = r12
-                        r0.L$7 = r12
-                        r0.label = r4
-                        java.lang.Object r2 = r2.invoke(r11, r0)
-                        if (r2 != r1) goto L8c
-                        return r1
-                    L8c:
-                        r9 = r10
-                        r4 = r11
-                        r6 = r4
-                        r8 = r6
-                        r11 = r12
-                        r5 = r0
-                        r7 = r5
-                        r12 = r2
-                        r2 = r11
-                    L95:
-                        r0.L$0 = r9
-                        r0.L$1 = r8
-                        r0.L$2 = r7
-                        r0.L$3 = r6
-                        r0.L$4 = r5
-                        r0.L$5 = r4
-                        r0.L$6 = r2
-                        r0.label = r3
-                        java.lang.Object r12 = r11.emit(r12, r0)
-                        if (r12 != r1) goto Lac
-                        return r1
-                    Lac:
-                        return r12
-                    */
-                    throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.flow.FlowKt__MergeKt$flatMapMerge$$inlined$map$1.AnonymousClass2.emit(java.lang.Object, kotlin.coroutines.Continuation):java.lang.Object");
+                public Object emit(Object obj, Continuation continuation) {
+                    AnonymousClass1 anonymousClass1;
+                    int i;
+                    AnonymousClass2<T> anonymousClass2;
+                    Object obj2;
+                    Object obj3;
+                    Object obj4;
+                    FlowCollector flowCollector;
+                    AnonymousClass1 anonymousClass12;
+                    AnonymousClass1 anonymousClass13;
+                    FlowCollector flowCollector2;
+                    if (continuation instanceof AnonymousClass1) {
+                        anonymousClass1 = (AnonymousClass1) continuation;
+                        if ((anonymousClass1.label & Integer.MIN_VALUE) != 0) {
+                            anonymousClass1.label -= Integer.MIN_VALUE;
+                            Object obj5 = anonymousClass1.result;
+                            Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+                            i = anonymousClass1.label;
+                            if (i != 0) {
+                                ResultKt.throwOnFailure(obj5);
+                                FlowCollector flowCollector3 = this.$this_unsafeFlow$inlined;
+                                Function2 function2 = transform;
+                                anonymousClass1.L$0 = this;
+                                anonymousClass1.L$1 = obj;
+                                anonymousClass1.L$2 = anonymousClass1;
+                                anonymousClass1.L$3 = obj;
+                                anonymousClass1.L$4 = anonymousClass1;
+                                anonymousClass1.L$5 = obj;
+                                anonymousClass1.L$6 = flowCollector3;
+                                anonymousClass1.L$7 = flowCollector3;
+                                anonymousClass1.label = 1;
+                                Object invoke = function2.invoke(obj, anonymousClass1);
+                                if (invoke == coroutine_suspended) {
+                                    return coroutine_suspended;
+                                }
+                                anonymousClass2 = this;
+                                obj2 = obj;
+                                obj3 = obj2;
+                                obj4 = obj3;
+                                flowCollector = flowCollector3;
+                                anonymousClass12 = anonymousClass1;
+                                anonymousClass13 = anonymousClass12;
+                                obj5 = invoke;
+                                flowCollector2 = flowCollector;
+                            } else if (i != 1) {
+                                if (i != 2) {
+                                    throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+                                }
+                                FlowCollector flowCollector4 = (FlowCollector) anonymousClass1.L$6;
+                                Object obj6 = anonymousClass1.L$5;
+                                AnonymousClass1 anonymousClass14 = (AnonymousClass1) anonymousClass1.L$4;
+                                Object obj7 = anonymousClass1.L$3;
+                                AnonymousClass1 anonymousClass15 = (AnonymousClass1) anonymousClass1.L$2;
+                                Object obj8 = anonymousClass1.L$1;
+                                AnonymousClass2 anonymousClass22 = (AnonymousClass2) anonymousClass1.L$0;
+                                ResultKt.throwOnFailure(obj5);
+                            } else {
+                                flowCollector = (FlowCollector) anonymousClass1.L$7;
+                                flowCollector2 = (FlowCollector) anonymousClass1.L$6;
+                                obj2 = anonymousClass1.L$5;
+                                anonymousClass12 = (AnonymousClass1) anonymousClass1.L$4;
+                                obj3 = anonymousClass1.L$3;
+                                anonymousClass13 = (AnonymousClass1) anonymousClass1.L$2;
+                                obj4 = anonymousClass1.L$1;
+                                anonymousClass2 = (AnonymousClass2) anonymousClass1.L$0;
+                                ResultKt.throwOnFailure(obj5);
+                            }
+                            anonymousClass1.L$0 = anonymousClass2;
+                            anonymousClass1.L$1 = obj4;
+                            anonymousClass1.L$2 = anonymousClass13;
+                            anonymousClass1.L$3 = obj3;
+                            anonymousClass1.L$4 = anonymousClass12;
+                            anonymousClass1.L$5 = obj2;
+                            anonymousClass1.L$6 = flowCollector2;
+                            anonymousClass1.label = 2;
+                            obj5 = flowCollector.emit(obj5, anonymousClass1);
+                            return obj5 != coroutine_suspended ? coroutine_suspended : obj5;
+                        }
+                    }
+                    anonymousClass1 = new AnonymousClass1(continuation);
+                    Object obj52 = anonymousClass1.result;
+                    Object coroutine_suspended2 = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+                    i = anonymousClass1.label;
+                    if (i != 0) {
+                    }
+                    anonymousClass1.L$0 = anonymousClass2;
+                    anonymousClass1.L$1 = obj4;
+                    anonymousClass1.L$2 = anonymousClass13;
+                    anonymousClass1.L$3 = obj3;
+                    anonymousClass1.L$4 = anonymousClass12;
+                    anonymousClass1.L$5 = obj2;
+                    anonymousClass1.L$6 = flowCollector2;
+                    anonymousClass1.label = 2;
+                    obj52 = flowCollector.emit(obj52, anonymousClass1);
+                    if (obj52 != coroutine_suspended2) {
+                    }
                 }
 
                 public AnonymousClass2(FlowCollector flowCollector, FlowKt__MergeKt$flatMapMerge$$inlined$map$1 flowKt__MergeKt$flatMapMerge$$inlined$map$1) {

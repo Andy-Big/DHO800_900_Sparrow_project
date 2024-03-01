@@ -72,7 +72,7 @@ import java.util.Objects;
 import timber.log.Timber;
 /* loaded from: classes2.dex */
 public class PanelKeyViewModel extends ViewModel {
-    public static boolean isPowerDown = false;
+    public static boolean isPowerDown;
     private long lastTime = 0;
     private long lastDownTime = 0;
     private final MutableLiveData<KeyEvent> onKeyUpData = new MutableLiveData<>();

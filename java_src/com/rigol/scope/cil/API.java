@@ -3,7 +3,6 @@ package com.rigol.scope.cil;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Surface;
-import com.rigol.scope.BuildConfig;
 import com.rigol.scope.data.MessageBus;
 import com.rigol.scope.utilities.ContextUtil;
 import com.rigol.util.ToastUtils;
@@ -81,7 +80,7 @@ public class API {
                 API api = new API();
                 instance = api;
                 api.UI_StartBusiness(i);
-                instance.UI_PostStr(11, MessageID.MSG_MISC_SOFT_VER, BuildConfig.VERSION_NAME);
+                instance.UI_PostStr(11, MessageID.MSG_MISC_SOFT_VER, "00.01.02.00.02");
             }
         }
         return instance;

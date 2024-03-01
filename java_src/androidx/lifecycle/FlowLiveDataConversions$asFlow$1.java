@@ -10,7 +10,14 @@ import kotlin.coroutines.jvm.internal.DebugMetadata;
 import kotlin.coroutines.jvm.internal.SuspendLambda;
 import kotlin.jvm.functions.Function2;
 import kotlin.jvm.internal.Intrinsics;
+import kotlinx.coroutines.BuildersKt;
+import kotlinx.coroutines.BuildersKt__Builders_commonKt;
 import kotlinx.coroutines.CoroutineScope;
+import kotlinx.coroutines.Dispatchers;
+import kotlinx.coroutines.GlobalScope;
+import kotlinx.coroutines.channels.Channel;
+import kotlinx.coroutines.channels.ChannelIterator;
+import kotlinx.coroutines.channels.ChannelKt;
 import kotlinx.coroutines.flow.FlowCollector;
 /* JADX INFO: Access modifiers changed from: package-private */
 /* JADX INFO: Add missing generic type declarations: [T] */
@@ -63,14 +70,154 @@ public final class FlowLiveDataConversions$asFlow$1<T> extends SuspendLambda imp
     @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public final java.lang.Object invokeSuspend(java.lang.Object r18) {
-        /*
-            Method dump skipped, instructions count: 281
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: androidx.lifecycle.FlowLiveDataConversions$asFlow$1.invokeSuspend(java.lang.Object):java.lang.Object");
+    public final Object invokeSuspend(Object obj) {
+        FlowCollector flowCollector;
+        Channel channel;
+        Observer<T> observer;
+        FlowLiveDataConversions$asFlow$1<T> flowLiveDataConversions$asFlow$1;
+        Throwable th;
+        FlowCollector flowCollector2;
+        Channel channel2;
+        ChannelIterator channelIterator;
+        ChannelIterator channelIterator2;
+        Object obj2;
+        Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+        int i = this.label;
+        ?? r5 = 1;
+        try {
+            try {
+                if (i == 0) {
+                    ResultKt.throwOnFailure(obj);
+                    flowCollector = this.p$;
+                    final Channel Channel = ChannelKt.Channel(-1);
+                    Observer<T> observer2 = new Observer<T>() { // from class: androidx.lifecycle.FlowLiveDataConversions$asFlow$1$observer$1
+                        @Override // androidx.lifecycle.Observer
+                        public final void onChanged(T t) {
+                            Channel.this.offer(t);
+                        }
+                    };
+                    this.L$0 = flowCollector;
+                    this.L$1 = Channel;
+                    this.L$2 = observer2;
+                    this.label = 1;
+                    if (BuildersKt.withContext(Dispatchers.getMain().getImmediate(), new AnonymousClass1(observer2, null), this) == coroutine_suspended) {
+                        return coroutine_suspended;
+                    }
+                    channel = Channel;
+                    observer = observer2;
+                } else if (i != 1) {
+                    try {
+                        if (i == 2) {
+                            channelIterator = (ChannelIterator) this.L$3;
+                            Observer observer3 = (Observer) this.L$2;
+                            channel2 = (Channel) this.L$1;
+                            flowCollector2 = (FlowCollector) this.L$0;
+                            ResultKt.throwOnFailure(obj);
+                            obj2 = obj;
+                            flowLiveDataConversions$asFlow$1 = this;
+                            r5 = observer3;
+                            if (((Boolean) obj2).booleanValue()) {
+                            }
+                        } else if (i != 3) {
+                            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+                        } else {
+                            channelIterator = (ChannelIterator) this.L$4;
+                            Observer<T> observer4 = (Observer) this.L$2;
+                            channel2 = (Channel) this.L$1;
+                            flowCollector2 = (FlowCollector) this.L$0;
+                            ResultKt.throwOnFailure(obj);
+                            flowLiveDataConversions$asFlow$1 = this;
+                            Observer<T> observer5 = observer4;
+                            FlowCollector flowCollector3 = flowCollector2;
+                            channelIterator2 = channelIterator;
+                            observer = observer5;
+                            channel = channel2;
+                            flowCollector = flowCollector3;
+                            flowLiveDataConversions$asFlow$1.L$0 = flowCollector;
+                            flowLiveDataConversions$asFlow$1.L$1 = channel;
+                            flowLiveDataConversions$asFlow$1.L$2 = observer;
+                            flowLiveDataConversions$asFlow$1.L$3 = channelIterator2;
+                            flowLiveDataConversions$asFlow$1.label = 2;
+                            obj2 = channelIterator2.hasNext(flowLiveDataConversions$asFlow$1);
+                            if (obj2 == coroutine_suspended) {
+                                return coroutine_suspended;
+                            }
+                            Channel channel3 = channel;
+                            r5 = observer;
+                            channelIterator = channelIterator2;
+                            flowCollector2 = flowCollector;
+                            channel2 = channel3;
+                            try {
+                                if (((Boolean) obj2).booleanValue()) {
+                                    BuildersKt__Builders_commonKt.launch$default(GlobalScope.INSTANCE, Dispatchers.getMain().getImmediate(), null, new AnonymousClass2(r5, null), 2, null);
+                                    return Unit.INSTANCE;
+                                }
+                                Object next = channelIterator.next();
+                                flowLiveDataConversions$asFlow$1.L$0 = flowCollector2;
+                                flowLiveDataConversions$asFlow$1.L$1 = channel2;
+                                flowLiveDataConversions$asFlow$1.L$2 = r5;
+                                flowLiveDataConversions$asFlow$1.L$3 = next;
+                                flowLiveDataConversions$asFlow$1.L$4 = channelIterator;
+                                flowLiveDataConversions$asFlow$1.label = 3;
+                                observer5 = r5;
+                                if (flowCollector2.emit(next, flowLiveDataConversions$asFlow$1) == coroutine_suspended) {
+                                    return coroutine_suspended;
+                                }
+                                FlowCollector flowCollector32 = flowCollector2;
+                                channelIterator2 = channelIterator;
+                                observer = observer5;
+                                channel = channel2;
+                                flowCollector = flowCollector32;
+                                flowLiveDataConversions$asFlow$1.L$0 = flowCollector;
+                                flowLiveDataConversions$asFlow$1.L$1 = channel;
+                                flowLiveDataConversions$asFlow$1.L$2 = observer;
+                                flowLiveDataConversions$asFlow$1.L$3 = channelIterator2;
+                                flowLiveDataConversions$asFlow$1.label = 2;
+                                obj2 = channelIterator2.hasNext(flowLiveDataConversions$asFlow$1);
+                                if (obj2 == coroutine_suspended) {
+                                }
+                            } catch (Throwable th2) {
+                                th = th2;
+                                BuildersKt__Builders_commonKt.launch$default(GlobalScope.INSTANCE, Dispatchers.getMain().getImmediate(), null, new AnonymousClass2(r5, null), 2, null);
+                                throw th;
+                            }
+                        }
+                    } catch (Throwable th3) {
+                        th = th3;
+                        flowLiveDataConversions$asFlow$1 = this;
+                        BuildersKt__Builders_commonKt.launch$default(GlobalScope.INSTANCE, Dispatchers.getMain().getImmediate(), null, new AnonymousClass2(r5, null), 2, null);
+                        throw th;
+                    }
+                } else {
+                    observer = (Observer) this.L$2;
+                    channel = (Channel) this.L$1;
+                    flowCollector = (FlowCollector) this.L$0;
+                    ResultKt.throwOnFailure(obj);
+                }
+                flowLiveDataConversions$asFlow$1.L$0 = flowCollector;
+                flowLiveDataConversions$asFlow$1.L$1 = channel;
+                flowLiveDataConversions$asFlow$1.L$2 = observer;
+                flowLiveDataConversions$asFlow$1.L$3 = channelIterator2;
+                flowLiveDataConversions$asFlow$1.label = 2;
+                obj2 = channelIterator2.hasNext(flowLiveDataConversions$asFlow$1);
+                if (obj2 == coroutine_suspended) {
+                }
+            } catch (Throwable th4) {
+                th = th4;
+                r5 = observer;
+                BuildersKt__Builders_commonKt.launch$default(GlobalScope.INSTANCE, Dispatchers.getMain().getImmediate(), null, new AnonymousClass2(r5, null), 2, null);
+                throw th;
+            }
+            channelIterator2 = channel.iterator();
+            flowLiveDataConversions$asFlow$1 = this;
+        } catch (Throwable th5) {
+            th = th5;
+            flowLiveDataConversions$asFlow$1 = this;
+            r5 = observer;
+            BuildersKt__Builders_commonKt.launch$default(GlobalScope.INSTANCE, Dispatchers.getMain().getImmediate(), null, new AnonymousClass2(r5, null), 2, null);
+            throw th;
+        }
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */

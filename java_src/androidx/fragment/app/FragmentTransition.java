@@ -10,6 +10,7 @@ import androidx.core.app.SharedElementCallback;
 import androidx.core.os.CancellationSignal;
 import androidx.core.view.OneShotPreDrawListener;
 import androidx.core.view.ViewCompat;
+import androidx.fragment.app.FragmentTransaction;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -703,14 +704,171 @@ public class FragmentTransition {
     /* JADX WARN: Removed duplicated region for block: B:95:0x00dd A[ADDED_TO_REGION] */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    private static void addToFirstInLastOut(androidx.fragment.app.BackStackRecord r8, androidx.fragment.app.FragmentTransaction.Op r9, android.util.SparseArray<androidx.fragment.app.FragmentTransition.FragmentContainerTransition> r10, boolean r11, boolean r12) {
-        /*
-            Method dump skipped, instructions count: 232
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: androidx.fragment.app.FragmentTransition.addToFirstInLastOut(androidx.fragment.app.BackStackRecord, androidx.fragment.app.FragmentTransaction$Op, android.util.SparseArray, boolean, boolean):void");
+    private static void addToFirstInLastOut(BackStackRecord backStackRecord, FragmentTransaction.Op op, SparseArray<FragmentContainerTransition> sparseArray, boolean z, boolean z2) {
+        int i;
+        boolean z3;
+        boolean z4;
+        boolean z5;
+        boolean z6;
+        FragmentContainerTransition fragmentContainerTransition;
+        FragmentManager fragmentManager;
+        Fragment fragment = op.mFragment;
+        if (fragment == null || (i = fragment.mContainerId) == 0) {
+            return;
+        }
+        int i2 = z ? INVERSE_OPS[op.mCmd] : op.mCmd;
+        boolean z7 = false;
+        if (i2 != 1) {
+            if (i2 != 3) {
+                if (i2 == 4) {
+                    boolean z8 = !z2 ? false : false;
+                    z5 = z8;
+                    z6 = false;
+                    z4 = true;
+                    fragmentContainerTransition = sparseArray.get(i);
+                    if (z7) {
+                    }
+                    if (!z2) {
+                    }
+                    if (z5) {
+                    }
+                    if (z2) {
+                    }
+                } else if (i2 != 5) {
+                    if (i2 != 6) {
+                        if (i2 != 7) {
+                            z6 = false;
+                            z4 = false;
+                            z5 = false;
+                            fragmentContainerTransition = sparseArray.get(i);
+                            if (z7) {
+                                fragmentContainerTransition = ensureContainer(fragmentContainerTransition, sparseArray, i);
+                                fragmentContainerTransition.lastIn = fragment;
+                                fragmentContainerTransition.lastInIsPop = z;
+                                fragmentContainerTransition.lastInTransaction = backStackRecord;
+                            }
+                            if (!z2 && z6) {
+                                if (fragmentContainerTransition != null && fragmentContainerTransition.firstOut == fragment) {
+                                    fragmentContainerTransition.firstOut = null;
+                                }
+                                fragmentManager = backStackRecord.mManager;
+                                if (fragment.mState < 1 && fragmentManager.mCurState >= 1 && !backStackRecord.mReorderingAllowed) {
+                                    fragmentManager.makeActive(fragment);
+                                    fragmentManager.moveToState(fragment, 1);
+                                }
+                            }
+                            if (z5 && (fragmentContainerTransition == null || fragmentContainerTransition.firstOut == null)) {
+                                fragmentContainerTransition = ensureContainer(fragmentContainerTransition, sparseArray, i);
+                                fragmentContainerTransition.firstOut = fragment;
+                                fragmentContainerTransition.firstOutIsPop = z;
+                                fragmentContainerTransition.firstOutTransaction = backStackRecord;
+                            }
+                            if (z2 || !z4 || fragmentContainerTransition == null || fragmentContainerTransition.lastIn != fragment) {
+                                return;
+                            }
+                            fragmentContainerTransition.lastIn = null;
+                            return;
+                        }
+                    }
+                } else if (z2) {
+                    if (fragment.mHiddenChanged) {
+                        if (!fragment.mHidden) {
+                        }
+                    }
+                    z3 = false;
+                    z4 = false;
+                    z5 = false;
+                    z7 = z3;
+                    z6 = true;
+                    fragmentContainerTransition = sparseArray.get(i);
+                    if (z7) {
+                    }
+                    if (!z2) {
+                        if (fragmentContainerTransition != null) {
+                            fragmentContainerTransition.firstOut = null;
+                        }
+                        fragmentManager = backStackRecord.mManager;
+                        if (fragment.mState < 1) {
+                            fragmentManager.makeActive(fragment);
+                            fragmentManager.moveToState(fragment, 1);
+                        }
+                    }
+                    if (z5) {
+                        fragmentContainerTransition = ensureContainer(fragmentContainerTransition, sparseArray, i);
+                        fragmentContainerTransition.firstOut = fragment;
+                        fragmentContainerTransition.firstOutIsPop = z;
+                        fragmentContainerTransition.firstOutTransaction = backStackRecord;
+                    }
+                    if (z2) {
+                        return;
+                    }
+                    return;
+                } else {
+                    z3 = fragment.mHidden;
+                    z4 = false;
+                    z5 = false;
+                    z7 = z3;
+                    z6 = true;
+                    fragmentContainerTransition = sparseArray.get(i);
+                    if (z7) {
+                    }
+                    if (!z2) {
+                    }
+                    if (z5) {
+                    }
+                    if (z2) {
+                    }
+                }
+            }
+            if (!z2) {
+            }
+            z5 = z8;
+            z6 = false;
+            z4 = true;
+            fragmentContainerTransition = sparseArray.get(i);
+            if (z7) {
+            }
+            if (!z2) {
+            }
+            if (z5) {
+            }
+            if (z2) {
+            }
+        }
+        if (z2) {
+            z3 = fragment.mIsNewlyAdded;
+            z4 = false;
+            z5 = false;
+            z7 = z3;
+            z6 = true;
+            fragmentContainerTransition = sparseArray.get(i);
+            if (z7) {
+            }
+            if (!z2) {
+            }
+            if (z5) {
+            }
+            if (z2) {
+            }
+        } else {
+            if (!fragment.mAdded) {
+            }
+            z3 = false;
+            z4 = false;
+            z5 = false;
+            z7 = z3;
+            z6 = true;
+            fragmentContainerTransition = sparseArray.get(i);
+            if (z7) {
+            }
+            if (!z2) {
+            }
+            if (z5) {
+            }
+            if (z2) {
+            }
+        }
     }
 
     private static FragmentContainerTransition ensureContainer(FragmentContainerTransition fragmentContainerTransition, SparseArray<FragmentContainerTransition> sparseArray, int i) {

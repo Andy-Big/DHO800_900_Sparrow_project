@@ -14,7 +14,7 @@ import java.util.Locale;
 import timber.log.Timber;
 /* loaded from: classes2.dex */
 public class LanguageUtil {
-    public static boolean isFirstStart = false;
+    public static boolean isFirstStart;
 
     public static String getSystemLanguage() {
         return Locale.getDefault().getLanguage();

@@ -43,11 +43,119 @@ final class LogManagerProperties extends Properties {
         if (r0 != null) goto L20;
      */
     static {
-        /*
-            Method dump skipped, instructions count: 204
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.sun.mail.util.logging.LogManagerProperties.<clinit>():void");
+        Object obj;
+        Method method;
+        Method method2;
+        Method method3;
+        Method method4 = null;
+        try {
+            method2 = LogRecord.class.getMethod("getInstant", new Class[0]);
+        } catch (LinkageError unused) {
+            method = null;
+            method2 = null;
+            method3 = null;
+        } catch (RuntimeException unused2) {
+            method = null;
+            method2 = null;
+            method3 = null;
+        } catch (Exception unused3) {
+            method = null;
+            method2 = null;
+            method3 = null;
+        } catch (Throwable th) {
+            th = th;
+            obj = null;
+        }
+        try {
+            method3 = findClass("java.time.ZoneId").getMethod("systemDefault", new Class[0]);
+            try {
+            } catch (RuntimeException unused4) {
+                method = null;
+            } catch (Exception unused5) {
+                method = null;
+            } catch (LinkageError unused6) {
+                method = null;
+            } catch (Throwable th2) {
+                throw th2;
+            }
+        } catch (RuntimeException unused7) {
+            method = null;
+            method3 = null;
+        } catch (Exception unused8) {
+            method = null;
+            method3 = null;
+        } catch (LinkageError unused9) {
+            method = null;
+            method3 = null;
+        } catch (Throwable th3) {
+            th = th3;
+            obj = null;
+            throw th;
+        }
+        if (!Modifier.isStatic(method3.getModifiers())) {
+            throw new NoSuchMethodException(method3.toString());
+        }
+        method = findClass("java.time.ZonedDateTime").getMethod("ofInstant", findClass("java.time.Instant"), findClass("java.time.ZoneId"));
+        try {
+        } catch (LinkageError unused10) {
+            if (method2 != null) {
+                if (method3 != null) {
+                }
+            }
+            method = null;
+            method3 = null;
+            LR_GET_INSTANT = method4;
+            ZI_SYSTEM_DEFAULT = method3;
+            ZDT_OF_INSTANT = method;
+            LOG_MANAGER = loadLogManager();
+        } catch (RuntimeException unused11) {
+            if (method2 != null) {
+                if (method3 != null) {
+                }
+            }
+            method = null;
+            method3 = null;
+            LR_GET_INSTANT = method4;
+            ZI_SYSTEM_DEFAULT = method3;
+            ZDT_OF_INSTANT = method;
+            LOG_MANAGER = loadLogManager();
+        } catch (Exception unused12) {
+            if (method2 != null) {
+                if (method3 != null) {
+                }
+            }
+            method = null;
+            method3 = null;
+            LR_GET_INSTANT = method4;
+            ZI_SYSTEM_DEFAULT = method3;
+            ZDT_OF_INSTANT = method;
+            LOG_MANAGER = loadLogManager();
+        } catch (Throwable th4) {
+            throw th4;
+        }
+        if (!Modifier.isStatic(method.getModifiers())) {
+            throw new NoSuchMethodException(method.toString());
+        }
+        if (!Comparable.class.isAssignableFrom(method.getReturnType())) {
+            throw new NoSuchMethodException(method.toString());
+        }
+        if (method2 != null) {
+            if (method3 != null) {
+                if (method == null) {
+                }
+                method4 = method2;
+                LR_GET_INSTANT = method4;
+                ZI_SYSTEM_DEFAULT = method3;
+                ZDT_OF_INSTANT = method;
+                LOG_MANAGER = loadLogManager();
+            }
+        }
+        method = null;
+        method3 = null;
+        LR_GET_INSTANT = method4;
+        ZI_SYSTEM_DEFAULT = method3;
+        ZDT_OF_INSTANT = method;
+        LOG_MANAGER = loadLogManager();
     }
 
     private static Object loadLogManager() {

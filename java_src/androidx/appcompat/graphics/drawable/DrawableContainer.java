@@ -492,88 +492,60 @@ public class DrawableContainer extends Drawable implements Drawable.Callback {
     /* JADX WARN: Removed duplicated region for block: B:26:? A[ADDED_TO_REGION, RETURN, SYNTHETIC] */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    void animate(boolean r14) {
-        /*
-            r13 = this;
-            r0 = 1
-            r13.mHasAlpha = r0
-            long r1 = android.os.SystemClock.uptimeMillis()
-            android.graphics.drawable.Drawable r3 = r13.mCurrDrawable
-            r4 = 255(0xff, double:1.26E-321)
-            r6 = 0
-            r7 = 0
-            if (r3 == 0) goto L38
-            long r9 = r13.mEnterAnimationEnd
-            int r11 = (r9 > r7 ? 1 : (r9 == r7 ? 0 : -1))
-            if (r11 == 0) goto L3a
-            int r11 = (r9 > r1 ? 1 : (r9 == r1 ? 0 : -1))
-            if (r11 > 0) goto L22
-            int r9 = r13.mAlpha
-            r3.setAlpha(r9)
-            r13.mEnterAnimationEnd = r7
-            goto L3a
-        L22:
-            long r9 = r9 - r1
-            long r9 = r9 * r4
-            int r3 = (int) r9
-            androidx.appcompat.graphics.drawable.DrawableContainer$DrawableContainerState r9 = r13.mDrawableContainerState
-            int r9 = r9.mEnterFadeDuration
-            int r3 = r3 / r9
-            android.graphics.drawable.Drawable r9 = r13.mCurrDrawable
-            int r3 = 255 - r3
-            int r10 = r13.mAlpha
-            int r3 = r3 * r10
-            int r3 = r3 / 255
-            r9.setAlpha(r3)
-            r3 = r0
-            goto L3b
-        L38:
-            r13.mEnterAnimationEnd = r7
-        L3a:
-            r3 = r6
-        L3b:
-            android.graphics.drawable.Drawable r9 = r13.mLastDrawable
-            if (r9 == 0) goto L65
-            long r10 = r13.mExitAnimationEnd
-            int r12 = (r10 > r7 ? 1 : (r10 == r7 ? 0 : -1))
-            if (r12 == 0) goto L67
-            int r12 = (r10 > r1 ? 1 : (r10 == r1 ? 0 : -1))
-            if (r12 > 0) goto L52
-            r9.setVisible(r6, r6)
-            r0 = 0
-            r13.mLastDrawable = r0
-            r13.mExitAnimationEnd = r7
-            goto L67
-        L52:
-            long r10 = r10 - r1
-            long r10 = r10 * r4
-            int r3 = (int) r10
-            androidx.appcompat.graphics.drawable.DrawableContainer$DrawableContainerState r4 = r13.mDrawableContainerState
-            int r4 = r4.mExitFadeDuration
-            int r3 = r3 / r4
-            android.graphics.drawable.Drawable r4 = r13.mLastDrawable
-            int r5 = r13.mAlpha
-            int r3 = r3 * r5
-            int r3 = r3 / 255
-            r4.setAlpha(r3)
-            goto L68
-        L65:
-            r13.mExitAnimationEnd = r7
-        L67:
-            r0 = r3
-        L68:
-            if (r14 == 0) goto L74
-            if (r0 == 0) goto L74
-            java.lang.Runnable r14 = r13.mAnimationRunnable
-            r3 = 16
-            long r1 = r1 + r3
-            r13.scheduleSelf(r14, r1)
-        L74:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: androidx.appcompat.graphics.drawable.DrawableContainer.animate(boolean):void");
+    void animate(boolean z) {
+        boolean z2;
+        Drawable drawable;
+        boolean z3 = true;
+        this.mHasAlpha = true;
+        long uptimeMillis = SystemClock.uptimeMillis();
+        Drawable drawable2 = this.mCurrDrawable;
+        if (drawable2 != null) {
+            long j = this.mEnterAnimationEnd;
+            if (j != 0) {
+                if (j <= uptimeMillis) {
+                    drawable2.setAlpha(this.mAlpha);
+                    this.mEnterAnimationEnd = 0L;
+                } else {
+                    this.mCurrDrawable.setAlpha(((255 - (((int) ((j - uptimeMillis) * 255)) / this.mDrawableContainerState.mEnterFadeDuration)) * this.mAlpha) / 255);
+                    z2 = true;
+                    drawable = this.mLastDrawable;
+                    if (drawable == null) {
+                        long j2 = this.mExitAnimationEnd;
+                        if (j2 != 0) {
+                            if (j2 <= uptimeMillis) {
+                                drawable.setVisible(false, false);
+                                this.mLastDrawable = null;
+                                this.mExitAnimationEnd = 0L;
+                            } else {
+                                this.mLastDrawable.setAlpha(((((int) ((j2 - uptimeMillis) * 255)) / this.mDrawableContainerState.mExitFadeDuration) * this.mAlpha) / 255);
+                                if (z && z3) {
+                                    scheduleSelf(this.mAnimationRunnable, uptimeMillis + 16);
+                                    return;
+                                }
+                                return;
+                            }
+                        }
+                    } else {
+                        this.mExitAnimationEnd = 0L;
+                    }
+                    z3 = z2;
+                    if (z) {
+                        return;
+                    }
+                    return;
+                }
+            }
+        } else {
+            this.mEnterAnimationEnd = 0L;
+        }
+        z2 = false;
+        drawable = this.mLastDrawable;
+        if (drawable == null) {
+        }
+        z3 = z2;
+        if (z) {
+        }
     }
 
     @Override // android.graphics.drawable.Drawable

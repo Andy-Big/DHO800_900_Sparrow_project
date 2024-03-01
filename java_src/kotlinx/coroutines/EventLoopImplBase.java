@@ -129,67 +129,36 @@ public abstract class EventLoopImplBase extends EventLoopImplPlatform implements
     @Override // kotlinx.coroutines.EventLoop
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
     public long processNextEvent() {
-        /*
-            r7 = this;
-            boolean r0 = r7.processUnconfinedEvent()
-            if (r0 == 0) goto Lb
-            long r0 = r7.getNextTime()
-            return r0
-        Lb:
-            java.lang.Object r0 = r7._delayed
-            kotlinx.coroutines.EventLoopImplBase$DelayedTaskQueue r0 = (kotlinx.coroutines.EventLoopImplBase.DelayedTaskQueue) r0
-            if (r0 == 0) goto L51
-            boolean r1 = r0.isEmpty()
-            if (r1 != 0) goto L51
-            kotlinx.coroutines.TimeSource r1 = kotlinx.coroutines.TimeSourceKt.getTimeSource()
-            if (r1 == 0) goto L22
-            long r1 = r1.nanoTime()
-            goto L26
-        L22:
-            long r1 = java.lang.System.nanoTime()
-        L26:
-            monitor-enter(r0)
-            kotlinx.coroutines.internal.ThreadSafeHeapNode r3 = r0.firstImpl()     // Catch: java.lang.Throwable -> L4e
-            r4 = 0
-            if (r3 == 0) goto L48
-            kotlinx.coroutines.EventLoopImplBase$DelayedTask r3 = (kotlinx.coroutines.EventLoopImplBase.DelayedTask) r3     // Catch: java.lang.Throwable -> L4e
-            boolean r5 = r3.timeToExecute(r1)     // Catch: java.lang.Throwable -> L4e
-            r6 = 0
-            if (r5 == 0) goto L3e
-            java.lang.Runnable r3 = (java.lang.Runnable) r3     // Catch: java.lang.Throwable -> L4e
-            boolean r3 = r7.enqueueImpl(r3)     // Catch: java.lang.Throwable -> L4e
-            goto L3f
-        L3e:
-            r3 = r6
-        L3f:
-            if (r3 == 0) goto L46
-            kotlinx.coroutines.internal.ThreadSafeHeapNode r3 = r0.removeAtImpl(r6)     // Catch: java.lang.Throwable -> L4e
-            r4 = r3
-        L46:
-            monitor-exit(r0)
-            goto L49
-        L48:
-            monitor-exit(r0)
-        L49:
-            kotlinx.coroutines.EventLoopImplBase$DelayedTask r4 = (kotlinx.coroutines.EventLoopImplBase.DelayedTask) r4
-            if (r4 == 0) goto L51
-            goto L26
-        L4e:
-            r1 = move-exception
-            monitor-exit(r0)
-            throw r1
-        L51:
-            java.lang.Runnable r0 = r7.dequeue()
-            if (r0 == 0) goto L5a
-            r0.run()
-        L5a:
-            long r0 = r7.getNextTime()
-            return r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.EventLoopImplBase.processNextEvent():long");
+        Runnable dequeue;
+        DelayedTask delayedTask;
+        if (processUnconfinedEvent()) {
+            return getNextTime();
+        }
+        DelayedTaskQueue delayedTaskQueue = (DelayedTaskQueue) this._delayed;
+        if (delayedTaskQueue != null && !delayedTaskQueue.isEmpty()) {
+            TimeSource timeSource = TimeSourceKt.getTimeSource();
+            long nanoTime = timeSource != null ? timeSource.nanoTime() : System.nanoTime();
+            do {
+                synchronized (delayedTaskQueue) {
+                    DelayedTask firstImpl = delayedTaskQueue.firstImpl();
+                    if (firstImpl != null) {
+                        DelayedTask delayedTask2 = firstImpl;
+                        delayedTask = delayedTask2.timeToExecute(nanoTime) ? enqueueImpl(delayedTask2) : false ? delayedTaskQueue.removeAtImpl(0) : null;
+                    }
+                }
+            } while (delayedTask != null);
+            dequeue = dequeue();
+            if (dequeue != null) {
+            }
+            return getNextTime();
+        }
+        dequeue = dequeue();
+        if (dequeue != null) {
+            dequeue.run();
+        }
+        return getNextTime();
     }
 
     @Override // kotlinx.coroutines.CoroutineDispatcher

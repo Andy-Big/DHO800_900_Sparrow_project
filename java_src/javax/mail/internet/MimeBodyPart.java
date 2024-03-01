@@ -684,14 +684,80 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public static void updateHeaders(javax.mail.internet.MimePart r9) throws javax.mail.MessagingException {
-        /*
-            Method dump skipped, instructions count: 321
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: javax.mail.internet.MimeBodyPart.updateHeaders(javax.mail.internet.MimePart):void");
+    public static void updateHeaders(MimePart mimePart) throws MessagingException {
+        String header;
+        String parameter;
+        Object content;
+        DataHandler dataHandler = mimePart.getDataHandler();
+        if (dataHandler == null) {
+            return;
+        }
+        try {
+            String contentType = dataHandler.getContentType();
+            boolean z = false;
+            boolean z2 = mimePart.getHeader("Content-Type") == null;
+            ContentType contentType2 = new ContentType(contentType);
+            if (contentType2.match("multipart/*")) {
+                if (mimePart instanceof MimeBodyPart) {
+                    MimeBodyPart mimeBodyPart = (MimeBodyPart) mimePart;
+                    content = mimeBodyPart.cachedContent != null ? mimeBodyPart.cachedContent : dataHandler.getContent();
+                } else if (mimePart instanceof MimeMessage) {
+                    MimeMessage mimeMessage = (MimeMessage) mimePart;
+                    content = mimeMessage.cachedContent != null ? mimeMessage.cachedContent : dataHandler.getContent();
+                } else {
+                    content = dataHandler.getContent();
+                }
+                if (content instanceof MimeMultipart) {
+                    ((MimeMultipart) content).updateHeaders();
+                } else {
+                    throw new MessagingException("MIME part of type \"" + contentType + "\" contains object of type " + content.getClass().getName() + " instead of MimeMultipart");
+                }
+            }
+            z = true;
+            if (dataHandler instanceof MimePartDataHandler) {
+                MimePart part = ((MimePartDataHandler) dataHandler).getPart();
+                if (part == mimePart) {
+                    return;
+                }
+                if (z2) {
+                    mimePart.setHeader("Content-Type", part.getContentType());
+                }
+                String encoding = part.getEncoding();
+                if (encoding != null) {
+                    setEncoding(mimePart, encoding);
+                    return;
+                }
+            }
+            if (!z) {
+                if (mimePart.getHeader("Content-Transfer-Encoding") == null) {
+                    setEncoding(mimePart, MimeUtility.getEncoding(dataHandler));
+                }
+                if (z2 && setDefaultTextCharset && contentType2.match("text/*") && contentType2.getParameter("charset") == null) {
+                    String encoding2 = mimePart.getEncoding();
+                    contentType2.setParameter("charset", (encoding2 == null || !encoding2.equalsIgnoreCase("7bit")) ? MimeUtility.getDefaultMIMECharset() : "us-ascii");
+                    contentType = contentType2.toString();
+                }
+            }
+            if (z2) {
+                if (setContentTypeFileName && (header = mimePart.getHeader("Content-Disposition", null)) != null && (parameter = new ContentDisposition(header).getParameter("filename")) != null) {
+                    ParameterList parameterList = contentType2.getParameterList();
+                    if (parameterList == null) {
+                        parameterList = new ParameterList();
+                        contentType2.setParameterList(parameterList);
+                    }
+                    if (encodeFileName) {
+                        parameterList.setLiteral(IMAPStore.ID_NAME, MimeUtility.encodeText(parameter));
+                    } else {
+                        parameterList.set(IMAPStore.ID_NAME, parameter, MimeUtility.getDefaultMIMECharset());
+                    }
+                    contentType = contentType2.toString();
+                }
+                mimePart.setHeader("Content-Type", contentType);
+            }
+        } catch (IOException e) {
+            throw new MessagingException("IOException updating headers", e);
+        }
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */

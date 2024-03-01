@@ -42,6 +42,7 @@ import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.PasswordAuthentication;
+import javax.mail.SendFailedException;
 import javax.mail.Service;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -672,67 +673,42 @@ public class MailHandler extends Handler {
      */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    final java.lang.String contentTypeOf(java.util.logging.Formatter r7) {
-        /*
-            r6 = this;
-            if (r7 == 0) goto L67
-            java.lang.Class r0 = r7.getClass()
-            java.lang.String r0 = r0.getName()
-            java.lang.String r0 = r6.getContentType(r0)
-            if (r0 == 0) goto L11
-            return r0
-        L11:
-            java.lang.Class r7 = r7.getClass()
-        L15:
-            java.lang.Class<java.util.logging.Formatter> r0 = java.util.logging.Formatter.class
-            if (r7 == r0) goto L67
-            java.lang.String r0 = r7.getSimpleName()     // Catch: java.lang.InternalError -> L1e
-            goto L22
-        L1e:
-            java.lang.String r0 = r7.getName()
-        L22:
-            java.util.Locale r1 = java.util.Locale.ENGLISH
-            java.lang.String r0 = r0.toLowerCase(r1)
-            r1 = 36
-            int r1 = r0.indexOf(r1)
-            r2 = 1
-            int r1 = r1 + r2
-        L30:
-            java.lang.String r3 = "ml"
-            int r1 = r0.indexOf(r3, r1)
-            r3 = -1
-            if (r1 <= r3) goto L62
-            if (r1 <= 0) goto L5f
-            int r3 = r1 + (-1)
-            char r4 = r0.charAt(r3)
-            r5 = 120(0x78, float:1.68E-43)
-            if (r4 != r5) goto L48
-            java.lang.String r7 = "application/xml"
-            return r7
-        L48:
-            if (r1 <= r2) goto L5f
-            int r4 = r1 + (-2)
-            char r4 = r0.charAt(r4)
-            r5 = 104(0x68, float:1.46E-43)
-            if (r4 != r5) goto L5f
-            char r3 = r0.charAt(r3)
-            r4 = 116(0x74, float:1.63E-43)
-            if (r3 != r4) goto L5f
-            java.lang.String r7 = "text/html"
-            return r7
-        L5f:
-            int r1 = r1 + 2
-            goto L30
-        L62:
-            java.lang.Class r7 = r7.getSuperclass()
-            goto L15
-        L67:
-            r7 = 0
-            return r7
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.sun.mail.util.logging.MailHandler.contentTypeOf(java.util.logging.Formatter):java.lang.String");
+    final String contentTypeOf(Formatter formatter) {
+        String name;
+        if (formatter != null) {
+            String contentType = getContentType(formatter.getClass().getName());
+            if (contentType != null) {
+                return contentType;
+            }
+            Class<?> cls = formatter.getClass();
+            while (cls != Formatter.class) {
+                try {
+                    name = cls.getSimpleName();
+                } catch (InternalError unused) {
+                    name = cls.getName();
+                }
+                String lowerCase = name.toLowerCase(Locale.ENGLISH);
+                int indexOf = lowerCase.indexOf(36) + 1;
+                while (true) {
+                    int indexOf2 = lowerCase.indexOf("ml", indexOf);
+                    if (indexOf2 > -1) {
+                        if (indexOf2 > 0) {
+                            int i = indexOf2 - 1;
+                            if (lowerCase.charAt(i) == 'x') {
+                                return "application/xml";
+                            }
+                            if (indexOf2 > 1 && lowerCase.charAt(indexOf2 - 2) == 'h' && lowerCase.charAt(i) == 't') {
+                                return "text/html";
+                            }
+                        }
+                        indexOf = indexOf2 + 2;
+                    }
+                }
+            }
+            return null;
+        }
+        return null;
     }
 
     final boolean isMissingContent(Message message, Throwable th) {
@@ -803,59 +779,27 @@ public class MailHandler extends Handler {
      */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    private void reportLinkageError(java.lang.Throwable r3, int r4) {
-        /*
-            r2 = this;
-            if (r3 == 0) goto L4e
-            java.lang.ThreadLocal<java.lang.Integer> r4 = com.sun.mail.util.logging.MailHandler.MUTEX
-            java.lang.Object r4 = r4.get()
-            java.lang.Integer r4 = (java.lang.Integer) r4
-            if (r4 == 0) goto L18
-            int r0 = r4.intValue()
-            java.lang.Integer r1 = com.sun.mail.util.logging.MailHandler.MUTEX_LINKAGE
-            int r1 = r1.intValue()
-            if (r0 <= r1) goto L4d
-        L18:
-            java.lang.ThreadLocal<java.lang.Integer> r0 = com.sun.mail.util.logging.MailHandler.MUTEX
-            java.lang.Integer r1 = com.sun.mail.util.logging.MailHandler.MUTEX_LINKAGE
-            r0.set(r1)
-            java.lang.Thread r0 = java.lang.Thread.currentThread()     // Catch: java.lang.Throwable -> L31 java.lang.Throwable -> L40
-            java.lang.Thread$UncaughtExceptionHandler r0 = r0.getUncaughtExceptionHandler()     // Catch: java.lang.Throwable -> L31 java.lang.Throwable -> L40
-            java.lang.Thread r1 = java.lang.Thread.currentThread()     // Catch: java.lang.Throwable -> L31 java.lang.Throwable -> L40
-            r0.uncaughtException(r1, r3)     // Catch: java.lang.Throwable -> L31 java.lang.Throwable -> L40
-            if (r4 == 0) goto L48
-            goto L42
-        L31:
-            r3 = move-exception
-            if (r4 == 0) goto L3a
-            java.lang.ThreadLocal<java.lang.Integer> r0 = com.sun.mail.util.logging.MailHandler.MUTEX
-            r0.set(r4)
-            goto L3f
-        L3a:
-            java.lang.ThreadLocal<java.lang.Integer> r4 = com.sun.mail.util.logging.MailHandler.MUTEX
-            r4.remove()
-        L3f:
-            throw r3
-        L40:
-            if (r4 == 0) goto L48
-        L42:
-            java.lang.ThreadLocal<java.lang.Integer> r3 = com.sun.mail.util.logging.MailHandler.MUTEX
-            r3.set(r4)
-            goto L4d
-        L48:
-            java.lang.ThreadLocal<java.lang.Integer> r3 = com.sun.mail.util.logging.MailHandler.MUTEX
-            r3.remove()
-        L4d:
-            return
-        L4e:
-            java.lang.NullPointerException r3 = new java.lang.NullPointerException
-            java.lang.String r4 = java.lang.String.valueOf(r4)
-            r3.<init>(r4)
-            throw r3
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.sun.mail.util.logging.MailHandler.reportLinkageError(java.lang.Throwable, int):void");
+    private void reportLinkageError(Throwable th, int i) {
+        if (th == null) {
+            throw new NullPointerException(String.valueOf(i));
+        }
+        Integer num = MUTEX.get();
+        if (num != null && num.intValue() <= MUTEX_LINKAGE.intValue()) {
+            return;
+        }
+        MUTEX.set(MUTEX_LINKAGE);
+        try {
+            Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), th);
+        } catch (LinkageError | RuntimeException unused) {
+        } catch (Throwable th2) {
+            if (num != null) {
+                MUTEX.set(num);
+            } else {
+                MUTEX.remove();
+            }
+            throw th2;
+        }
     }
 
     private String getContentType(String str) {
@@ -930,48 +874,33 @@ public class MailHandler extends Handler {
     /* JADX WARN: Removed duplicated region for block: B:9:0x001a  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
     private boolean alignAttachmentNames() {
-        /*
-            r5 = this;
-            java.util.logging.Formatter[] r0 = r5.attachmentFormatters
-            int r0 = r0.length
-            java.util.logging.Formatter[] r1 = r5.attachmentNames
-            int r2 = r1.length
-            r3 = 0
-            if (r2 == r0) goto L17
-            java.lang.Class<java.util.logging.Formatter[]> r4 = java.util.logging.Formatter[].class
-            java.lang.Object[] r1 = java.util.Arrays.copyOf(r1, r0, r4)
-            java.util.logging.Formatter[] r1 = (java.util.logging.Formatter[]) r1
-            r5.attachmentNames = r1
-            if (r2 == 0) goto L17
-            r1 = 1
-            goto L18
-        L17:
-            r1 = r3
-        L18:
-            if (r0 != 0) goto L21
-            java.util.logging.Formatter[] r0 = emptyFormatterArray()
-            r5.attachmentNames = r0
-            goto L3a
-        L21:
-            if (r3 >= r0) goto L3a
-            java.util.logging.Formatter[] r2 = r5.attachmentNames
-            r4 = r2[r3]
-            if (r4 != 0) goto L37
-            java.util.logging.Formatter[] r4 = r5.attachmentFormatters
-            r4 = r4[r3]
-            java.lang.String r4 = r5.toString(r4)
-            java.util.logging.Formatter r4 = com.sun.mail.util.logging.MailHandler.TailNameFormatter.of(r4)
-            r2[r3] = r4
-        L37:
-            int r3 = r3 + 1
-            goto L21
-        L3a:
-            return r1
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.sun.mail.util.logging.MailHandler.alignAttachmentNames():boolean");
+        boolean z;
+        int length = this.attachmentFormatters.length;
+        Formatter[] formatterArr = this.attachmentNames;
+        int length2 = formatterArr.length;
+        if (length2 != length) {
+            this.attachmentNames = (Formatter[]) Arrays.copyOf(formatterArr, length, Formatter[].class);
+            if (length2 != 0) {
+                z = true;
+                if (length != 0) {
+                    this.attachmentNames = emptyFormatterArray();
+                } else {
+                    for (int i = 0; i < length; i++) {
+                        Formatter[] formatterArr2 = this.attachmentNames;
+                        if (formatterArr2[i] == null) {
+                            formatterArr2[i] = TailNameFormatter.of(toString(this.attachmentFormatters[i]));
+                        }
+                    }
+                }
+                return z;
+            }
+        }
+        z = false;
+        if (length != 0) {
+        }
+        return z;
     }
 
     private boolean alignAttachmentFilters() {
@@ -1732,14 +1661,268 @@ public class MailHandler extends Handler {
     /* JADX WARN: Removed duplicated region for block: B:227:0x0271 A[EXC_TOP_SPLITTER, SYNTHETIC] */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    private void verifySettings0(javax.mail.Session r17, java.lang.String r18) {
-        /*
-            Method dump skipped, instructions count: 945
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.sun.mail.util.logging.MailHandler.verifySettings0(javax.mail.Session, java.lang.String):void");
+    private void verifySettings0(Session session, String str) {
+        String str2;
+        int length;
+        String[] strArr;
+        int i;
+        Object andSetContextClassLoader;
+        Transport transport;
+        Exception exc;
+        Throwable th;
+        String str3;
+        Exception exc2;
+        String str4;
+        String contentTypeOf;
+        MimeBodyPart createBodyPart;
+        Address[] from;
+        if (!"local".equals(str) && !"remote".equals(str) && !"limited".equals(str) && !"resolve".equals(str) && !"login".equals(str)) {
+            reportError("Verify must be 'limited', local', 'resolve', 'login', or 'remote'.", new IllegalArgumentException(str), 4);
+            return;
+        }
+        MimeMessage mimeMessage = new MimeMessage(session);
+        if ("limited".equals(str)) {
+            str2 = "Skipping local address check.";
+        } else {
+            str2 = "Local address is " + InternetAddress.getLocalAddress(session) + '.';
+            try {
+                Charset.forName(getEncodingName());
+            } catch (RuntimeException e) {
+                UnsupportedEncodingException unsupportedEncodingException = new UnsupportedEncodingException(e.toString());
+                unsupportedEncodingException.initCause(e);
+                reportError(str2, unsupportedEncodingException, 5);
+            }
+        }
+        synchronized (this) {
+            appendSubject(mimeMessage, head(this.subjectFormatter));
+            appendSubject(mimeMessage, tail(this.subjectFormatter, ""));
+            length = this.attachmentNames.length;
+            strArr = new String[length];
+            for (int i2 = 0; i2 < length; i2++) {
+                strArr[i2] = head(this.attachmentNames[i2]);
+                if (strArr[i2].length() == 0) {
+                    strArr[i2] = tail(this.attachmentNames[i2], "");
+                } else {
+                    strArr[i2] = strArr[i2].concat(tail(this.attachmentNames[i2], ""));
+                }
+            }
+        }
+        setIncompleteCopy(mimeMessage);
+        envelopeFor(mimeMessage, true);
+        saveChangesNoContent(mimeMessage, str2);
+        try {
+            try {
+                Address[] allRecipients = mimeMessage.getAllRecipients();
+                if (allRecipients == null) {
+                    allRecipients = new InternetAddress[0];
+                }
+                Address[] addressArr = allRecipients;
+                try {
+                    try {
+                        from = addressArr.length != 0 ? addressArr : mimeMessage.getFrom();
+                    } catch (RuntimeException e2) {
+                        e = e2;
+                        i = 4;
+                        setErrorContent(mimeMessage, str, e);
+                        reportError(mimeMessage, e, i);
+                        return;
+                    }
+                } catch (MessagingException e3) {
+                    andSetContextClassLoader = getAndSetContextClassLoader(MAILHANDLER_LOADER);
+                    try {
+                        try {
+                            transport = session.getTransport();
+                        } catch (MessagingException e4) {
+                            throw attach(e3, e4);
+                        }
+                    } finally {
+                    }
+                }
+                if (from != null && from.length != 0) {
+                    transport = session.getTransport(from[0]);
+                    session.getProperty("mail.transport.protocol");
+                    Transport transport2 = transport;
+                    try {
+                        try {
+                            if (!"remote".equals(str) && !"login".equals(str)) {
+                                String protocol = transport2.getURLName().getProtocol();
+                                verifyProperties(session, protocol);
+                                String property = session.getProperty("mail." + protocol + ".host");
+                                if (isEmpty(property)) {
+                                    property = session.getProperty("mail.host");
+                                } else {
+                                    session.getProperty("mail.host");
+                                }
+                                str4 = session.getProperty("mail." + protocol + ".localhost");
+                                if (isEmpty(str4)) {
+                                    str4 = session.getProperty("mail." + protocol + ".localaddress");
+                                } else {
+                                    session.getProperty("mail." + protocol + ".localaddress");
+                                }
+                                if ("resolve".equals(str)) {
+                                    try {
+                                        String host = transport2.getURLName().getHost();
+                                        if (!isEmpty(host)) {
+                                            verifyHost(host);
+                                            if (!host.equalsIgnoreCase(property)) {
+                                                verifyHost(property);
+                                            }
+                                        } else {
+                                            verifyHost(property);
+                                        }
+                                    } catch (IOException | RuntimeException e5) {
+                                        Exception messagingException = new MessagingException(str2, e5);
+                                        setErrorContent(mimeMessage, str, messagingException);
+                                        reportError(mimeMessage, messagingException, 4);
+                                    }
+                                }
+                                if (!"limited".equals(str)) {
+                                    try {
+                                        if (!"remote".equals(str) && !"login".equals(str)) {
+                                            str4 = getLocalHost(transport2);
+                                        }
+                                        verifyHost(str4);
+                                    } catch (IOException | RuntimeException e6) {
+                                        Exception messagingException2 = new MessagingException(str2, e6);
+                                        setErrorContent(mimeMessage, str, messagingException2);
+                                        reportError(mimeMessage, messagingException2, 4);
+                                    }
+                                    try {
+                                        andSetContextClassLoader = getAndSetContextClassLoader(MAILHANDLER_LOADER);
+                                        try {
+                                            Multipart mimeMultipart = new MimeMultipart();
+                                            MimePart[] mimePartArr = new MimeBodyPart[length];
+                                            synchronized (this) {
+                                                contentTypeOf = contentTypeOf(getFormatter());
+                                                createBodyPart = createBodyPart();
+                                                for (int i3 = 0; i3 < length; i3++) {
+                                                    mimePartArr[i3] = createBodyPart(i3);
+                                                    mimePartArr[i3].setFileName(strArr[i3]);
+                                                    strArr[i3] = getContentType(strArr[i3]);
+                                                }
+                                            }
+                                            createBodyPart.setDescription(str);
+                                            setContent(createBodyPart, "", contentTypeOf);
+                                            mimeMultipart.addBodyPart(createBodyPart);
+                                            for (int i4 = 0; i4 < length; i4++) {
+                                                mimePartArr[i4].setDescription(str);
+                                                setContent(mimePartArr[i4], "", strArr[i4]);
+                                            }
+                                            mimeMessage.setContent(mimeMultipart);
+                                            mimeMessage.saveChanges();
+                                            mimeMessage.writeTo(new ByteArrayOutputStream(1024));
+                                        } finally {
+                                        }
+                                    } catch (IOException e7) {
+                                        Exception messagingException3 = new MessagingException(str2, e7);
+                                        setErrorContent(mimeMessage, str, messagingException3);
+                                        reportError(mimeMessage, messagingException3, 5);
+                                    }
+                                }
+                                if (addressArr.length == 0) {
+                                    verifyAddresses(addressArr);
+                                    Address[] from2 = mimeMessage.getFrom();
+                                    Object sender = mimeMessage.getSender();
+                                    if (sender instanceof InternetAddress) {
+                                        ((InternetAddress) sender).validate();
+                                    }
+                                    if (mimeMessage.getHeader("From", ",") != null && from2.length != 0) {
+                                        verifyAddresses(from2);
+                                        for (Address address : from2) {
+                                            if (address.equals(sender)) {
+                                                throw new MessagingException(str2, new MessagingException("Sender address '" + sender + "' equals from address."));
+                                            }
+                                        }
+                                    } else if (sender == null) {
+                                        throw new MessagingException(str2, new MessagingException("No from or sender address."));
+                                    }
+                                    verifyAddresses(mimeMessage.getReplyTo());
+                                    return;
+                                }
+                                throw new MessagingException("No recipient addresses.");
+                            }
+                            if ("remote".equals(str)) {
+                                transport2.sendMessage(mimeMessage, addressArr);
+                            }
+                            transport2.close();
+                            exc2 = null;
+                            if ("remote".equals(str)) {
+                                reportUnexpectedSend(mimeMessage, str, null);
+                            } else {
+                                verifyProperties(session, transport2.getURLName().getProtocol());
+                            }
+                            if (exc2 != null) {
+                                setErrorContent(mimeMessage, str, exc2);
+                                reportError(mimeMessage, exc2, 3);
+                            }
+                            str4 = str3;
+                            if (!"limited".equals(str)) {
+                            }
+                            if (addressArr.length == 0) {
+                            }
+                        } catch (Throwable th2) {
+                            th = th2;
+                            try {
+                                transport2.close();
+                            } catch (MessagingException e8) {
+                                exc = e8;
+                            }
+                            try {
+                                throw th;
+                            } catch (SendFailedException e9) {
+                                e = e9;
+                                Address[] invalidAddresses = e.getInvalidAddresses();
+                                if (invalidAddresses != null) {
+                                    setErrorContent(mimeMessage, str, e);
+                                    reportError(mimeMessage, e, 4);
+                                }
+                                Address[] validSentAddresses = e.getValidSentAddresses();
+                                if (validSentAddresses != null) {
+                                    reportUnexpectedSend(mimeMessage, str, e);
+                                }
+                                exc2 = exc;
+                                if (exc2 != null) {
+                                }
+                                str4 = str3;
+                                if (!"limited".equals(str)) {
+                                }
+                                if (addressArr.length == 0) {
+                                }
+                            } catch (MessagingException e10) {
+                                e = e10;
+                                exc2 = exc;
+                                if (!isMissingContent(mimeMessage, e)) {
+                                }
+                                if (exc2 != null) {
+                                }
+                                str4 = str3;
+                                if (!"limited".equals(str)) {
+                                }
+                                if (addressArr.length == 0) {
+                                }
+                            }
+                        }
+                        str3 = getLocalHost(transport2);
+                    } catch (Throwable th3) {
+                        th = th3;
+                        str3 = null;
+                    }
+                    transport2.connect();
+                    exc = null;
+                } else {
+                    Exception messagingException4 = new MessagingException("No recipient or from address.");
+                    reportError(str2, messagingException4, 4);
+                    throw messagingException4;
+                }
+            } catch (RuntimeException e11) {
+                e = e11;
+                i = 4;
+            }
+        } catch (Exception e12) {
+            setErrorContent(mimeMessage, str, e12);
+            reportError(mimeMessage, e12, 4);
+        }
     }
 
     private void saveChangesNoContent(Message message, String str) {

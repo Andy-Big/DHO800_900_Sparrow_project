@@ -1,9 +1,14 @@
 package kotlin.sequences;
 
 import androidx.exifinterface.media.ExifInterface;
+import java.util.Iterator;
 import kotlin.Metadata;
+import kotlin.ResultKt;
 import kotlin.Unit;
+import kotlin.collections.CollectionsKt;
 import kotlin.coroutines.Continuation;
+import kotlin.coroutines.intrinsics.IntrinsicsKt;
+import kotlin.coroutines.jvm.internal.Boxing;
 import kotlin.coroutines.jvm.internal.DebugMetadata;
 import kotlin.coroutines.jvm.internal.RestrictedSuspendLambda;
 import kotlin.jvm.functions.Function2;
@@ -53,82 +58,64 @@ public final class SequencesKt___SequencesKt$runningFoldIndexed$1<R> extends Res
     @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public final java.lang.Object invokeSuspend(java.lang.Object r10) {
-        /*
-            r9 = this;
-            java.lang.Object r0 = kotlin.coroutines.intrinsics.IntrinsicsKt.getCOROUTINE_SUSPENDED()
-            int r1 = r9.label
-            r2 = 2
-            r3 = 1
-            if (r1 == 0) goto L2f
-            if (r1 == r3) goto L27
-            if (r1 != r2) goto L1f
-            java.lang.Object r1 = r9.L$3
-            java.util.Iterator r1 = (java.util.Iterator) r1
-            java.lang.Object r3 = r9.L$1
-            int r4 = r9.I$0
-            java.lang.Object r5 = r9.L$0
-            kotlin.sequences.SequenceScope r5 = (kotlin.sequences.SequenceScope) r5
-            kotlin.ResultKt.throwOnFailure(r10)
-            r10 = r4
-            goto L4c
-        L1f:
-            java.lang.IllegalStateException r10 = new java.lang.IllegalStateException
-            java.lang.String r0 = "call to 'resume' before 'invoke' with coroutine"
-            r10.<init>(r0)
-            throw r10
-        L27:
-            java.lang.Object r1 = r9.L$0
-            kotlin.sequences.SequenceScope r1 = (kotlin.sequences.SequenceScope) r1
-            kotlin.ResultKt.throwOnFailure(r10)
-            goto L41
-        L2f:
-            kotlin.ResultKt.throwOnFailure(r10)
-            kotlin.sequences.SequenceScope r1 = r9.p$
-            java.lang.Object r10 = r9.$initial
-            r9.L$0 = r1
-            r9.label = r3
-            java.lang.Object r10 = r1.yield(r10, r9)
-            if (r10 != r0) goto L41
-            return r0
-        L41:
-            r10 = 0
-            java.lang.Object r3 = r9.$initial
-            kotlin.sequences.Sequence r4 = r9.$this_runningFoldIndexed
-            java.util.Iterator r4 = r4.iterator()
-            r5 = r1
-            r1 = r4
-        L4c:
-            r4 = r9
-        L4d:
-            boolean r6 = r1.hasNext()
-            if (r6 == 0) goto L7d
-            java.lang.Object r6 = r1.next()
-            kotlin.jvm.functions.Function3 r7 = r4.$operation
-            int r8 = r10 + 1
-            if (r10 >= 0) goto L60
-            kotlin.collections.CollectionsKt.throwIndexOverflow()
-        L60:
-            java.lang.Integer r10 = kotlin.coroutines.jvm.internal.Boxing.boxInt(r10)
-            java.lang.Object r3 = r7.invoke(r10, r3, r6)
-            r4.L$0 = r5
-            r4.I$0 = r8
-            r4.L$1 = r3
-            r4.L$2 = r6
-            r4.L$3 = r1
-            r4.label = r2
-            java.lang.Object r10 = r5.yield(r3, r4)
-            if (r10 != r0) goto L7b
-            return r0
-        L7b:
-            r10 = r8
-            goto L4d
-        L7d:
-            kotlin.Unit r10 = kotlin.Unit.INSTANCE
-            return r10
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlin.sequences.SequencesKt___SequencesKt$runningFoldIndexed$1.invokeSuspend(java.lang.Object):java.lang.Object");
+    public final Object invokeSuspend(Object obj) {
+        SequenceScope sequenceScope;
+        int i;
+        Object obj2;
+        SequenceScope sequenceScope2;
+        Iterator it;
+        Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+        int i2 = this.label;
+        if (i2 == 0) {
+            ResultKt.throwOnFailure(obj);
+            sequenceScope = this.p$;
+            Object obj3 = this.$initial;
+            this.L$0 = sequenceScope;
+            this.label = 1;
+            if (sequenceScope.yield(obj3, this) == coroutine_suspended) {
+                return coroutine_suspended;
+            }
+        } else if (i2 != 1) {
+            if (i2 == 2) {
+                it = (Iterator) this.L$3;
+                obj2 = this.L$1;
+                int i3 = this.I$0;
+                sequenceScope2 = (SequenceScope) this.L$0;
+                ResultKt.throwOnFailure(obj);
+                i = i3;
+                while (it.hasNext()) {
+                    Object next = it.next();
+                    Function3 function3 = this.$operation;
+                    int i4 = i + 1;
+                    if (i < 0) {
+                        CollectionsKt.throwIndexOverflow();
+                    }
+                    obj2 = function3.invoke(Boxing.boxInt(i), obj2, next);
+                    this.L$0 = sequenceScope2;
+                    this.I$0 = i4;
+                    this.L$1 = obj2;
+                    this.L$2 = next;
+                    this.L$3 = it;
+                    this.label = 2;
+                    if (sequenceScope2.yield(obj2, this) == coroutine_suspended) {
+                        return coroutine_suspended;
+                    }
+                    i = i4;
+                }
+                return Unit.INSTANCE;
+            }
+            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+        } else {
+            sequenceScope = (SequenceScope) this.L$0;
+            ResultKt.throwOnFailure(obj);
+        }
+        i = 0;
+        obj2 = this.$initial;
+        sequenceScope2 = sequenceScope;
+        it = this.$this_runningFoldIndexed.iterator();
+        while (it.hasNext()) {
+        }
+        return Unit.INSTANCE;
     }
 }

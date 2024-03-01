@@ -1359,36 +1359,20 @@ public class TextInputLayout extends LinearLayout {
      */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public void setTextAppearanceCompatWithErrorFallback(android.widget.TextView r3, int r4) {
-        /*
-            r2 = this;
-            r0 = 1
-            androidx.core.widget.TextViewCompat.setTextAppearance(r3, r4)     // Catch: java.lang.Exception -> L1a
-            int r4 = android.os.Build.VERSION.SDK_INT     // Catch: java.lang.Exception -> L1a
-            r1 = 23
-            if (r4 < r1) goto L18
-            android.content.res.ColorStateList r4 = r3.getTextColors()     // Catch: java.lang.Exception -> L1a
-            int r4 = r4.getDefaultColor()     // Catch: java.lang.Exception -> L1a
-            r1 = -65281(0xffffffffffff00ff, float:NaN)
-            if (r4 != r1) goto L18
-            goto L1a
-        L18:
-            r4 = 0
-            r0 = r4
-        L1a:
-            if (r0 == 0) goto L2e
-            int r4 = com.google.android.material.R.style.TextAppearance_AppCompat_Caption
-            androidx.core.widget.TextViewCompat.setTextAppearance(r3, r4)
-            android.content.Context r4 = r2.getContext()
-            int r0 = com.google.android.material.R.color.design_error
-            int r4 = androidx.core.content.ContextCompat.getColor(r4, r0)
-            r3.setTextColor(r4)
-        L2e:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.google.android.material.textfield.TextInputLayout.setTextAppearanceCompatWithErrorFallback(android.widget.TextView, int):void");
+    public void setTextAppearanceCompatWithErrorFallback(TextView textView, int i) {
+        boolean z = true;
+        try {
+            TextViewCompat.setTextAppearance(textView, i);
+            if (Build.VERSION.SDK_INT >= 23) {
+            }
+            z = false;
+        } catch (Exception unused) {
+        }
+        if (z) {
+            TextViewCompat.setTextAppearance(textView, R.style.TextAppearance_AppCompat_Caption);
+            textView.setTextColor(ContextCompat.getColor(getContext(), R.color.design_error));
+        }
     }
 
     private int calculateLabelMarginTop() {

@@ -27,6 +27,7 @@ import com.rigol.scope.data.MappingObject;
 import com.rigol.scope.data.OptionParam;
 import com.rigol.scope.data.UtilityParam;
 import com.rigol.scope.data.UtilityParamKt;
+import com.rigol.scope.databinding.FragmentWaveformBinding;
 import com.rigol.scope.utilities.ContextUtil;
 import com.rigol.scope.utilities.DragViewUtil;
 import com.rigol.scope.utilities.KeyCodeUtil;
@@ -492,14 +493,160 @@ public class BasePopupView extends PopupWindow implements PopupWindow.OnDismissL
     /* JADX WARN: Removed duplicated region for block: B:80:0x0288  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    private void show(android.view.View r8, boolean r9, int r10, int r11, int r12) {
-        /*
-            Method dump skipped, instructions count: 666
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.rigol.scope.views.baseview.BasePopupView.show(android.view.View, boolean, int, int, int):void");
+    private void show(View view, boolean z, int i, int i2, int i3) {
+        int i4;
+        int min;
+        int i5;
+        int min2;
+        int i6;
+        int i7;
+        int i8;
+        int i9;
+        int i10;
+        int i11 = 0;
+        if (!z) {
+            Activity topActivity = ActivityUtils.getTopActivity();
+            if (topActivity instanceof MainActivity) {
+                getRectValue(((MainActivity) topActivity).getWaveformFragment().getBinding().getRoot(), this.waveLocation, this.waveRect, "waveRect: %s");
+                getRectValue(view, this.anchorLocation, this.anchorRect, "anchorRect: %s");
+                int width = getWidth();
+                int height = getHeight();
+                if (width <= 0 || height <= 0) {
+                    getContentView().measure(View.MeasureSpec.makeMeasureSpec(0, 0), View.MeasureSpec.makeMeasureSpec(0, 0));
+                }
+                if (width <= 0) {
+                    width = getContentView().getMeasuredWidth();
+                }
+                if (i == 17 || i == 48) {
+                    this.popupRect.left = (int) ((ScreenUtils.getAppScreenWidth() - width) / 2.0f);
+                } else {
+                    this.popupRect.left = 0;
+                }
+                Rect rect = this.popupRect;
+                rect.right = rect.left + width;
+                if (getHeight() <= 0) {
+                    height = getContentView().getMeasuredHeight();
+                }
+                if (i == 17) {
+                    this.popupRect.top = (int) ((ScreenUtils.getAppScreenHeight() - height) / 2.0f);
+                } else {
+                    this.popupRect.top = 0;
+                }
+                Rect rect2 = this.popupRect;
+                rect2.bottom = rect2.top + height;
+                View decorView = topActivity.getWindow().getDecorView();
+                if (i != 17) {
+                    if (view != decorView) {
+                        i2 = (i2 + this.anchorRect.left) - this.popupRect.left;
+                        i3 = (i3 + this.anchorRect.bottom) - this.popupRect.top;
+                    } else if (i2 == 0 && i3 == 0) {
+                        i2 = (int) ((ScreenUtils.getAppScreenWidth() - width) / 2.0f);
+                        i3 = (int) ((ScreenUtils.getAppScreenHeight() - height) / 2.0f);
+                    }
+                }
+                if (this.popupRect.left + i2 < this.waveRect.left) {
+                    i7 = this.waveRect.left;
+                    i8 = this.popupRect.left;
+                } else {
+                    if (this.popupRect.right + i2 > this.waveRect.right) {
+                        i7 = this.waveRect.right;
+                        i8 = this.popupRect.right;
+                    }
+                    if (this.popupRect.top + i3 >= this.waveRect.top) {
+                        i9 = this.waveRect.top;
+                        i10 = this.popupRect.top;
+                    } else {
+                        if (this.popupRect.bottom + i3 > this.waveRect.bottom) {
+                            i9 = this.waveRect.bottom;
+                            i10 = this.popupRect.bottom;
+                        }
+                        showAtLocation(view, i, i2, i3);
+                        return;
+                    }
+                    i3 = i9 - i10;
+                    showAtLocation(view, i, i2, i3);
+                    return;
+                }
+                i2 = i7 - i8;
+                if (this.popupRect.top + i3 >= this.waveRect.top) {
+                }
+                i3 = i9 - i10;
+                showAtLocation(view, i, i2, i3);
+                return;
+            }
+            return;
+        }
+        Activity topActivity2 = ActivityUtils.getTopActivity();
+        if (topActivity2 instanceof MainActivity) {
+            FragmentWaveformBinding binding = ((MainActivity) topActivity2).getWaveformFragment().getBinding();
+            binding.getRoot().getLocationOnScreen(this.waveLocation);
+            this.waveRect.left = this.waveLocation[0];
+            this.waveRect.top = this.waveLocation[1];
+            Rect rect3 = this.waveRect;
+            rect3.right = rect3.left + binding.getRoot().getWidth();
+            Rect rect4 = this.waveRect;
+            rect4.bottom = rect4.top + binding.getRoot().getHeight();
+            view.getLocationOnScreen(this.anchorLocation);
+            this.anchorRect.left = this.anchorLocation[0];
+            this.anchorRect.top = this.anchorLocation[1];
+            Rect rect5 = this.anchorRect;
+            rect5.right = rect5.left + view.getWidth();
+            Rect rect6 = this.anchorRect;
+            rect6.bottom = rect6.top + view.getHeight();
+            if (getWidth() <= 0 || getHeight() <= 0) {
+                getContentView().measure(View.MeasureSpec.makeMeasureSpec(0, 0), View.MeasureSpec.makeMeasureSpec(0, 0));
+            }
+            this.popupRect.left = this.anchorRect.left + i2;
+            this.popupRect.top = this.anchorRect.bottom + i3;
+            if (getWidth() <= 0) {
+                Rect rect7 = this.popupRect;
+                rect7.right = rect7.left + getContentView().getMeasuredWidth();
+            } else {
+                Rect rect8 = this.popupRect;
+                rect8.right = rect8.left + getWidth();
+            }
+            if (getHeight() <= 0) {
+                Rect rect9 = this.popupRect;
+                rect9.bottom = rect9.top + getContentView().getMeasuredHeight();
+            } else {
+                Rect rect10 = this.popupRect;
+                rect10.bottom = rect10.top + getHeight();
+            }
+            if (this.popupRect.left < this.waveRect.left) {
+                min = Math.max(this.anchorRect.left, this.waveRect.left);
+                i5 = this.popupRect.left;
+            } else if (this.popupRect.right > this.waveRect.right) {
+                min = Math.min(this.anchorRect.right, this.waveRect.right);
+                i5 = this.popupRect.right;
+            } else {
+                i4 = 0;
+                if (this.popupRect.top >= this.waveRect.top) {
+                    min2 = Math.max(this.anchorRect.bottom, this.waveRect.top);
+                    i6 = this.popupRect.top;
+                } else {
+                    if (this.popupRect.bottom > this.waveRect.bottom) {
+                        min2 = Math.min(this.anchorRect.top, this.waveRect.bottom);
+                        i6 = this.popupRect.bottom;
+                    }
+                    if (this.popupRect.top + i11 + i3 < this.waveRect.top) {
+                        i11 += this.waveRect.top - ((this.popupRect.top + i11) + i3);
+                    }
+                    showAsDropDown(view, i2 + i4, i3 + i11, i);
+                }
+                i11 = min2 - i6;
+                if (this.popupRect.top + i11 + i3 < this.waveRect.top) {
+                }
+                showAsDropDown(view, i2 + i4, i3 + i11, i);
+            }
+            i4 = min - i5;
+            if (this.popupRect.top >= this.waveRect.top) {
+            }
+            i11 = min2 - i6;
+            if (this.popupRect.top + i11 + i3 < this.waveRect.top) {
+            }
+            showAsDropDown(view, i2 + i4, i3 + i11, i);
+        }
     }
 
     /* JADX WARN: Removed duplicated region for block: B:41:0x0106  */
@@ -509,14 +656,160 @@ public class BasePopupView extends PopupWindow implements PopupWindow.OnDismissL
     /* JADX WARN: Removed duplicated region for block: B:80:0x028a  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    private void showR(android.view.View r8, boolean r9, int r10, int r11, int r12) {
-        /*
-            Method dump skipped, instructions count: 668
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.rigol.scope.views.baseview.BasePopupView.showR(android.view.View, boolean, int, int, int):void");
+    private void showR(View view, boolean z, int i, int i2, int i3) {
+        int i4;
+        int min;
+        int i5;
+        int min2;
+        int i6;
+        int i7;
+        int i8;
+        int i9;
+        int i10;
+        int i11 = 0;
+        if (!z) {
+            Activity topActivity = ActivityUtils.getTopActivity();
+            if (topActivity instanceof MainActivity) {
+                getRectValue(((MainActivity) topActivity).getWaveformFragment().getBinding().getRoot(), this.waveLocation, this.waveRect, "waveRect: %s");
+                getRectValue(view, this.anchorLocation, this.anchorRect, "anchorRect: %s");
+                int width = getWidth();
+                int height = getHeight();
+                if (width <= 0 || height <= 0) {
+                    getContentView().measure(View.MeasureSpec.makeMeasureSpec(0, 0), View.MeasureSpec.makeMeasureSpec(0, 0));
+                }
+                if (width <= 0) {
+                    width = getContentView().getMeasuredWidth();
+                }
+                if (i == 17 || i == 48) {
+                    this.popupRect.left = (int) ((ScreenUtils.getAppScreenWidth() - width) / 2.0f);
+                } else {
+                    this.popupRect.left = 0;
+                }
+                Rect rect = this.popupRect;
+                rect.right = rect.left + width;
+                if (getHeight() <= 0) {
+                    height = getContentView().getMeasuredHeight();
+                }
+                if (i == 17) {
+                    this.popupRect.top = (int) ((ScreenUtils.getAppScreenHeight() - height) / 2.0f);
+                } else {
+                    this.popupRect.top = 0;
+                }
+                Rect rect2 = this.popupRect;
+                rect2.bottom = rect2.top + height;
+                View decorView = topActivity.getWindow().getDecorView();
+                if (i != 17) {
+                    if (view != decorView) {
+                        i2 = (i2 + this.anchorRect.left) - this.popupRect.left;
+                        i3 = (i3 + this.anchorRect.bottom) - this.popupRect.top;
+                    } else if (i2 == 0 && i3 == 0) {
+                        i2 = (int) ((ScreenUtils.getAppScreenWidth() - width) / 2.0f);
+                        i3 = (int) ((ScreenUtils.getAppScreenHeight() - height) / 2.0f);
+                    }
+                }
+                if (this.popupRect.left + i2 < this.waveRect.left) {
+                    i7 = this.waveRect.left;
+                    i8 = this.popupRect.left;
+                } else {
+                    if (this.popupRect.right + i2 > this.waveRect.right) {
+                        i7 = this.waveRect.right;
+                        i8 = this.popupRect.right;
+                    }
+                    if (this.popupRect.top + i3 >= this.waveRect.top) {
+                        i9 = this.waveRect.top;
+                        i10 = this.popupRect.top;
+                    } else {
+                        if (this.popupRect.bottom + i3 > this.waveRect.bottom) {
+                            i9 = this.waveRect.bottom;
+                            i10 = this.popupRect.bottom;
+                        }
+                        showAtLocation(view, i, i2 - 140, i3);
+                        return;
+                    }
+                    i3 = i9 - i10;
+                    showAtLocation(view, i, i2 - 140, i3);
+                    return;
+                }
+                i2 = i7 - i8;
+                if (this.popupRect.top + i3 >= this.waveRect.top) {
+                }
+                i3 = i9 - i10;
+                showAtLocation(view, i, i2 - 140, i3);
+                return;
+            }
+            return;
+        }
+        Activity topActivity2 = ActivityUtils.getTopActivity();
+        if (topActivity2 instanceof MainActivity) {
+            FragmentWaveformBinding binding = ((MainActivity) topActivity2).getWaveformFragment().getBinding();
+            binding.getRoot().getLocationOnScreen(this.waveLocation);
+            this.waveRect.left = this.waveLocation[0];
+            this.waveRect.top = this.waveLocation[1];
+            Rect rect3 = this.waveRect;
+            rect3.right = rect3.left + binding.getRoot().getWidth();
+            Rect rect4 = this.waveRect;
+            rect4.bottom = rect4.top + binding.getRoot().getHeight();
+            view.getLocationOnScreen(this.anchorLocation);
+            this.anchorRect.left = this.anchorLocation[0];
+            this.anchorRect.top = this.anchorLocation[1];
+            Rect rect5 = this.anchorRect;
+            rect5.right = rect5.left + view.getWidth();
+            Rect rect6 = this.anchorRect;
+            rect6.bottom = rect6.top + view.getHeight();
+            if (getWidth() <= 0 || getHeight() <= 0) {
+                getContentView().measure(View.MeasureSpec.makeMeasureSpec(0, 0), View.MeasureSpec.makeMeasureSpec(0, 0));
+            }
+            this.popupRect.left = this.anchorRect.left + i2;
+            this.popupRect.top = this.anchorRect.bottom + i3;
+            if (getWidth() <= 0) {
+                Rect rect7 = this.popupRect;
+                rect7.right = rect7.left + getContentView().getMeasuredWidth();
+            } else {
+                Rect rect8 = this.popupRect;
+                rect8.right = rect8.left + getWidth();
+            }
+            if (getHeight() <= 0) {
+                Rect rect9 = this.popupRect;
+                rect9.bottom = rect9.top + getContentView().getMeasuredHeight();
+            } else {
+                Rect rect10 = this.popupRect;
+                rect10.bottom = rect10.top + getHeight();
+            }
+            if (this.popupRect.left < this.waveRect.left) {
+                min = Math.max(this.anchorRect.left, this.waveRect.left);
+                i5 = this.popupRect.left;
+            } else if (this.popupRect.right > this.waveRect.right) {
+                min = Math.min(this.anchorRect.right, this.waveRect.right);
+                i5 = this.popupRect.right;
+            } else {
+                i4 = 0;
+                if (this.popupRect.top >= this.waveRect.top) {
+                    min2 = Math.max(this.anchorRect.bottom, this.waveRect.top);
+                    i6 = this.popupRect.top;
+                } else {
+                    if (this.popupRect.bottom > this.waveRect.bottom) {
+                        min2 = Math.min(this.anchorRect.top, this.waveRect.bottom);
+                        i6 = this.popupRect.bottom;
+                    }
+                    if (this.popupRect.top + i11 + i3 < this.waveRect.top) {
+                        i11 += this.waveRect.top - ((this.popupRect.top + i11) + i3);
+                    }
+                    showAsDropDown(view, i2 + i4, i3 + i11, i);
+                }
+                i11 = min2 - i6;
+                if (this.popupRect.top + i11 + i3 < this.waveRect.top) {
+                }
+                showAsDropDown(view, i2 + i4, i3 + i11, i);
+            }
+            i4 = min - i5;
+            if (this.popupRect.top >= this.waveRect.top) {
+            }
+            i11 = min2 - i6;
+            if (this.popupRect.top + i11 + i3 < this.waveRect.top) {
+            }
+            showAsDropDown(view, i2 + i4, i3 + i11, i);
+        }
     }
 
     public void updateLocation() {

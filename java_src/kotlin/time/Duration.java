@@ -313,111 +313,67 @@ public final class Duration implements Comparable<Duration> {
     /* renamed from: toString-impl  reason: not valid java name */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public static java.lang.String m1324toStringimpl(double r8) {
-        /*
-            boolean r0 = m1306isInfiniteimpl(r8)
-            if (r0 == 0) goto Lc
-            java.lang.String r8 = java.lang.String.valueOf(r8)
-            goto Lc1
-        Lc:
-            r0 = 0
-            int r0 = (r8 > r0 ? 1 : (r8 == r0 ? 0 : -1))
-            if (r0 != 0) goto L16
-            java.lang.String r8 = "0s"
-            goto Lc1
-        L16:
-            double r0 = m1292getAbsoluteValueUwyO8pc(r8)
-            double r0 = m1299getInNanosecondsimpl(r0)
-            r2 = 4517329193108106637(0x3eb0c6f7a0b5ed8d, double:1.0E-6)
-            int r2 = (r0 > r2 ? 1 : (r0 == r2 ? 0 : -1))
-            r3 = 0
-            r4 = 1
-            if (r2 >= 0) goto L2f
-            java.util.concurrent.TimeUnit r0 = java.util.concurrent.TimeUnit.SECONDS
-        L2b:
-            r1 = r3
-            r3 = r4
-            goto L90
-        L2f:
-            double r5 = (double) r4
-            int r2 = (r0 > r5 ? 1 : (r0 == r5 ? 0 : -1))
-            if (r2 >= 0) goto L38
-            java.util.concurrent.TimeUnit r0 = java.util.concurrent.TimeUnit.NANOSECONDS
-            r1 = 7
-            goto L90
-        L38:
-            r5 = 4652007308841189376(0x408f400000000000, double:1000.0)
-            int r2 = (r0 > r5 ? 1 : (r0 == r5 ? 0 : -1))
-            if (r2 >= 0) goto L45
-            java.util.concurrent.TimeUnit r0 = java.util.concurrent.TimeUnit.NANOSECONDS
-        L43:
-            r1 = r3
-            goto L90
-        L45:
-            r5 = 4696837146684686336(0x412e848000000000, double:1000000.0)
-            int r2 = (r0 > r5 ? 1 : (r0 == r5 ? 0 : -1))
-            if (r2 >= 0) goto L51
-            java.util.concurrent.TimeUnit r0 = java.util.concurrent.TimeUnit.MICROSECONDS
-            goto L43
-        L51:
-            r5 = 4741671816366391296(0x41cdcd6500000000, double:1.0E9)
-            int r2 = (r0 > r5 ? 1 : (r0 == r5 ? 0 : -1))
-            if (r2 >= 0) goto L5d
-            java.util.concurrent.TimeUnit r0 = java.util.concurrent.TimeUnit.MILLISECONDS
-            goto L43
-        L5d:
-            r5 = 4786511204640096256(0x426d1a94a2000000, double:1.0E12)
-            int r2 = (r0 > r5 ? 1 : (r0 == r5 ? 0 : -1))
-            if (r2 >= 0) goto L69
-            java.util.concurrent.TimeUnit r0 = java.util.concurrent.TimeUnit.SECONDS
-            goto L43
-        L69:
-            r5 = 4813020802404319232(0x42cb48eb57e00000, double:6.0E13)
-            int r2 = (r0 > r5 ? 1 : (r0 == r5 ? 0 : -1))
-            if (r2 >= 0) goto L75
-            java.util.concurrent.TimeUnit r0 = java.util.concurrent.TimeUnit.MINUTES
-            goto L43
-        L75:
-            r5 = 4839562400168542208(0x4329945ca2620000, double:3.6E15)
-            int r2 = (r0 > r5 ? 1 : (r0 == r5 ? 0 : -1))
-            if (r2 >= 0) goto L81
-            java.util.concurrent.TimeUnit r0 = java.util.concurrent.TimeUnit.HOURS
-            goto L43
-        L81:
-            r5 = 4920018990336211136(0x44476b344f2a78c0, double:8.64E20)
-            int r0 = (r0 > r5 ? 1 : (r0 == r5 ? 0 : -1))
-            if (r0 >= 0) goto L8d
-            java.util.concurrent.TimeUnit r0 = java.util.concurrent.TimeUnit.DAYS
-            goto L43
-        L8d:
-            java.util.concurrent.TimeUnit r0 = java.util.concurrent.TimeUnit.DAYS
-            goto L2b
-        L90:
-            double r4 = m1318toDoubleimpl(r8, r0)
-            java.lang.StringBuilder r2 = new java.lang.StringBuilder
-            r2.<init>()
-            if (r3 == 0) goto La0
-            java.lang.String r8 = kotlin.time.FormatToDecimalsKt.formatScientific(r4)
-            goto Lb3
-        La0:
-            if (r1 <= 0) goto La7
-            java.lang.String r8 = kotlin.time.FormatToDecimalsKt.formatUpToDecimals(r4, r1)
-            goto Lb3
-        La7:
-            double r6 = java.lang.Math.abs(r4)
-            int r8 = m1311precisionimpl(r8, r6)
-            java.lang.String r8 = kotlin.time.FormatToDecimalsKt.formatToExactDecimals(r4, r8)
-        Lb3:
-            r2.append(r8)
-            java.lang.String r8 = kotlin.time.DurationUnitKt.shortName(r0)
-            r2.append(r8)
-            java.lang.String r8 = r2.toString()
-        Lc1:
-            return r8
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlin.time.Duration.m1324toStringimpl(double):java.lang.String");
+    public static String m1324toStringimpl(double d) {
+        TimeUnit timeUnit;
+        int i;
+        String formatToExactDecimals;
+        if (m1306isInfiniteimpl(d)) {
+            return String.valueOf(d);
+        }
+        if (d == 0.0d) {
+            return "0s";
+        }
+        double m1299getInNanosecondsimpl = m1299getInNanosecondsimpl(m1292getAbsoluteValueUwyO8pc(d));
+        boolean z = false;
+        if (m1299getInNanosecondsimpl < 1.0E-6d) {
+            timeUnit = TimeUnit.SECONDS;
+        } else {
+            if (m1299getInNanosecondsimpl < 1) {
+                timeUnit = TimeUnit.NANOSECONDS;
+                i = 7;
+            } else {
+                if (m1299getInNanosecondsimpl < 1000.0d) {
+                    timeUnit = TimeUnit.NANOSECONDS;
+                } else if (m1299getInNanosecondsimpl < 1000000.0d) {
+                    timeUnit = TimeUnit.MICROSECONDS;
+                } else if (m1299getInNanosecondsimpl < 1.0E9d) {
+                    timeUnit = TimeUnit.MILLISECONDS;
+                } else if (m1299getInNanosecondsimpl < 1.0E12d) {
+                    timeUnit = TimeUnit.SECONDS;
+                } else if (m1299getInNanosecondsimpl < 6.0E13d) {
+                    timeUnit = TimeUnit.MINUTES;
+                } else if (m1299getInNanosecondsimpl < 3.6E15d) {
+                    timeUnit = TimeUnit.HOURS;
+                } else if (m1299getInNanosecondsimpl < 8.64E20d) {
+                    timeUnit = TimeUnit.DAYS;
+                } else {
+                    timeUnit = TimeUnit.DAYS;
+                }
+                i = 0;
+            }
+            double m1318toDoubleimpl = m1318toDoubleimpl(d, timeUnit);
+            StringBuilder sb = new StringBuilder();
+            if (!z) {
+                formatToExactDecimals = FormatToDecimalsKt.formatScientific(m1318toDoubleimpl);
+            } else if (i > 0) {
+                formatToExactDecimals = FormatToDecimalsKt.formatUpToDecimals(m1318toDoubleimpl, i);
+            } else {
+                formatToExactDecimals = FormatToDecimalsKt.formatToExactDecimals(m1318toDoubleimpl, m1311precisionimpl(d, Math.abs(m1318toDoubleimpl)));
+            }
+            sb.append(formatToExactDecimals);
+            sb.append(DurationUnitKt.shortName(timeUnit));
+            return sb.toString();
+        }
+        i = 0;
+        z = true;
+        double m1318toDoubleimpl2 = m1318toDoubleimpl(d, timeUnit);
+        StringBuilder sb2 = new StringBuilder();
+        if (!z) {
+        }
+        sb2.append(formatToExactDecimals);
+        sb2.append(DurationUnitKt.shortName(timeUnit));
+        return sb2.toString();
     }
 
     /* renamed from: toString-impl$default  reason: not valid java name */

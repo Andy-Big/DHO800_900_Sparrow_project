@@ -2,8 +2,10 @@ package kotlinx.coroutines;
 
 import androidx.exifinterface.media.ExifInterface;
 import kotlin.Metadata;
+import kotlin.ResultKt;
 import kotlin.coroutines.Continuation;
 import kotlin.coroutines.CoroutineContext;
+import kotlin.coroutines.intrinsics.IntrinsicsKt;
 import kotlin.jvm.functions.Function2;
 import kotlin.jvm.internal.Intrinsics;
 import kotlinx.coroutines.selects.SelectClause1;
@@ -33,52 +35,41 @@ class DeferredCoroutine<T> extends AbstractCoroutine<T> implements Deferred<T>, 
     /* JADX WARN: Removed duplicated region for block: B:14:0x0036  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public static /* synthetic */ java.lang.Object await$suspendImpl(kotlinx.coroutines.DeferredCoroutine r4, kotlin.coroutines.Continuation r5) {
-        /*
-            boolean r0 = r5 instanceof kotlinx.coroutines.DeferredCoroutine$await$1
-            if (r0 == 0) goto L14
-            r0 = r5
-            kotlinx.coroutines.DeferredCoroutine$await$1 r0 = (kotlinx.coroutines.DeferredCoroutine$await$1) r0
-            int r1 = r0.label
-            r2 = -2147483648(0xffffffff80000000, float:-0.0)
-            r1 = r1 & r2
-            if (r1 == 0) goto L14
-            int r5 = r0.label
-            int r5 = r5 - r2
-            r0.label = r5
-            goto L19
-        L14:
-            kotlinx.coroutines.DeferredCoroutine$await$1 r0 = new kotlinx.coroutines.DeferredCoroutine$await$1
-            r0.<init>(r4, r5)
-        L19:
-            java.lang.Object r5 = r0.result
-            java.lang.Object r1 = kotlin.coroutines.intrinsics.IntrinsicsKt.getCOROUTINE_SUSPENDED()
-            int r2 = r0.label
-            r3 = 1
-            if (r2 == 0) goto L36
-            if (r2 != r3) goto L2e
-            java.lang.Object r4 = r0.L$0
-            kotlinx.coroutines.DeferredCoroutine r4 = (kotlinx.coroutines.DeferredCoroutine) r4
-            kotlin.ResultKt.throwOnFailure(r5)
-            goto L44
-        L2e:
-            java.lang.IllegalStateException r4 = new java.lang.IllegalStateException
-            java.lang.String r5 = "call to 'resume' before 'invoke' with coroutine"
-            r4.<init>(r5)
-            throw r4
-        L36:
-            kotlin.ResultKt.throwOnFailure(r5)
-            r0.L$0 = r4
-            r0.label = r3
-            java.lang.Object r5 = r4.awaitInternal$kotlinx_coroutines_core(r0)
-            if (r5 != r1) goto L44
-            return r1
-        L44:
-            return r5
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.DeferredCoroutine.await$suspendImpl(kotlinx.coroutines.DeferredCoroutine, kotlin.coroutines.Continuation):java.lang.Object");
+    public static /* synthetic */ Object await$suspendImpl(DeferredCoroutine deferredCoroutine, Continuation continuation) {
+        DeferredCoroutine$await$1 deferredCoroutine$await$1;
+        int i;
+        if (continuation instanceof DeferredCoroutine$await$1) {
+            deferredCoroutine$await$1 = (DeferredCoroutine$await$1) continuation;
+            if ((deferredCoroutine$await$1.label & Integer.MIN_VALUE) != 0) {
+                deferredCoroutine$await$1.label -= Integer.MIN_VALUE;
+                Object obj = deferredCoroutine$await$1.result;
+                Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+                i = deferredCoroutine$await$1.label;
+                if (i != 0) {
+                    ResultKt.throwOnFailure(obj);
+                    deferredCoroutine$await$1.L$0 = deferredCoroutine;
+                    deferredCoroutine$await$1.label = 1;
+                    obj = deferredCoroutine.awaitInternal$kotlinx_coroutines_core(deferredCoroutine$await$1);
+                    if (obj == coroutine_suspended) {
+                        return coroutine_suspended;
+                    }
+                } else if (i != 1) {
+                    throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+                } else {
+                    DeferredCoroutine deferredCoroutine2 = (DeferredCoroutine) deferredCoroutine$await$1.L$0;
+                    ResultKt.throwOnFailure(obj);
+                }
+                return obj;
+            }
+        }
+        deferredCoroutine$await$1 = new DeferredCoroutine$await$1(deferredCoroutine, continuation);
+        Object obj2 = deferredCoroutine$await$1.result;
+        Object coroutine_suspended2 = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+        i = deferredCoroutine$await$1.label;
+        if (i != 0) {
+        }
+        return obj2;
     }
 
     @Override // kotlinx.coroutines.Deferred

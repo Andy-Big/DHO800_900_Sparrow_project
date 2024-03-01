@@ -530,10 +530,10 @@ public class WindowInsetsCompat {
 
     /* loaded from: classes.dex */
     private static class BuilderImpl20 extends BuilderImpl {
-        private static Constructor<WindowInsets> sConstructor = null;
-        private static boolean sConstructorFetched = false;
-        private static Field sConsumedField = null;
-        private static boolean sConsumedFieldFetched = false;
+        private static Constructor<WindowInsets> sConstructor;
+        private static boolean sConstructorFetched;
+        private static Field sConsumedField;
+        private static boolean sConsumedFieldFetched;
         private WindowInsets mInsets;
 
         BuilderImpl20() {

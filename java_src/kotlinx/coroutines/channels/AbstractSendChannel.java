@@ -22,6 +22,7 @@ import kotlinx.coroutines.DebugStringsKt;
 import kotlinx.coroutines.DisposableHandle;
 import kotlinx.coroutines.YieldKt;
 import kotlinx.coroutines.internal.LockFreeLinkedListHead;
+import kotlinx.coroutines.internal.LockFreeLinkedListKt;
 import kotlinx.coroutines.internal.LockFreeLinkedListNode;
 import kotlinx.coroutines.internal.StackTraceRecoveryKt;
 import kotlinx.coroutines.intrinsics.UndispatchedKt;
@@ -273,69 +274,58 @@ public abstract class AbstractSendChannel<E> implements SendChannel<E> {
      */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public final java.lang.Object enqueueSend(kotlinx.coroutines.channels.Send r6) {
-        /*
-            r5 = this;
-            boolean r0 = r5.isBufferAlwaysFull()
-        */
-        //  java.lang.String r1 = "null cannot be cast to non-null type kotlinx.coroutines.internal.Node /* = kotlinx.coroutines.internal.LockFreeLinkedListNode */"
-        /*
-            if (r0 == 0) goto L27
-            kotlinx.coroutines.internal.LockFreeLinkedListHead r0 = r5.queue
-        La:
-            java.lang.Object r2 = r0.getPrev()
-            if (r2 == 0) goto L21
-            kotlinx.coroutines.internal.LockFreeLinkedListNode r2 = (kotlinx.coroutines.internal.LockFreeLinkedListNode) r2
-            boolean r3 = r2 instanceof kotlinx.coroutines.channels.ReceiveOrClosed
-            if (r3 == 0) goto L17
-            return r2
-        L17:
-            r3 = r6
-            kotlinx.coroutines.internal.LockFreeLinkedListNode r3 = (kotlinx.coroutines.internal.LockFreeLinkedListNode) r3
-            boolean r2 = r2.addNext(r3, r0)
-            if (r2 == 0) goto La
-            goto L50
-        L21:
-            kotlin.TypeCastException r6 = new kotlin.TypeCastException
-            r6.<init>(r1)
-            throw r6
-        L27:
-            kotlinx.coroutines.internal.LockFreeLinkedListHead r0 = r5.queue
-            kotlinx.coroutines.channels.AbstractSendChannel$enqueueSend$$inlined$addLastIfPrevAndIf$1 r2 = new kotlinx.coroutines.channels.AbstractSendChannel$enqueueSend$$inlined$addLastIfPrevAndIf$1
-            kotlinx.coroutines.internal.LockFreeLinkedListNode r6 = (kotlinx.coroutines.internal.LockFreeLinkedListNode) r6
-            r2.<init>(r6)
-            kotlinx.coroutines.internal.LockFreeLinkedListNode$CondAddOp r2 = (kotlinx.coroutines.internal.LockFreeLinkedListNode.CondAddOp) r2
-        L32:
-            java.lang.Object r3 = r0.getPrev()
-            if (r3 == 0) goto L52
-            kotlinx.coroutines.internal.LockFreeLinkedListNode r3 = (kotlinx.coroutines.internal.LockFreeLinkedListNode) r3
-            boolean r4 = r3 instanceof kotlinx.coroutines.channels.ReceiveOrClosed
-            if (r4 == 0) goto L3f
-            return r3
-        L3f:
-            int r3 = r3.tryCondAddNext(r6, r0, r2)
-            r4 = 1
-            if (r3 == r4) goto L4b
-            r4 = 2
-            if (r3 == r4) goto L4a
-            goto L32
-        L4a:
-            r4 = 0
-        L4b:
-            if (r4 != 0) goto L50
-            java.lang.Object r6 = kotlinx.coroutines.channels.AbstractChannelKt.ENQUEUE_FAILED
-            return r6
-        L50:
-            r6 = 0
-            return r6
-        L52:
-            kotlin.TypeCastException r6 = new kotlin.TypeCastException
-            r6.<init>(r1)
-            throw r6
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.channels.AbstractSendChannel.enqueueSend(kotlinx.coroutines.channels.Send):java.lang.Object");
+    public final Object enqueueSend(Send send) {
+        LockFreeLinkedListNode lockFreeLinkedListNode;
+        if (isBufferAlwaysFull()) {
+            LockFreeLinkedListHead lockFreeLinkedListHead = this.queue;
+            do {
+                Object prev = lockFreeLinkedListHead.getPrev();
+                if (prev != null) {
+                    lockFreeLinkedListNode = (LockFreeLinkedListNode) prev;
+                    if (lockFreeLinkedListNode instanceof ReceiveOrClosed) {
+                        return lockFreeLinkedListNode;
+                    }
+                } else {
+                    throw new TypeCastException("null cannot be cast to non-null type kotlinx.coroutines.internal.Node /* = kotlinx.coroutines.internal.LockFreeLinkedListNode */");
+                }
+            } while (!lockFreeLinkedListNode.addNext(send, lockFreeLinkedListHead));
+            return null;
+        }
+        LockFreeLinkedListHead lockFreeLinkedListHead2 = this.queue;
+        final Send send2 = send;
+        LockFreeLinkedListNode.CondAddOp condAddOp = new LockFreeLinkedListNode.CondAddOp(send2) { // from class: kotlinx.coroutines.channels.AbstractSendChannel$enqueueSend$$inlined$addLastIfPrevAndIf$1
+            @Override // kotlinx.coroutines.internal.AtomicOp
+            public Object prepare(LockFreeLinkedListNode affected) {
+                Intrinsics.checkParameterIsNotNull(affected, "affected");
+                if (this.isBufferFull()) {
+                    return null;
+                }
+                return LockFreeLinkedListKt.getCONDITION_FALSE();
+            }
+        };
+        while (true) {
+            Object prev2 = lockFreeLinkedListHead2.getPrev();
+            if (prev2 != null) {
+                LockFreeLinkedListNode lockFreeLinkedListNode2 = (LockFreeLinkedListNode) prev2;
+                if (!(lockFreeLinkedListNode2 instanceof ReceiveOrClosed)) {
+                    int tryCondAddNext = lockFreeLinkedListNode2.tryCondAddNext(send2, lockFreeLinkedListHead2, condAddOp);
+                    boolean z = true;
+                    if (tryCondAddNext != 1) {
+                        if (tryCondAddNext == 2) {
+                            z = false;
+                            break;
+                        }
+                    } else {
+                        break;
+                    }
+                } else {
+                    return lockFreeLinkedListNode2;
+                }
+            } else {
+                throw new TypeCastException("null cannot be cast to non-null type kotlinx.coroutines.internal.Node /* = kotlinx.coroutines.internal.LockFreeLinkedListNode */");
+            }
+        }
     }
 
     @Override // kotlinx.coroutines.channels.SendChannel

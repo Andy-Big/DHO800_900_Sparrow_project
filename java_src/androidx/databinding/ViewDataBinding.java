@@ -855,14 +855,109 @@ public abstract class ViewDataBinding extends BaseObservable implements ViewBind
     /* JADX WARN: Removed duplicated region for block: B:75:0x010e A[SYNTHETIC] */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    private static void mapBindings(androidx.databinding.DataBindingComponent r17, android.view.View r18, java.lang.Object[] r19, androidx.databinding.ViewDataBinding.IncludedLayouts r20, android.util.SparseIntArray r21, boolean r22) {
-        /*
-            Method dump skipped, instructions count: 282
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: androidx.databinding.ViewDataBinding.mapBindings(androidx.databinding.DataBindingComponent, android.view.View, java.lang.Object[], androidx.databinding.ViewDataBinding$IncludedLayouts, android.util.SparseIntArray, boolean):void");
+    private static void mapBindings(DataBindingComponent dataBindingComponent, View view, Object[] objArr, IncludedLayouts includedLayouts, SparseIntArray sparseIntArray, boolean z) {
+        int i;
+        boolean z2;
+        int i2;
+        int i3;
+        int i4;
+        int findIncludeIndex;
+        int id;
+        int i5;
+        int i6;
+        if (getBinding(view) != null) {
+            return;
+        }
+        Object tag = view.getTag();
+        String str = tag instanceof String ? (String) tag : null;
+        int i7 = 1;
+        if (z && str != null && str.startsWith("layout")) {
+            int lastIndexOf = str.lastIndexOf(95);
+            if (lastIndexOf > 0) {
+                int i8 = lastIndexOf + 1;
+                if (isNumeric(str, i8)) {
+                    i6 = parseTagInt(str, i8);
+                    if (objArr[i6] == null) {
+                        objArr[i6] = view;
+                    }
+                    if (includedLayouts == null) {
+                        i6 = -1;
+                    }
+                    z2 = true;
+                    i = i6;
+                }
+            }
+            i6 = -1;
+            z2 = false;
+            i = i6;
+        } else if (str == null || !str.startsWith(BINDING_TAG_PREFIX)) {
+            i = -1;
+            z2 = false;
+        } else {
+            int parseTagInt = parseTagInt(str, BINDING_NUMBER_START);
+            if (objArr[parseTagInt] == null) {
+                objArr[parseTagInt] = view;
+            }
+            if (includedLayouts == null) {
+                parseTagInt = -1;
+            }
+            i = parseTagInt;
+            z2 = true;
+        }
+        if (!z2 && (id = view.getId()) > 0 && sparseIntArray != null && (i5 = sparseIntArray.get(id, -1)) >= 0 && objArr[i5] == null) {
+            objArr[i5] = view;
+        }
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            int childCount = viewGroup.getChildCount();
+            int i9 = 0;
+            int i10 = 0;
+            while (i9 < childCount) {
+                View childAt = viewGroup.getChildAt(i9);
+                if (i >= 0 && (childAt.getTag() instanceof String)) {
+                    String str2 = (String) childAt.getTag();
+                    if (str2.endsWith("_0") && str2.startsWith("layout") && str2.indexOf(47) > 0 && (findIncludeIndex = findIncludeIndex(str2, i10, includedLayouts, i)) >= 0) {
+                        int i11 = findIncludeIndex + 1;
+                        int i12 = includedLayouts.indexes[i][findIncludeIndex];
+                        int i13 = includedLayouts.layoutIds[i][findIncludeIndex];
+                        int findLastMatching = findLastMatching(viewGroup, i9);
+                        if (findLastMatching == i9) {
+                            objArr[i12] = DataBindingUtil.bind(dataBindingComponent, childAt, i13);
+                            i2 = i9;
+                            i4 = i7;
+                            i3 = i11;
+                        } else {
+                            int i14 = (findLastMatching - i9) + i7;
+                            View[] viewArr = new View[i14];
+                            for (int i15 = 0; i15 < i14; i15++) {
+                                viewArr[i15] = viewGroup.getChildAt(i9 + i15);
+                            }
+                            objArr[i12] = DataBindingUtil.bind(dataBindingComponent, viewArr, i13);
+                            i2 = i9 + (i14 - 1);
+                            i3 = i11;
+                            i4 = 1;
+                        }
+                        if (i4 != 0) {
+                            mapBindings(dataBindingComponent, childAt, objArr, includedLayouts, sparseIntArray, false);
+                        }
+                        int i16 = i3;
+                        i7 = 1;
+                        i9 = i2 + 1;
+                        i10 = i16;
+                    }
+                }
+                i2 = i9;
+                i3 = i10;
+                i4 = 0;
+                if (i4 != 0) {
+                }
+                int i162 = i3;
+                i7 = 1;
+                i9 = i2 + 1;
+                i10 = i162;
+            }
+        }
     }
 
     private static int findIncludeIndex(String str, int i, IncludedLayouts includedLayouts, int i2) {

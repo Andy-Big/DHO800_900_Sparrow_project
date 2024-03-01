@@ -3,8 +3,8 @@ package org.slf4j.helpers;
 import java.io.PrintStream;
 /* loaded from: classes2.dex */
 public final class Util {
-    private static ClassContextSecurityManager SECURITY_MANAGER = null;
-    private static boolean SECURITY_MANAGER_CREATION_ALREADY_ATTEMPTED = false;
+    private static ClassContextSecurityManager SECURITY_MANAGER;
+    private static boolean SECURITY_MANAGER_CREATION_ALREADY_ATTEMPTED;
 
     private Util() {
     }

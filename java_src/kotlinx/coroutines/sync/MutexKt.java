@@ -2,7 +2,9 @@ package kotlinx.coroutines.sync;
 
 import androidx.exifinterface.media.ExifInterface;
 import kotlin.Metadata;
+import kotlin.ResultKt;
 import kotlin.coroutines.Continuation;
+import kotlin.coroutines.intrinsics.IntrinsicsKt;
 import kotlin.jvm.functions.Function0;
 import kotlin.jvm.internal.InlineMarker;
 import kotlinx.coroutines.internal.Symbol;
@@ -58,68 +60,50 @@ public final class MutexKt {
     /* JADX WARN: Removed duplicated region for block: B:14:0x003d  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public static final <T> java.lang.Object withLock(kotlinx.coroutines.sync.Mutex r4, java.lang.Object r5, kotlin.jvm.functions.Function0<? extends T> r6, kotlin.coroutines.Continuation<? super T> r7) {
-        /*
-            boolean r0 = r7 instanceof kotlinx.coroutines.sync.MutexKt$withLock$1
-            if (r0 == 0) goto L14
-            r0 = r7
-            kotlinx.coroutines.sync.MutexKt$withLock$1 r0 = (kotlinx.coroutines.sync.MutexKt$withLock$1) r0
-            int r1 = r0.label
-            r2 = -2147483648(0xffffffff80000000, float:-0.0)
-            r1 = r1 & r2
-            if (r1 == 0) goto L14
-            int r7 = r0.label
-            int r7 = r7 - r2
-            r0.label = r7
-            goto L19
-        L14:
-            kotlinx.coroutines.sync.MutexKt$withLock$1 r0 = new kotlinx.coroutines.sync.MutexKt$withLock$1
-            r0.<init>(r7)
-        L19:
-            java.lang.Object r7 = r0.result
-            java.lang.Object r1 = kotlin.coroutines.intrinsics.IntrinsicsKt.getCOROUTINE_SUSPENDED()
-            int r2 = r0.label
-            r3 = 1
-            if (r2 == 0) goto L3d
-            if (r2 != r3) goto L35
-            java.lang.Object r4 = r0.L$2
-            r6 = r4
-            kotlin.jvm.functions.Function0 r6 = (kotlin.jvm.functions.Function0) r6
-            java.lang.Object r5 = r0.L$1
-            java.lang.Object r4 = r0.L$0
-            kotlinx.coroutines.sync.Mutex r4 = (kotlinx.coroutines.sync.Mutex) r4
-            kotlin.ResultKt.throwOnFailure(r7)
-            goto L4f
-        L35:
-            java.lang.IllegalStateException r4 = new java.lang.IllegalStateException
-            java.lang.String r5 = "call to 'resume' before 'invoke' with coroutine"
-            r4.<init>(r5)
-            throw r4
-        L3d:
-            kotlin.ResultKt.throwOnFailure(r7)
-            r0.L$0 = r4
-            r0.L$1 = r5
-            r0.L$2 = r6
-            r0.label = r3
-            java.lang.Object r7 = r4.lock(r5, r0)
-            if (r7 != r1) goto L4f
-            return r1
-        L4f:
-            java.lang.Object r6 = r6.invoke()     // Catch: java.lang.Throwable -> L5d
-            kotlin.jvm.internal.InlineMarker.finallyStart(r3)
-            r4.unlock(r5)
-            kotlin.jvm.internal.InlineMarker.finallyEnd(r3)
-            return r6
-        L5d:
-            r6 = move-exception
-            kotlin.jvm.internal.InlineMarker.finallyStart(r3)
-            r4.unlock(r5)
-            kotlin.jvm.internal.InlineMarker.finallyEnd(r3)
-            throw r6
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.sync.MutexKt.withLock(kotlinx.coroutines.sync.Mutex, java.lang.Object, kotlin.jvm.functions.Function0, kotlin.coroutines.Continuation):java.lang.Object");
+    public static final <T> Object withLock(Mutex mutex, Object obj, Function0<? extends T> function0, Continuation<? super T> continuation) {
+        MutexKt$withLock$1 mutexKt$withLock$1;
+        int i;
+        try {
+            if (continuation instanceof MutexKt$withLock$1) {
+                mutexKt$withLock$1 = (MutexKt$withLock$1) continuation;
+                if ((mutexKt$withLock$1.label & Integer.MIN_VALUE) != 0) {
+                    mutexKt$withLock$1.label -= Integer.MIN_VALUE;
+                    Object obj2 = mutexKt$withLock$1.result;
+                    Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+                    i = mutexKt$withLock$1.label;
+                    if (i != 0) {
+                        ResultKt.throwOnFailure(obj2);
+                        mutexKt$withLock$1.L$0 = mutex;
+                        mutexKt$withLock$1.L$1 = obj;
+                        mutexKt$withLock$1.L$2 = function0;
+                        mutexKt$withLock$1.label = 1;
+                        if (mutex.lock(obj, mutexKt$withLock$1) == coroutine_suspended) {
+                            return coroutine_suspended;
+                        }
+                    } else if (i != 1) {
+                        throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+                    } else {
+                        function0 = (Function0) mutexKt$withLock$1.L$2;
+                        obj = mutexKt$withLock$1.L$1;
+                        mutex = (Mutex) mutexKt$withLock$1.L$0;
+                        ResultKt.throwOnFailure(obj2);
+                    }
+                    return function0.invoke();
+                }
+            }
+            return function0.invoke();
+        } finally {
+            InlineMarker.finallyStart(1);
+            mutex.unlock(obj);
+            InlineMarker.finallyEnd(1);
+        }
+        mutexKt$withLock$1 = new MutexKt$withLock$1(continuation);
+        Object obj22 = mutexKt$withLock$1.result;
+        Object coroutine_suspended2 = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+        i = mutexKt$withLock$1.label;
+        if (i != 0) {
+        }
     }
 
     private static final Object withLock$$forInline(Mutex mutex, Object obj, Function0 function0, Continuation continuation) {

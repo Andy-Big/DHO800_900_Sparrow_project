@@ -22,7 +22,7 @@ public class CompletedExceptionally {
         this(th, (i & 2) != 0 ? false : z);
     }
 
-    /* JADX WARN: Type inference failed for: r0v0, types: [boolean, int] */
+    /* JADX WARN: Type inference failed for: r0v0, types: [int, boolean] */
     public final boolean getHandled() {
         return this._handled;
     }

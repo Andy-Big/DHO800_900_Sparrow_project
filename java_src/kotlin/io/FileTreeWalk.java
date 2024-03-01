@@ -244,95 +244,50 @@ public final class FileTreeWalk implements Sequence<File> {
             @Override // kotlin.io.FileTreeWalk.WalkState
             /*
                 Code decompiled incorrectly, please refer to instructions dump.
-                To view partially-correct add '--show-bad-code' argument
             */
-            public java.io.File step() {
-                /*
-                    r10 = this;
-                    boolean r0 = r10.rootVisited
-                    r1 = 0
-                    if (r0 != 0) goto L28
-                    kotlin.io.FileTreeWalk$FileTreeWalkIterator r0 = r10.this$0
-                    kotlin.io.FileTreeWalk r0 = kotlin.io.FileTreeWalk.this
-                    kotlin.jvm.functions.Function1 r0 = kotlin.io.FileTreeWalk.access$getOnEnter$p(r0)
-                    if (r0 == 0) goto L20
-                    java.io.File r2 = r10.getRoot()
-                    java.lang.Object r0 = r0.invoke(r2)
-                    java.lang.Boolean r0 = (java.lang.Boolean) r0
-                    boolean r0 = r0.booleanValue()
-                    if (r0 != 0) goto L20
-                    return r1
-                L20:
-                    r0 = 1
-                    r10.rootVisited = r0
-                    java.io.File r0 = r10.getRoot()
-                    return r0
-                L28:
-                    java.io.File[] r0 = r10.fileList
-                    if (r0 == 0) goto L4a
-                    int r2 = r10.fileIndex
-                    kotlin.jvm.internal.Intrinsics.checkNotNull(r0)
-                    int r0 = r0.length
-                    if (r2 >= r0) goto L35
-                    goto L4a
-                L35:
-                    kotlin.io.FileTreeWalk$FileTreeWalkIterator r0 = r10.this$0
-                    kotlin.io.FileTreeWalk r0 = kotlin.io.FileTreeWalk.this
-                    kotlin.jvm.functions.Function1 r0 = kotlin.io.FileTreeWalk.access$getOnLeave$p(r0)
-                    if (r0 == 0) goto L49
-                    java.io.File r2 = r10.getRoot()
-                    java.lang.Object r0 = r0.invoke(r2)
-                    kotlin.Unit r0 = (kotlin.Unit) r0
-                L49:
-                    return r1
-                L4a:
-                    java.io.File[] r0 = r10.fileList
-                    if (r0 != 0) goto L9c
-                    java.io.File r0 = r10.getRoot()
-                    java.io.File[] r0 = r0.listFiles()
-                    r10.fileList = r0
-                    if (r0 != 0) goto L7d
-                    kotlin.io.FileTreeWalk$FileTreeWalkIterator r0 = r10.this$0
-                    kotlin.io.FileTreeWalk r0 = kotlin.io.FileTreeWalk.this
-                    kotlin.jvm.functions.Function2 r0 = kotlin.io.FileTreeWalk.access$getOnFail$p(r0)
-                    if (r0 == 0) goto L7d
-                    java.io.File r2 = r10.getRoot()
-                    kotlin.io.AccessDeniedException r9 = new kotlin.io.AccessDeniedException
-                    java.io.File r4 = r10.getRoot()
-                    r5 = 0
-                    r7 = 2
-                    r8 = 0
-                    java.lang.String r6 = "Cannot list files in a directory"
-                    r3 = r9
-                    r3.<init>(r4, r5, r6, r7, r8)
-                    java.lang.Object r0 = r0.invoke(r2, r9)
-                    kotlin.Unit r0 = (kotlin.Unit) r0
-                L7d:
-                    java.io.File[] r0 = r10.fileList
-                    if (r0 == 0) goto L87
-                    kotlin.jvm.internal.Intrinsics.checkNotNull(r0)
-                    int r0 = r0.length
-                    if (r0 != 0) goto L9c
-                L87:
-                    kotlin.io.FileTreeWalk$FileTreeWalkIterator r0 = r10.this$0
-                    kotlin.io.FileTreeWalk r0 = kotlin.io.FileTreeWalk.this
-                    kotlin.jvm.functions.Function1 r0 = kotlin.io.FileTreeWalk.access$getOnLeave$p(r0)
-                    if (r0 == 0) goto L9b
-                    java.io.File r2 = r10.getRoot()
-                    java.lang.Object r0 = r0.invoke(r2)
-                    kotlin.Unit r0 = (kotlin.Unit) r0
-                L9b:
-                    return r1
-                L9c:
-                    java.io.File[] r0 = r10.fileList
-                    kotlin.jvm.internal.Intrinsics.checkNotNull(r0)
-                    int r1 = r10.fileIndex
-                    int r2 = r1 + 1
-                    r10.fileIndex = r2
-                    r0 = r0[r1]
-                    return r0
-                */
-                throw new UnsupportedOperationException("Method not decompiled: kotlin.io.FileTreeWalk.FileTreeWalkIterator.TopDownDirectoryState.step():java.io.File");
+            public File step() {
+                Function2 function2;
+                if (!this.rootVisited) {
+                    Function1 function1 = FileTreeWalk.this.onEnter;
+                    if (function1 == null || ((Boolean) function1.invoke(getRoot())).booleanValue()) {
+                        this.rootVisited = true;
+                        return getRoot();
+                    }
+                    return null;
+                }
+                File[] fileArr = this.fileList;
+                if (fileArr != null) {
+                    int i = this.fileIndex;
+                    Intrinsics.checkNotNull(fileArr);
+                    if (i >= fileArr.length) {
+                        Function1 function12 = FileTreeWalk.this.onLeave;
+                        if (function12 != null) {
+                            Unit unit = (Unit) function12.invoke(getRoot());
+                        }
+                        return null;
+                    }
+                }
+                if (this.fileList == null) {
+                    File[] listFiles = getRoot().listFiles();
+                    this.fileList = listFiles;
+                    if (listFiles == null && (function2 = FileTreeWalk.this.onFail) != null) {
+                        Unit unit2 = (Unit) function2.invoke(getRoot(), new AccessDeniedException(getRoot(), null, "Cannot list files in a directory", 2, null));
+                    }
+                    File[] fileArr2 = this.fileList;
+                    if (fileArr2 != null) {
+                        Intrinsics.checkNotNull(fileArr2);
+                    }
+                    Function1 function13 = FileTreeWalk.this.onLeave;
+                    if (function13 != null) {
+                        Unit unit3 = (Unit) function13.invoke(getRoot());
+                    }
+                    return null;
+                }
+                File[] fileArr3 = this.fileList;
+                Intrinsics.checkNotNull(fileArr3);
+                int i2 = this.fileIndex;
+                this.fileIndex = i2 + 1;
+                return fileArr3[i2];
             }
         }
 

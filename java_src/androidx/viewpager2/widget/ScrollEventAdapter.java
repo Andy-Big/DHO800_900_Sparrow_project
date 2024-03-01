@@ -98,95 +98,44 @@ public final class ScrollEventAdapter extends RecyclerView.OnScrollListener {
     @Override // androidx.recyclerview.widget.RecyclerView.OnScrollListener
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public void onScrolled(androidx.recyclerview.widget.RecyclerView r4, int r5, int r6) {
-        /*
-            r3 = this;
-            r4 = 1
-            r3.mScrollHappened = r4
-            r3.updateScrollEventValues()
-            boolean r0 = r3.mDispatchSelected
-            r1 = -1
-            r2 = 0
-            if (r0 == 0) goto L3f
-            r3.mDispatchSelected = r2
-            if (r6 > 0) goto L22
-            if (r6 != 0) goto L20
-            if (r5 >= 0) goto L16
-            r5 = r4
-            goto L17
-        L16:
-            r5 = r2
-        L17:
-            androidx.viewpager2.widget.ViewPager2 r6 = r3.mViewPager
-            boolean r6 = r6.isRtl()
-            if (r5 != r6) goto L20
-            goto L22
-        L20:
-            r5 = r2
-            goto L23
-        L22:
-            r5 = r4
-        L23:
-            if (r5 == 0) goto L31
-            androidx.viewpager2.widget.ScrollEventAdapter$ScrollEventValues r5 = r3.mScrollValues
-            int r5 = r5.mOffsetPx
-            if (r5 == 0) goto L31
-            androidx.viewpager2.widget.ScrollEventAdapter$ScrollEventValues r5 = r3.mScrollValues
-            int r5 = r5.mPosition
-            int r5 = r5 + r4
-            goto L35
-        L31:
-            androidx.viewpager2.widget.ScrollEventAdapter$ScrollEventValues r5 = r3.mScrollValues
-            int r5 = r5.mPosition
-        L35:
-            r3.mTarget = r5
-            int r6 = r3.mDragStartPosition
-            if (r6 == r5) goto L4d
-            r3.dispatchSelected(r5)
-            goto L4d
-        L3f:
-            int r5 = r3.mAdapterState
-            if (r5 != 0) goto L4d
-            androidx.viewpager2.widget.ScrollEventAdapter$ScrollEventValues r5 = r3.mScrollValues
-            int r5 = r5.mPosition
-            if (r5 != r1) goto L4a
-            r5 = r2
-        L4a:
-            r3.dispatchSelected(r5)
-        L4d:
-            androidx.viewpager2.widget.ScrollEventAdapter$ScrollEventValues r5 = r3.mScrollValues
-            int r5 = r5.mPosition
-            if (r5 != r1) goto L55
-            r5 = r2
-            goto L59
-        L55:
-            androidx.viewpager2.widget.ScrollEventAdapter$ScrollEventValues r5 = r3.mScrollValues
-            int r5 = r5.mPosition
-        L59:
-            androidx.viewpager2.widget.ScrollEventAdapter$ScrollEventValues r6 = r3.mScrollValues
-            float r6 = r6.mOffset
-            androidx.viewpager2.widget.ScrollEventAdapter$ScrollEventValues r0 = r3.mScrollValues
-            int r0 = r0.mOffsetPx
-            r3.dispatchScrolled(r5, r6, r0)
-            androidx.viewpager2.widget.ScrollEventAdapter$ScrollEventValues r5 = r3.mScrollValues
-            int r5 = r5.mPosition
-            int r6 = r3.mTarget
-            if (r5 == r6) goto L6e
-            if (r6 != r1) goto L7e
-        L6e:
-            androidx.viewpager2.widget.ScrollEventAdapter$ScrollEventValues r5 = r3.mScrollValues
-            int r5 = r5.mOffsetPx
-            if (r5 != 0) goto L7e
-            int r5 = r3.mScrollState
-            if (r5 == r4) goto L7e
-            r3.dispatchStateChanged(r2)
-            r3.resetState()
-        L7e:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: androidx.viewpager2.widget.ScrollEventAdapter.onScrolled(androidx.recyclerview.widget.RecyclerView, int, int):void");
+    public void onScrolled(RecyclerView recyclerView, int i, int i2) {
+        boolean z;
+        int i3;
+        this.mScrollHappened = true;
+        updateScrollEventValues();
+        if (this.mDispatchSelected) {
+            this.mDispatchSelected = false;
+            if (i2 <= 0) {
+                if (i2 == 0) {
+                }
+                z = false;
+                i3 = (z || this.mScrollValues.mOffsetPx == 0) ? this.mScrollValues.mPosition : this.mScrollValues.mPosition + 1;
+                this.mTarget = i3;
+                if (this.mDragStartPosition != i3) {
+                    dispatchSelected(i3);
+                }
+            }
+            z = true;
+            if (z) {
+            }
+            this.mTarget = i3;
+            if (this.mDragStartPosition != i3) {
+            }
+        } else if (this.mAdapterState == 0) {
+            int i4 = this.mScrollValues.mPosition;
+            if (i4 == -1) {
+                i4 = 0;
+            }
+            dispatchSelected(i4);
+        }
+        dispatchScrolled(this.mScrollValues.mPosition == -1 ? 0 : this.mScrollValues.mPosition, this.mScrollValues.mOffset, this.mScrollValues.mOffsetPx);
+        int i5 = this.mScrollValues.mPosition;
+        int i6 = this.mTarget;
+        if ((i5 == i6 || i6 == -1) && this.mScrollValues.mOffsetPx == 0 && this.mScrollState != 1) {
+            dispatchStateChanged(0);
+            resetState();
+        }
     }
 
     private void updateScrollEventValues() {

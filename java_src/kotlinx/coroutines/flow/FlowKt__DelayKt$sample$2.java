@@ -2,13 +2,21 @@ package kotlinx.coroutines.flow;
 
 import androidx.exifinterface.media.ExifInterface;
 import kotlin.Metadata;
+import kotlin.ResultKt;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
+import kotlin.coroutines.intrinsics.IntrinsicsKt;
 import kotlin.coroutines.jvm.internal.DebugMetadata;
+import kotlin.coroutines.jvm.internal.DebugProbesKt;
 import kotlin.coroutines.jvm.internal.SuspendLambda;
 import kotlin.jvm.functions.Function3;
 import kotlin.jvm.internal.Intrinsics;
+import kotlin.jvm.internal.Ref;
 import kotlinx.coroutines.CoroutineScope;
+import kotlinx.coroutines.channels.ProduceKt;
+import kotlinx.coroutines.channels.ReceiveChannel;
+import kotlinx.coroutines.flow.internal.NullSurrogateKt;
+import kotlinx.coroutines.selects.SelectBuilderImpl;
 /* JADX INFO: Access modifiers changed from: package-private */
 /* JADX INFO: Add missing generic type declarations: [T] */
 /* compiled from: Delay.kt */
@@ -69,13 +77,81 @@ public final class FlowKt__DelayKt$sample$2<T> extends SuspendLambda implements 
     @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public final java.lang.Object invokeSuspend(java.lang.Object r20) {
-        /*
-            Method dump skipped, instructions count: 219
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.flow.FlowKt__DelayKt$sample$2.invokeSuspend(java.lang.Object):java.lang.Object");
+    public final Object invokeSuspend(Object obj) {
+        FlowCollector flowCollector;
+        ReceiveChannel produce$default;
+        Ref.ObjectRef objectRef;
+        ReceiveChannel fixedPeriodTicker$default;
+        FlowKt__DelayKt$sample$2<T> flowKt__DelayKt$sample$2;
+        CoroutineScope coroutineScope;
+        ReceiveChannel receiveChannel;
+        Object obj2;
+        FlowKt__DelayKt$sample$2<T> flowKt__DelayKt$sample$22;
+        SelectBuilderImpl selectBuilderImpl;
+        Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+        int i = this.label;
+        int i2 = 1;
+        if (i == 0) {
+            ResultKt.throwOnFailure(obj);
+            CoroutineScope coroutineScope2 = this.p$;
+            flowCollector = this.p$0;
+            produce$default = ProduceKt.produce$default(coroutineScope2, null, -1, new FlowKt__DelayKt$sample$2$values$1(this, null), 1, null);
+            objectRef = new Ref.ObjectRef();
+            objectRef.element = null;
+            fixedPeriodTicker$default = FlowKt__DelayKt.fixedPeriodTicker$default(coroutineScope2, this.$periodMillis, 0L, 2, null);
+            flowKt__DelayKt$sample$2 = this;
+            coroutineScope = coroutineScope2;
+            receiveChannel = fixedPeriodTicker$default;
+            obj2 = coroutine_suspended;
+            if (objectRef.element == NullSurrogateKt.DONE) {
+            }
+        } else if (i == 1) {
+            FlowKt__DelayKt$sample$2 flowKt__DelayKt$sample$23 = (FlowKt__DelayKt$sample$2) this.L$5;
+            ResultKt.throwOnFailure(obj);
+            flowKt__DelayKt$sample$2 = this;
+            receiveChannel = (ReceiveChannel) this.L$4;
+            objectRef = (Ref.ObjectRef) this.L$3;
+            produce$default = (ReceiveChannel) this.L$2;
+            flowCollector = (FlowCollector) this.L$1;
+            coroutineScope = (CoroutineScope) this.L$0;
+            obj2 = coroutine_suspended;
+            i2 = 1;
+            if (objectRef.element == NullSurrogateKt.DONE) {
+                flowKt__DelayKt$sample$2.L$0 = coroutineScope;
+                flowKt__DelayKt$sample$2.L$1 = flowCollector;
+                flowKt__DelayKt$sample$2.L$2 = produce$default;
+                flowKt__DelayKt$sample$2.L$3 = objectRef;
+                flowKt__DelayKt$sample$2.L$4 = receiveChannel;
+                flowKt__DelayKt$sample$2.L$5 = flowKt__DelayKt$sample$2;
+                flowKt__DelayKt$sample$2.label = i2;
+                FlowKt__DelayKt$sample$2<T> flowKt__DelayKt$sample$24 = flowKt__DelayKt$sample$2;
+                SelectBuilderImpl selectBuilderImpl2 = new SelectBuilderImpl(flowKt__DelayKt$sample$24);
+                try {
+                } catch (Throwable th) {
+                    th = th;
+                    flowKt__DelayKt$sample$22 = flowKt__DelayKt$sample$24;
+                    selectBuilderImpl = selectBuilderImpl2;
+                }
+                SelectBuilderImpl selectBuilderImpl3 = selectBuilderImpl2;
+                flowKt__DelayKt$sample$22 = flowKt__DelayKt$sample$24;
+                selectBuilderImpl3.invoke(produce$default.getOnReceiveOrNull(), new FlowKt__DelayKt$sample$2$invokeSuspend$$inlined$select$lambda$1(null, produce$default, receiveChannel, objectRef, flowCollector));
+                selectBuilderImpl3.invoke(receiveChannel.getOnReceive(), new FlowKt__DelayKt$sample$2$invokeSuspend$$inlined$select$lambda$2(null, produce$default, receiveChannel, objectRef, flowCollector));
+                selectBuilderImpl = selectBuilderImpl2;
+                Object result = selectBuilderImpl.getResult();
+                if (result == IntrinsicsKt.getCOROUTINE_SUSPENDED()) {
+                    DebugProbesKt.probeCoroutineSuspended(flowKt__DelayKt$sample$22);
+                }
+                if (result == obj2) {
+                    return obj2;
+                }
+                i2 = 1;
+                if (objectRef.element == NullSurrogateKt.DONE) {
+                    return Unit.INSTANCE;
+                }
+            }
+        } else {
+            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+        }
     }
 }

@@ -26,6 +26,7 @@ import androidx.customview.view.AbsSavedState;
 import com.google.android.material.R;
 import com.google.android.material.animation.TransformationCallback;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
@@ -367,36 +368,19 @@ public class BottomAppBar extends Toolbar implements CoordinatorLayout.AttachedB
     /* JADX WARN: Removed duplicated region for block: B:8:0x001e  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public android.view.View findDependentView() {
-        /*
-            r4 = this;
-            android.view.ViewParent r0 = r4.getParent()
-            boolean r0 = r0 instanceof androidx.coordinatorlayout.widget.CoordinatorLayout
-            r1 = 0
-            if (r0 != 0) goto La
-            return r1
-        La:
-            android.view.ViewParent r0 = r4.getParent()
-            androidx.coordinatorlayout.widget.CoordinatorLayout r0 = (androidx.coordinatorlayout.widget.CoordinatorLayout) r0
-            java.util.List r0 = r0.getDependents(r4)
-            java.util.Iterator r0 = r0.iterator()
-        L18:
-            boolean r2 = r0.hasNext()
-            if (r2 == 0) goto L2d
-            java.lang.Object r2 = r0.next()
-            android.view.View r2 = (android.view.View) r2
-            boolean r3 = r2 instanceof com.google.android.material.floatingactionbutton.FloatingActionButton
-            if (r3 != 0) goto L2c
-            boolean r3 = r2 instanceof com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            if (r3 == 0) goto L18
-        L2c:
-            return r2
-        L2d:
-            return r1
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.google.android.material.bottomappbar.BottomAppBar.findDependentView():android.view.View");
+    public View findDependentView() {
+        if (getParent() instanceof CoordinatorLayout) {
+            for (View view : ((CoordinatorLayout) getParent()).getDependents(this)) {
+                if ((view instanceof FloatingActionButton) || (view instanceof ExtendedFloatingActionButton)) {
+                    return view;
+                }
+                while (r0.hasNext()) {
+                }
+            }
+            return null;
+        }
+        return null;
     }
 
     private boolean isFabVisibleOrWillBeShown() {

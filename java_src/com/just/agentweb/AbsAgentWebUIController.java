@@ -8,7 +8,7 @@ import android.webkit.JsResult;
 import android.webkit.WebView;
 /* loaded from: classes.dex */
 public abstract class AbsAgentWebUIController {
-    public static boolean HAS_DESIGN_LIB = false;
+    public static boolean HAS_DESIGN_LIB;
     private Activity mActivity;
     protected AbsAgentWebUIController mAgentWebUIControllerDelegate;
     private WebParentLayout mWebParentLayout;

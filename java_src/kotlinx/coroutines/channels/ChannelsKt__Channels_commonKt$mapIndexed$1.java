@@ -2,8 +2,11 @@ package kotlinx.coroutines.channels;
 
 import androidx.exifinterface.media.ExifInterface;
 import kotlin.Metadata;
+import kotlin.ResultKt;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
+import kotlin.coroutines.intrinsics.IntrinsicsKt;
+import kotlin.coroutines.jvm.internal.Boxing;
 import kotlin.coroutines.jvm.internal.DebugMetadata;
 import kotlin.coroutines.jvm.internal.SuspendLambda;
 import kotlin.jvm.functions.Function2;
@@ -55,13 +58,107 @@ public final class ChannelsKt__Channels_commonKt$mapIndexed$1<R> extends Suspend
     @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public final java.lang.Object invokeSuspend(java.lang.Object r12) {
-        /*
-            Method dump skipped, instructions count: 186
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.channels.ChannelsKt__Channels_commonKt$mapIndexed$1.invokeSuspend(java.lang.Object):java.lang.Object");
+    public final Object invokeSuspend(Object obj) {
+        ProducerScope producerScope;
+        ChannelsKt__Channels_commonKt$mapIndexed$1<R> channelsKt__Channels_commonKt$mapIndexed$1;
+        int i;
+        ChannelIterator it;
+        ChannelsKt__Channels_commonKt$mapIndexed$1<R> channelsKt__Channels_commonKt$mapIndexed$12;
+        Object obj2;
+        int i2;
+        ProducerScope producerScope2;
+        ChannelIterator channelIterator;
+        ProducerScope producerScope3;
+        ChannelsKt__Channels_commonKt$mapIndexed$1<R> channelsKt__Channels_commonKt$mapIndexed$13;
+        Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+        int i3 = this.label;
+        if (i3 == 0) {
+            ResultKt.throwOnFailure(obj);
+            producerScope = this.p$;
+            channelsKt__Channels_commonKt$mapIndexed$1 = this;
+            i = 0;
+            it = this.$this_mapIndexed.iterator();
+        } else if (i3 == 1) {
+            it = (ChannelIterator) this.L$1;
+            i = this.I$0;
+            producerScope2 = (ProducerScope) this.L$0;
+            ResultKt.throwOnFailure(obj);
+            channelsKt__Channels_commonKt$mapIndexed$13 = this;
+            if (((Boolean) obj).booleanValue()) {
+                return Unit.INSTANCE;
+            }
+            Object next = it.next();
+            Function3 function3 = channelsKt__Channels_commonKt$mapIndexed$13.$transform;
+            Integer boxInt = Boxing.boxInt(i);
+            int i4 = i + 1;
+            channelsKt__Channels_commonKt$mapIndexed$13.L$0 = producerScope2;
+            channelsKt__Channels_commonKt$mapIndexed$13.I$0 = i4;
+            channelsKt__Channels_commonKt$mapIndexed$13.L$1 = next;
+            channelsKt__Channels_commonKt$mapIndexed$13.L$2 = it;
+            channelsKt__Channels_commonKt$mapIndexed$13.L$3 = producerScope2;
+            channelsKt__Channels_commonKt$mapIndexed$13.label = 2;
+            Object invoke = function3.invoke(boxInt, next, channelsKt__Channels_commonKt$mapIndexed$13);
+            if (invoke == coroutine_suspended) {
+                return coroutine_suspended;
+            }
+            channelsKt__Channels_commonKt$mapIndexed$12 = channelsKt__Channels_commonKt$mapIndexed$13;
+            i2 = i4;
+            channelIterator = it;
+            producerScope3 = producerScope2;
+            obj2 = next;
+            obj = invoke;
+            channelsKt__Channels_commonKt$mapIndexed$12.L$0 = producerScope2;
+            channelsKt__Channels_commonKt$mapIndexed$12.I$0 = i2;
+            channelsKt__Channels_commonKt$mapIndexed$12.L$1 = obj2;
+            channelsKt__Channels_commonKt$mapIndexed$12.L$2 = channelIterator;
+            channelsKt__Channels_commonKt$mapIndexed$12.label = 3;
+            if (producerScope3.send(obj, channelsKt__Channels_commonKt$mapIndexed$12) != coroutine_suspended) {
+            }
+        } else if (i3 == 2) {
+            producerScope3 = (ProducerScope) this.L$3;
+            channelIterator = (ChannelIterator) this.L$2;
+            Object obj3 = this.L$1;
+            i2 = this.I$0;
+            ProducerScope producerScope4 = (ProducerScope) this.L$0;
+            ResultKt.throwOnFailure(obj);
+            channelsKt__Channels_commonKt$mapIndexed$12 = this;
+            obj2 = obj3;
+            producerScope2 = producerScope4;
+            channelsKt__Channels_commonKt$mapIndexed$12.L$0 = producerScope2;
+            channelsKt__Channels_commonKt$mapIndexed$12.I$0 = i2;
+            channelsKt__Channels_commonKt$mapIndexed$12.L$1 = obj2;
+            channelsKt__Channels_commonKt$mapIndexed$12.L$2 = channelIterator;
+            channelsKt__Channels_commonKt$mapIndexed$12.label = 3;
+            if (producerScope3.send(obj, channelsKt__Channels_commonKt$mapIndexed$12) != coroutine_suspended) {
+                return coroutine_suspended;
+            }
+            it = channelIterator;
+            producerScope = producerScope2;
+            i = i2;
+            channelsKt__Channels_commonKt$mapIndexed$1 = channelsKt__Channels_commonKt$mapIndexed$12;
+        } else if (i3 != 3) {
+            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+        } else {
+            it = (ChannelIterator) this.L$2;
+            i = this.I$0;
+            ResultKt.throwOnFailure(obj);
+            producerScope = (ProducerScope) this.L$0;
+            channelsKt__Channels_commonKt$mapIndexed$1 = this;
+        }
+        channelsKt__Channels_commonKt$mapIndexed$1.L$0 = producerScope;
+        channelsKt__Channels_commonKt$mapIndexed$1.I$0 = i;
+        channelsKt__Channels_commonKt$mapIndexed$1.L$1 = it;
+        channelsKt__Channels_commonKt$mapIndexed$1.label = 1;
+        Object hasNext = it.hasNext(channelsKt__Channels_commonKt$mapIndexed$1);
+        if (hasNext == coroutine_suspended) {
+            return coroutine_suspended;
+        }
+        ChannelsKt__Channels_commonKt$mapIndexed$1<R> channelsKt__Channels_commonKt$mapIndexed$14 = channelsKt__Channels_commonKt$mapIndexed$1;
+        producerScope2 = producerScope;
+        obj = hasNext;
+        channelsKt__Channels_commonKt$mapIndexed$13 = channelsKt__Channels_commonKt$mapIndexed$14;
+        if (((Boolean) obj).booleanValue()) {
+        }
     }
 }

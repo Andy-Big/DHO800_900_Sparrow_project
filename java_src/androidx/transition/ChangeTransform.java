@@ -236,35 +236,15 @@ public class ChangeTransform extends Transition {
      */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    private boolean parentsMatch(android.view.ViewGroup r4, android.view.ViewGroup r5) {
-        /*
-            r3 = this;
-            boolean r0 = r3.isValidTarget(r4)
-            r1 = 1
-            r2 = 0
-            if (r0 == 0) goto L1a
-            boolean r0 = r3.isValidTarget(r5)
-            if (r0 != 0) goto Lf
-            goto L1a
-        Lf:
-            androidx.transition.TransitionValues r4 = r3.getMatchedTransitionValues(r4, r1)
-            if (r4 == 0) goto L1f
-            android.view.View r4 = r4.view
-            if (r5 != r4) goto L1d
-            goto L1e
-        L1a:
-            if (r4 != r5) goto L1d
-            goto L1e
-        L1d:
-            r1 = r2
-        L1e:
-            r2 = r1
-        L1f:
-            return r2
-        */
-        throw new UnsupportedOperationException("Method not decompiled: androidx.transition.ChangeTransform.parentsMatch(android.view.ViewGroup, android.view.ViewGroup):boolean");
+    private boolean parentsMatch(ViewGroup viewGroup, ViewGroup viewGroup2) {
+        boolean z = true;
+        if (isValidTarget(viewGroup) && isValidTarget(viewGroup2)) {
+            TransitionValues matchedTransitionValues = getMatchedTransitionValues(viewGroup, true);
+            if (matchedTransitionValues == null) {
+                return false;
+            }
+        }
     }
 
     private void createGhostView(ViewGroup viewGroup, TransitionValues transitionValues, TransitionValues transitionValues2) {

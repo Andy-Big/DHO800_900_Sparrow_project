@@ -1,5 +1,6 @@
 package javax.mail.internet;
 
+import com.sun.mail.imap.IMAPStore;
 import com.sun.mail.util.ASCIIUtility;
 import com.sun.mail.util.PropUtil;
 import java.io.ByteArrayOutputStream;
@@ -15,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import javax.mail.internet.HeaderTokenizer;
 import kotlin.UByte;
 import org.slf4j.Marker;
 /* loaded from: classes2.dex */
@@ -107,14 +109,54 @@ public class ParameterList {
      */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public ParameterList(java.lang.String r12) throws javax.mail.internet.ParseException {
-        /*
-            Method dump skipped, instructions count: 366
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: javax.mail.internet.ParameterList.<init>(java.lang.String):void");
+    public ParameterList(String str) throws ParseException {
+        this();
+        HeaderTokenizer.Token next;
+        String str2;
+        HeaderTokenizer headerTokenizer = new HeaderTokenizer(str, HeaderTokenizer.MIME);
+        while (true) {
+            HeaderTokenizer.Token next2 = headerTokenizer.next();
+            int type = next2.getType();
+            if (type == -4) {
+                break;
+            } else if (((char) type) == ';') {
+                HeaderTokenizer.Token next3 = headerTokenizer.next();
+                if (next3.getType() == -4) {
+                    break;
+                } else if (next3.getType() != -1) {
+                    throw new ParseException("In parameter list <" + str + ">, expected parameter name, got \"" + next3.getValue() + "\"");
+                } else {
+                    String lowerCase = next3.getValue().toLowerCase(Locale.ENGLISH);
+                    HeaderTokenizer.Token next4 = headerTokenizer.next();
+                    if (((char) next4.getType()) != '=') {
+                        throw new ParseException("In parameter list <" + str + ">, expected '=', got \"" + next4.getValue() + "\"");
+                    }
+                    if (windowshack && (lowerCase.equals(IMAPStore.ID_NAME) || lowerCase.equals("filename"))) {
+                        next = headerTokenizer.next(';', true);
+                    } else if (parametersStrict) {
+                        next = headerTokenizer.next();
+                    } else {
+                        next = headerTokenizer.next(';');
+                    }
+                    int type2 = next.getType();
+                    if (type2 != -1 && type2 != -2) {
+                        throw new ParseException("In parameter list <" + str + ">, expected parameter value, got \"" + next.getValue() + "\"");
+                    }
+                    String value = next.getValue();
+                    this.lastName = lowerCase;
+                    if (decodeParameters) {
+                        putEncodedName(lowerCase, value);
+                    } else {
+                        this.list.put(lowerCase, value);
+                    }
+                }
+            } else if (type != -1 || (str2 = this.lastName) == null || (!(applehack && (str2.equals(IMAPStore.ID_NAME) || this.lastName.equals("filename"))) && parametersStrict)) {
+                break;
+            } else {
+                this.list.put(this.lastName, ((String) this.list.get(this.lastName)) + " " + next2.getValue());
+            }
+        }
     }
 
     public void combineSegments() {

@@ -25,6 +25,7 @@ import kotlinx.coroutines.DisposableHandle;
 import kotlinx.coroutines.channels.ChannelIterator;
 import kotlinx.coroutines.channels.ValueOrClosed;
 import kotlinx.coroutines.internal.LockFreeLinkedListHead;
+import kotlinx.coroutines.internal.LockFreeLinkedListKt;
 import kotlinx.coroutines.internal.LockFreeLinkedListNode;
 import kotlinx.coroutines.internal.StackTraceRecoveryKt;
 import kotlinx.coroutines.intrinsics.UndispatchedKt;
@@ -116,70 +117,61 @@ public abstract class AbstractChannel<E> extends AbstractSendChannel<E> implemen
     /* JADX WARN: Removed duplicated region for block: B:28:0x0054  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public final boolean enqueueReceive(kotlinx.coroutines.channels.Receive<? super E> r8) {
-        /*
-            r7 = this;
-            boolean r0 = r7.isBufferAlwaysEmpty()
-        */
-        //  java.lang.String r1 = "null cannot be cast to non-null type kotlinx.coroutines.internal.Node /* = kotlinx.coroutines.internal.LockFreeLinkedListNode */"
-        /*
-            r2 = 0
-            r3 = 1
-            if (r0 == 0) goto L2c
-            kotlinx.coroutines.internal.LockFreeLinkedListHead r0 = r7.getQueue()
-        Le:
-            java.lang.Object r4 = r0.getPrev()
-            if (r4 == 0) goto L26
-            kotlinx.coroutines.internal.LockFreeLinkedListNode r4 = (kotlinx.coroutines.internal.LockFreeLinkedListNode) r4
-            boolean r5 = r4 instanceof kotlinx.coroutines.channels.Send
-            r5 = r5 ^ r3
-            if (r5 != 0) goto L1c
-            goto L52
-        L1c:
-            r5 = r8
-            kotlinx.coroutines.internal.LockFreeLinkedListNode r5 = (kotlinx.coroutines.internal.LockFreeLinkedListNode) r5
-            boolean r4 = r4.addNext(r5, r0)
-            if (r4 == 0) goto Le
-            goto L51
-        L26:
-            kotlin.TypeCastException r8 = new kotlin.TypeCastException
-            r8.<init>(r1)
-            throw r8
-        L2c:
-            kotlinx.coroutines.internal.LockFreeLinkedListHead r0 = r7.getQueue()
-            kotlinx.coroutines.channels.AbstractChannel$enqueueReceive$$inlined$addLastIfPrevAndIf$1 r4 = new kotlinx.coroutines.channels.AbstractChannel$enqueueReceive$$inlined$addLastIfPrevAndIf$1
-            kotlinx.coroutines.internal.LockFreeLinkedListNode r8 = (kotlinx.coroutines.internal.LockFreeLinkedListNode) r8
-            r4.<init>(r8)
-            kotlinx.coroutines.internal.LockFreeLinkedListNode$CondAddOp r4 = (kotlinx.coroutines.internal.LockFreeLinkedListNode.CondAddOp) r4
-        L39:
-            java.lang.Object r5 = r0.getPrev()
-            if (r5 == 0) goto L58
-            kotlinx.coroutines.internal.LockFreeLinkedListNode r5 = (kotlinx.coroutines.internal.LockFreeLinkedListNode) r5
-            boolean r6 = r5 instanceof kotlinx.coroutines.channels.Send
-            r6 = r6 ^ r3
-            if (r6 != 0) goto L47
-            goto L52
-        L47:
-            int r5 = r5.tryCondAddNext(r8, r0, r4)
-            if (r5 == r3) goto L51
-            r6 = 2
-            if (r5 == r6) goto L52
-            goto L39
-        L51:
-            r2 = r3
-        L52:
-            if (r2 == 0) goto L57
-            r7.onReceiveEnqueued()
-        L57:
-            return r2
-        L58:
-            kotlin.TypeCastException r8 = new kotlin.TypeCastException
-            r8.<init>(r1)
-            throw r8
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.channels.AbstractChannel.enqueueReceive(kotlinx.coroutines.channels.Receive):boolean");
+    public final boolean enqueueReceive(Receive<? super E> receive) {
+        int tryCondAddNext;
+        LockFreeLinkedListNode lockFreeLinkedListNode;
+        boolean z = false;
+        if (isBufferAlwaysEmpty()) {
+            LockFreeLinkedListHead queue = getQueue();
+            do {
+                Object prev = queue.getPrev();
+                if (prev != null) {
+                    lockFreeLinkedListNode = (LockFreeLinkedListNode) prev;
+                    if (!(!(lockFreeLinkedListNode instanceof Send))) {
+                        break;
+                    }
+                } else {
+                    throw new TypeCastException("null cannot be cast to non-null type kotlinx.coroutines.internal.Node /* = kotlinx.coroutines.internal.LockFreeLinkedListNode */");
+                }
+            } while (!lockFreeLinkedListNode.addNext(receive, queue));
+            z = true;
+            if (z) {
+                onReceiveEnqueued();
+            }
+            return z;
+        }
+        LockFreeLinkedListHead queue2 = getQueue();
+        final Receive<? super E> receive2 = receive;
+        LockFreeLinkedListNode.CondAddOp condAddOp = new LockFreeLinkedListNode.CondAddOp(receive2) { // from class: kotlinx.coroutines.channels.AbstractChannel$enqueueReceive$$inlined$addLastIfPrevAndIf$1
+            @Override // kotlinx.coroutines.internal.AtomicOp
+            public Object prepare(LockFreeLinkedListNode affected) {
+                Intrinsics.checkParameterIsNotNull(affected, "affected");
+                if (this.isBufferEmpty()) {
+                    return null;
+                }
+                return LockFreeLinkedListKt.getCONDITION_FALSE();
+            }
+        };
+        do {
+            Object prev2 = queue2.getPrev();
+            if (prev2 != null) {
+                LockFreeLinkedListNode lockFreeLinkedListNode2 = (LockFreeLinkedListNode) prev2;
+                if (!(!(lockFreeLinkedListNode2 instanceof Send))) {
+                    break;
+                }
+                tryCondAddNext = lockFreeLinkedListNode2.tryCondAddNext(receive2, queue2, condAddOp);
+                if (tryCondAddNext == 1) {
+                    z = true;
+                    break;
+                }
+            } else {
+                throw new TypeCastException("null cannot be cast to non-null type kotlinx.coroutines.internal.Node /* = kotlinx.coroutines.internal.LockFreeLinkedListNode */");
+            }
+        } while (tryCondAddNext != 2);
+        if (z) {
+        }
+        return z;
     }
 
     /* JADX WARN: Multi-variable type inference failed */

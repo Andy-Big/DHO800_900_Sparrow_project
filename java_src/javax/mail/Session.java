@@ -580,136 +580,107 @@ public final class Session {
     /* JADX WARN: Removed duplicated region for block: B:83:? A[RETURN, SYNTHETIC] */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    private void loadAllResources(java.lang.String r11, java.lang.Class<?> r12, javax.mail.StreamLoader r13) {
-        /*
-            r10 = this;
-            java.lang.String r0 = "Exception loading resource"
-            r1 = 0
-            java.lang.ClassLoader r2 = getContextClassLoader()     // Catch: java.lang.Exception -> L8b
-            if (r2 != 0) goto Ld
-            java.lang.ClassLoader r2 = r12.getClassLoader()     // Catch: java.lang.Exception -> L8b
-        Ld:
-            if (r2 == 0) goto L14
-            java.net.URL[] r2 = getResources(r2, r11)     // Catch: java.lang.Exception -> L8b
-            goto L18
-        L14:
-            java.net.URL[] r2 = getSystemResources(r11)     // Catch: java.lang.Exception -> L8b
-        L18:
-            if (r2 == 0) goto L89
-            r3 = r1
-            r4 = r3
-        L1c:
-            int r5 = r2.length     // Catch: java.lang.Exception -> L87
-            if (r3 >= r5) goto L94
-            r5 = r2[r3]     // Catch: java.lang.Exception -> L87
-            r6 = 0
-            com.sun.mail.util.MailLogger r7 = r10.logger     // Catch: java.lang.Exception -> L87
-            java.util.logging.Level r8 = java.util.logging.Level.CONFIG     // Catch: java.lang.Exception -> L87
-            java.lang.String r9 = "URL {0}"
-            r7.log(r8, r9, r5)     // Catch: java.lang.Exception -> L87
-            r7 = 1
-            java.io.InputStream r6 = openStream(r5)     // Catch: java.lang.Throwable -> L55 java.lang.SecurityException -> L57 java.io.IOException -> L64 java.io.FileNotFoundException -> L81
-            if (r6 == 0) goto L46
-            r13.load(r6)     // Catch: java.lang.Throwable -> L55 java.lang.SecurityException -> L57 java.io.IOException -> L64 java.io.FileNotFoundException -> L81
-            com.sun.mail.util.MailLogger r4 = r10.logger     // Catch: java.lang.SecurityException -> L40 java.io.IOException -> L42 java.io.FileNotFoundException -> L44 java.lang.Throwable -> L79
-            java.util.logging.Level r8 = java.util.logging.Level.CONFIG     // Catch: java.lang.SecurityException -> L40 java.io.IOException -> L42 java.io.FileNotFoundException -> L44 java.lang.Throwable -> L79
-            java.lang.String r9 = "successfully loaded resource: {0}"
-            r4.log(r8, r9, r5)     // Catch: java.lang.SecurityException -> L40 java.io.IOException -> L42 java.io.FileNotFoundException -> L44 java.lang.Throwable -> L79
-            r4 = r7
-            goto L4f
-        L40:
-            r4 = move-exception
-            goto L5a
-        L42:
-            r4 = move-exception
-            goto L67
-        L44:
-            r4 = r7
-            goto L81
-        L46:
-            com.sun.mail.util.MailLogger r7 = r10.logger     // Catch: java.lang.Throwable -> L55 java.lang.SecurityException -> L57 java.io.IOException -> L64 java.io.FileNotFoundException -> L81
-            java.util.logging.Level r8 = java.util.logging.Level.CONFIG     // Catch: java.lang.Throwable -> L55 java.lang.SecurityException -> L57 java.io.IOException -> L64 java.io.FileNotFoundException -> L81
-            java.lang.String r9 = "not loading resource: {0}"
-            r7.log(r8, r9, r5)     // Catch: java.lang.Throwable -> L55 java.lang.SecurityException -> L57 java.io.IOException -> L64 java.io.FileNotFoundException -> L81
-        L4f:
-            if (r6 == 0) goto L84
-        L51:
-            r6.close()     // Catch: java.io.IOException -> L84 java.lang.Exception -> L87
-            goto L84
-        L55:
-            r2 = move-exception
-            goto L7b
-        L57:
-            r5 = move-exception
-            r7 = r4
-            r4 = r5
-        L5a:
-            com.sun.mail.util.MailLogger r5 = r10.logger     // Catch: java.lang.Throwable -> L79
-            java.util.logging.Level r8 = java.util.logging.Level.CONFIG     // Catch: java.lang.Throwable -> L79
-            r5.log(r8, r0, r4)     // Catch: java.lang.Throwable -> L79
-            if (r6 == 0) goto L77
-            goto L70
-        L64:
-            r5 = move-exception
-            r7 = r4
-            r4 = r5
-        L67:
-            com.sun.mail.util.MailLogger r5 = r10.logger     // Catch: java.lang.Throwable -> L79
-            java.util.logging.Level r8 = java.util.logging.Level.CONFIG     // Catch: java.lang.Throwable -> L79
-            r5.log(r8, r0, r4)     // Catch: java.lang.Throwable -> L79
-            if (r6 == 0) goto L77
-        L70:
-            r6.close()     // Catch: java.lang.Exception -> L74 java.io.IOException -> L77
-            goto L77
-        L74:
-            r2 = move-exception
-            r4 = r7
-            goto L8d
-        L77:
-            r4 = r7
-            goto L84
-        L79:
-            r2 = move-exception
-            r4 = r7
-        L7b:
-            if (r6 == 0) goto L80
-            r6.close()     // Catch: java.io.IOException -> L80 java.lang.Exception -> L87
-        L80:
-            throw r2     // Catch: java.lang.Exception -> L87
-        L81:
-            if (r6 == 0) goto L84
-            goto L51
-        L84:
-            int r3 = r3 + 1
-            goto L1c
-        L87:
-            r2 = move-exception
-            goto L8d
-        L89:
-            r4 = r1
-            goto L94
-        L8b:
-            r2 = move-exception
-            r4 = r1
-        L8d:
-            com.sun.mail.util.MailLogger r3 = r10.logger
-            java.util.logging.Level r5 = java.util.logging.Level.CONFIG
-            r3.log(r5, r0, r2)
-        L94:
-            if (r4 != 0) goto Laa
-            java.lang.StringBuilder r0 = new java.lang.StringBuilder
-            r0.<init>()
-            java.lang.String r2 = "/"
-            r0.append(r2)
-            r0.append(r11)
-            java.lang.String r11 = r0.toString()
-            r10.loadResource(r11, r12, r13, r1)
-        Laa:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: javax.mail.Session.loadAllResources(java.lang.String, java.lang.Class, javax.mail.StreamLoader):void");
+    private void loadAllResources(String str, Class<?> cls, StreamLoader streamLoader) {
+        boolean z;
+        URL[] systemResources;
+        int i;
+        SecurityException e;
+        IOException e2;
+        try {
+            ClassLoader contextClassLoader = getContextClassLoader();
+            if (contextClassLoader == null) {
+                contextClassLoader = cls.getClassLoader();
+            }
+            if (contextClassLoader != null) {
+                systemResources = getResources(contextClassLoader, str);
+            } else {
+                systemResources = getSystemResources(str);
+            }
+            if (systemResources != null) {
+                z = false;
+                for (URL url : systemResources) {
+                    try {
+                        InputStream inputStream = null;
+                        this.logger.log(Level.CONFIG, "URL {0}", url);
+                        boolean z2 = true;
+                        try {
+                            inputStream = openStream(url);
+                            if (inputStream != null) {
+                                streamLoader.load(inputStream);
+                                try {
+                                    try {
+                                        this.logger.log(Level.CONFIG, "successfully loaded resource: {0}", url);
+                                        z = true;
+                                    } catch (Throwable th) {
+                                        th = th;
+                                        z = true;
+                                        if (inputStream != null) {
+                                            try {
+                                                inputStream.close();
+                                            } catch (IOException unused) {
+                                            }
+                                        }
+                                        throw th;
+                                    }
+                                } catch (FileNotFoundException unused2) {
+                                    z = true;
+                                    i = inputStream == null ? i + 1 : 0;
+                                    inputStream.close();
+                                } catch (IOException e3) {
+                                    e2 = e3;
+                                    this.logger.log(Level.CONFIG, "Exception loading resource", (Throwable) e2);
+                                } catch (SecurityException e4) {
+                                    e = e4;
+                                    this.logger.log(Level.CONFIG, "Exception loading resource", (Throwable) e);
+                                    if (inputStream != null) {
+                                        try {
+                                            inputStream.close();
+                                        } catch (IOException unused3) {
+                                            z = z2;
+                                        } catch (Exception e5) {
+                                            e = e5;
+                                            z = z2;
+                                            this.logger.log(Level.CONFIG, "Exception loading resource", (Throwable) e);
+                                            if (z) {
+                                            }
+                                        }
+                                    }
+                                    z = z2;
+                                }
+                            } else {
+                                this.logger.log(Level.CONFIG, "not loading resource: {0}", url);
+                            }
+                        } catch (FileNotFoundException unused4) {
+                        } catch (IOException e6) {
+                            z2 = z;
+                            e2 = e6;
+                        } catch (SecurityException e7) {
+                            z2 = z;
+                            e = e7;
+                        } catch (Throwable th2) {
+                            th = th2;
+                        }
+                        if (inputStream == null) {
+                        }
+                        try {
+                            inputStream.close();
+                        } catch (IOException unused5) {
+                        }
+                    } catch (Exception e8) {
+                        e = e8;
+                    }
+                }
+            } else {
+                z = false;
+            }
+        } catch (Exception e9) {
+            e = e9;
+            z = false;
+        }
+        if (z) {
+            loadResource("/" + str, cls, streamLoader, false);
+        }
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */

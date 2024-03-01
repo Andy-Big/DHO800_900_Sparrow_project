@@ -5,7 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 /* loaded from: classes2.dex */
 public class LogSupport {
-    private static boolean debug = false;
+    private static boolean debug;
     private static final Level level = Level.FINE;
     private static Logger logger;
 

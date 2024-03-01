@@ -105,82 +105,49 @@ public class BaseProperty<T> extends BaseObservable {
     /* JADX WARN: Type inference failed for: r0v7, types: [java.lang.Object] */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public final void setValue(T r7) {
-        /*
-            r6 = this;
-            com.rigol.scope.cil.MessageAttr r0 = r6.attr
-            if (r0 == 0) goto L82
-            boolean r1 = r7 instanceof java.lang.Integer
-            if (r1 == 0) goto L3f
-            java.lang.Object r1 = r0.getM_MaxValue()
-            java.lang.Object r2 = r0.getM_MinValue()
-            if (r1 == r2) goto L7e
-            r1 = r7
-            java.lang.Number r1 = (java.lang.Number) r1
-            int r2 = r1.intValue()
-            int r3 = r0.getMinIntValue()
-            if (r2 >= r3) goto L2a
-            int r0 = r0.getMinIntValue()
-            java.lang.Integer r0 = java.lang.Integer.valueOf(r0)
-            java.lang.Object r0 = (java.lang.Object) r0
-            goto L7f
-        L2a:
-            int r1 = r1.intValue()
-            int r2 = r0.getMaxIntValue()
-            if (r1 <= r2) goto L7e
-            int r0 = r0.getMaxIntValue()
-            java.lang.Integer r0 = java.lang.Integer.valueOf(r0)
-            java.lang.Object r0 = (java.lang.Object) r0
-            goto L7f
-        L3f:
-            boolean r1 = r7 instanceof java.lang.Long
-            if (r1 == 0) goto L7e
-            java.lang.Object r1 = r0.getM_MaxValue()
-            java.lang.Object r2 = r0.getM_MinValue()
-            if (r1 == r2) goto L7e
-            r1 = r7
-            java.lang.Number r1 = (java.lang.Number) r1
-            long r2 = r1.longValue()
-            long r4 = r0.getMinLongValue()
-            int r2 = (r2 > r4 ? 1 : (r2 == r4 ? 0 : -1))
-            if (r2 >= 0) goto L67
-            long r0 = r0.getMinLongValue()
-            java.lang.Long r0 = java.lang.Long.valueOf(r0)
-            java.lang.Object r0 = (java.lang.Object) r0
-            goto L7f
-        L67:
-            long r1 = r1.longValue()
-            long r3 = r0.getMaxLongValue()
-            int r1 = (r1 > r3 ? 1 : (r1 == r3 ? 0 : -1))
-            if (r1 <= 0) goto L7e
-            long r0 = r0.getMaxLongValue()
-            java.lang.Long r0 = java.lang.Long.valueOf(r0)
-            java.lang.Object r0 = (java.lang.Object) r0
-            goto L7f
-        L7e:
-            r0 = r7
-        L7f:
-            if (r0 == 0) goto L82
-            r7 = r0
-        L82:
-            T r0 = r6.value
-            r6.value = r7
-            r6.onSet(r0, r7)
-            r0 = 1003(0x3eb, float:1.406E-42)
-            r6.notifyPropertyChanged(r0)
-            boolean r0 = r6.syncable
-            if (r0 == 0) goto La1
-            com.rigol.scope.data.MessageBus r0 = com.rigol.scope.data.MessageBus.getInstance()
-            int r1 = r6.serviceID
-            int r2 = r6.messageID
-            java.lang.String r1 = com.rigol.scope.data.MessageBus.getKey(r1, r2)
-            r0.onSyncData(r1, r7)
-        La1:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.rigol.scope.data.BaseProperty.setValue(java.lang.Object):void");
+    public final void setValue(T t) {
+        T t2;
+        MessageAttr messageAttr = this.attr;
+        if (messageAttr != null) {
+            if (t instanceof Integer) {
+                if (messageAttr.getM_MaxValue() != messageAttr.getM_MinValue()) {
+                    Number number = (Number) t;
+                    if (number.intValue() < messageAttr.getMinIntValue()) {
+                        t2 = Integer.valueOf(messageAttr.getMinIntValue());
+                    } else if (number.intValue() > messageAttr.getMaxIntValue()) {
+                        t2 = Integer.valueOf(messageAttr.getMaxIntValue());
+                    }
+                    if (t2 != null) {
+                        t = t2;
+                    }
+                }
+                t2 = t;
+                if (t2 != null) {
+                }
+            } else {
+                if ((t instanceof Long) && messageAttr.getM_MaxValue() != messageAttr.getM_MinValue()) {
+                    Number number2 = (Number) t;
+                    if (number2.longValue() < messageAttr.getMinLongValue()) {
+                        t2 = Long.valueOf(messageAttr.getMinLongValue());
+                    } else if (number2.longValue() > messageAttr.getMaxLongValue()) {
+                        t2 = Long.valueOf(messageAttr.getMaxLongValue());
+                    }
+                    if (t2 != null) {
+                    }
+                }
+                t2 = t;
+                if (t2 != null) {
+                }
+            }
+        }
+        T t3 = this.value;
+        this.value = t;
+        onSet(t3, t);
+        notifyPropertyChanged(1003);
+        if (this.syncable) {
+            MessageBus.getInstance().onSyncData(MessageBus.getKey(this.serviceID, this.messageID), t);
+        }
     }
 
     public final Observer<Boolean> getObserver() {

@@ -915,79 +915,36 @@ public class DrawerLayout extends ViewGroup {
     @Override // android.view.ViewGroup
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public boolean onInterceptTouchEvent(android.view.MotionEvent r7) {
-        /*
-            r6 = this;
-            int r0 = r7.getActionMasked()
-            androidx.customview.widget.ViewDragHelper r1 = r6.mLeftDragger
-            boolean r1 = r1.shouldInterceptTouchEvent(r7)
-            androidx.customview.widget.ViewDragHelper r2 = r6.mRightDragger
-            boolean r2 = r2.shouldInterceptTouchEvent(r7)
-            r1 = r1 | r2
-            r2 = 1
-            r3 = 0
-            if (r0 == 0) goto L3a
-            if (r0 == r2) goto L31
-            r7 = 2
-            r4 = 3
-            if (r0 == r7) goto L1e
-            if (r0 == r4) goto L31
-            goto L38
-        L1e:
-            androidx.customview.widget.ViewDragHelper r7 = r6.mLeftDragger
-            boolean r7 = r7.checkTouchSlop(r4)
-            if (r7 == 0) goto L38
-            androidx.drawerlayout.widget.DrawerLayout$ViewDragCallback r7 = r6.mLeftCallback
-            r7.removeCallbacks()
-            androidx.drawerlayout.widget.DrawerLayout$ViewDragCallback r7 = r6.mRightCallback
-            r7.removeCallbacks()
-            goto L38
-        L31:
-            r6.closeDrawers(r2)
-            r6.mDisallowInterceptRequested = r3
-            r6.mChildrenCanceledTouch = r3
-        L38:
-            r7 = r3
-            goto L64
-        L3a:
-            float r0 = r7.getX()
-            float r7 = r7.getY()
-            r6.mInitialMotionX = r0
-            r6.mInitialMotionY = r7
-            float r4 = r6.mScrimOpacity
-            r5 = 0
-            int r4 = (r4 > r5 ? 1 : (r4 == r5 ? 0 : -1))
-            if (r4 <= 0) goto L5f
-            androidx.customview.widget.ViewDragHelper r4 = r6.mLeftDragger
-            int r0 = (int) r0
-            int r7 = (int) r7
-            android.view.View r7 = r4.findTopChildUnder(r0, r7)
-            if (r7 == 0) goto L5f
-            boolean r7 = r6.isContentView(r7)
-            if (r7 == 0) goto L5f
-            r7 = r2
-            goto L60
-        L5f:
-            r7 = r3
-        L60:
-            r6.mDisallowInterceptRequested = r3
-            r6.mChildrenCanceledTouch = r3
-        L64:
-            if (r1 != 0) goto L74
-            if (r7 != 0) goto L74
-            boolean r7 = r6.hasPeekingDrawer()
-            if (r7 != 0) goto L74
-            boolean r7 = r6.mChildrenCanceledTouch
-            if (r7 == 0) goto L73
-            goto L74
-        L73:
-            r2 = r3
-        L74:
-            return r2
-        */
-        throw new UnsupportedOperationException("Method not decompiled: androidx.drawerlayout.widget.DrawerLayout.onInterceptTouchEvent(android.view.MotionEvent):boolean");
+    public boolean onInterceptTouchEvent(MotionEvent motionEvent) {
+        boolean z;
+        View findTopChildUnder;
+        int actionMasked = motionEvent.getActionMasked();
+        boolean shouldInterceptTouchEvent = this.mLeftDragger.shouldInterceptTouchEvent(motionEvent) | this.mRightDragger.shouldInterceptTouchEvent(motionEvent);
+        if (actionMasked == 0) {
+            float x = motionEvent.getX();
+            float y = motionEvent.getY();
+            this.mInitialMotionX = x;
+            this.mInitialMotionY = y;
+            z = this.mScrimOpacity > 0.0f && (findTopChildUnder = this.mLeftDragger.findTopChildUnder((int) x, (int) y)) != null && isContentView(findTopChildUnder);
+            this.mDisallowInterceptRequested = false;
+            this.mChildrenCanceledTouch = false;
+        } else {
+            if (actionMasked != 1) {
+                if (actionMasked == 2) {
+                    if (this.mLeftDragger.checkTouchSlop(3)) {
+                        this.mLeftCallback.removeCallbacks();
+                        this.mRightCallback.removeCallbacks();
+                    }
+                }
+                z = false;
+            }
+            closeDrawers(true);
+            this.mDisallowInterceptRequested = false;
+            this.mChildrenCanceledTouch = false;
+            z = false;
+        }
+        return shouldInterceptTouchEvent || z || hasPeekingDrawer() || this.mChildrenCanceledTouch;
     }
 
     @Override // android.view.View

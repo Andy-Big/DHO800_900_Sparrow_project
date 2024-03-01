@@ -27,67 +27,52 @@ public class PlatformImplementations {
         /* JADX WARN: Removed duplicated region for block: B:13:0x0046 A[LOOP:0: B:3:0x0015->B:13:0x0046, LOOP_END] */
         /* JADX WARN: Removed duplicated region for block: B:23:0x004a A[EDGE_INSN: B:23:0x004a->B:15:0x004a ?: BREAK  , SYNTHETIC] */
         static {
-            /*
-                kotlin.internal.PlatformImplementations$ReflectThrowable r0 = new kotlin.internal.PlatformImplementations$ReflectThrowable
-                r0.<init>()
-                kotlin.internal.PlatformImplementations.ReflectThrowable.INSTANCE = r0
-                java.lang.Class<java.lang.Throwable> r0 = java.lang.Throwable.class
-                java.lang.reflect.Method[] r1 = r0.getMethods()
-                java.lang.String r2 = "throwableMethods"
-                kotlin.jvm.internal.Intrinsics.checkNotNullExpressionValue(r1, r2)
-                int r2 = r1.length
-                r3 = 0
-                r4 = r3
-            L15:
-                java.lang.String r5 = "it"
-                r6 = 0
-                if (r4 >= r2) goto L49
-                r7 = r1[r4]
-                kotlin.jvm.internal.Intrinsics.checkNotNullExpressionValue(r7, r5)
-                java.lang.String r8 = r7.getName()
-                java.lang.String r9 = "addSuppressed"
-                boolean r8 = kotlin.jvm.internal.Intrinsics.areEqual(r8, r9)
-                if (r8 == 0) goto L42
-                java.lang.Class[] r8 = r7.getParameterTypes()
-                java.lang.String r9 = "it.parameterTypes"
-                kotlin.jvm.internal.Intrinsics.checkNotNullExpressionValue(r8, r9)
-                java.lang.Object r8 = kotlin.collections.ArraysKt.singleOrNull(r8)
-                java.lang.Class r8 = (java.lang.Class) r8
-                boolean r8 = kotlin.jvm.internal.Intrinsics.areEqual(r8, r0)
-                if (r8 == 0) goto L42
-                r8 = 1
-                goto L43
-            L42:
-                r8 = r3
-            L43:
-                if (r8 == 0) goto L46
-                goto L4a
-            L46:
-                int r4 = r4 + 1
-                goto L15
-            L49:
-                r7 = r6
-            L4a:
-                kotlin.internal.PlatformImplementations.ReflectThrowable.addSuppressed = r7
-                int r0 = r1.length
-            L4d:
-                if (r3 >= r0) goto L65
-                r2 = r1[r3]
-                kotlin.jvm.internal.Intrinsics.checkNotNullExpressionValue(r2, r5)
-                java.lang.String r4 = r2.getName()
-                java.lang.String r7 = "getSuppressed"
-                boolean r4 = kotlin.jvm.internal.Intrinsics.areEqual(r4, r7)
-                if (r4 == 0) goto L62
-                r6 = r2
-                goto L65
-            L62:
-                int r3 = r3 + 1
-                goto L4d
-            L65:
-                kotlin.internal.PlatformImplementations.ReflectThrowable.getSuppressed = r6
-                return
-            */
-            throw new UnsupportedOperationException("Method not decompiled: kotlin.internal.PlatformImplementations.ReflectThrowable.<clinit>():void");
+            Method method;
+            Method it;
+            boolean z;
+            Method[] throwableMethods = Throwable.class.getMethods();
+            Intrinsics.checkNotNullExpressionValue(throwableMethods, "throwableMethods");
+            int length = throwableMethods.length;
+            int i = 0;
+            int i2 = 0;
+            while (true) {
+                method = null;
+                if (i2 >= length) {
+                    it = null;
+                    break;
+                }
+                it = throwableMethods[i2];
+                Intrinsics.checkNotNullExpressionValue(it, "it");
+                if (Intrinsics.areEqual(it.getName(), "addSuppressed")) {
+                    Class<?>[] parameterTypes = it.getParameterTypes();
+                    Intrinsics.checkNotNullExpressionValue(parameterTypes, "it.parameterTypes");
+                    if (Intrinsics.areEqual((Class) ArraysKt.singleOrNull(parameterTypes), Throwable.class)) {
+                        z = true;
+                        if (!z) {
+                            break;
+                        }
+                        i2++;
+                    }
+                }
+                z = false;
+                if (!z) {
+                }
+            }
+            addSuppressed = it;
+            int length2 = throwableMethods.length;
+            while (true) {
+                if (i >= length2) {
+                    break;
+                }
+                Method it2 = throwableMethods[i];
+                Intrinsics.checkNotNullExpressionValue(it2, "it");
+                if (Intrinsics.areEqual(it2.getName(), "getSuppressed")) {
+                    method = it2;
+                    break;
+                }
+                i++;
+            }
+            getSuppressed = method;
         }
 
         private ReflectThrowable() {

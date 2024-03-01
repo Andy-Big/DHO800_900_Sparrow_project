@@ -592,14 +592,93 @@ public class PDFView extends RelativeLayout {
     /* JADX WARN: Removed duplicated region for block: B:52:0x00f8  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public void moveTo(float r6, float r7, boolean r8) {
-        /*
-            Method dump skipped, instructions count: 299
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.github.barteksc.pdfviewer.PDFView.moveTo(float, float, boolean):void");
+    public void moveTo(float f, float f2, boolean z) {
+        float height;
+        float docLen;
+        float f3;
+        float width;
+        float docLen2;
+        float f4;
+        if (this.swipeVertical) {
+            float currentScale = toCurrentScale(this.pdfFile.getMaxPageWidth());
+            if (currentScale < getWidth()) {
+                width = getWidth() / 2;
+                currentScale /= 2.0f;
+            } else {
+                if (f > 0.0f) {
+                    f = 0.0f;
+                } else if (f + currentScale < getWidth()) {
+                    width = getWidth();
+                }
+                docLen2 = this.pdfFile.getDocLen(this.zoom);
+                if (docLen2 >= getHeight()) {
+                    f2 = (getHeight() - docLen2) / 2.0f;
+                } else if (f2 > 0.0f) {
+                    f2 = 0.0f;
+                } else if (f2 + docLen2 < getHeight()) {
+                    f2 = (-docLen2) + getHeight();
+                }
+                f4 = this.currentYOffset;
+                if (f2 >= f4) {
+                    this.scrollDir = ScrollDir.END;
+                } else if (f2 > f4) {
+                    this.scrollDir = ScrollDir.START;
+                } else {
+                    this.scrollDir = ScrollDir.NONE;
+                }
+            }
+            f = width - currentScale;
+            docLen2 = this.pdfFile.getDocLen(this.zoom);
+            if (docLen2 >= getHeight()) {
+            }
+            f4 = this.currentYOffset;
+            if (f2 >= f4) {
+            }
+        } else {
+            float currentScale2 = toCurrentScale(this.pdfFile.getMaxPageHeight());
+            if (currentScale2 < getHeight()) {
+                height = getHeight() / 2;
+                currentScale2 /= 2.0f;
+            } else {
+                if (f2 > 0.0f) {
+                    f2 = 0.0f;
+                } else if (f2 + currentScale2 < getHeight()) {
+                    height = getHeight();
+                }
+                docLen = this.pdfFile.getDocLen(this.zoom);
+                if (docLen >= getWidth()) {
+                    f = (getWidth() - docLen) / 2.0f;
+                } else if (f > 0.0f) {
+                    f = 0.0f;
+                } else if (f + docLen < getWidth()) {
+                    f = (-docLen) + getWidth();
+                }
+                f3 = this.currentXOffset;
+                if (f >= f3) {
+                    this.scrollDir = ScrollDir.END;
+                } else if (f > f3) {
+                    this.scrollDir = ScrollDir.START;
+                } else {
+                    this.scrollDir = ScrollDir.NONE;
+                }
+            }
+            f2 = height - currentScale2;
+            docLen = this.pdfFile.getDocLen(this.zoom);
+            if (docLen >= getWidth()) {
+            }
+            f3 = this.currentXOffset;
+            if (f >= f3) {
+            }
+        }
+        this.currentXOffset = f;
+        this.currentYOffset = f2;
+        float positionOffset = getPositionOffset();
+        if (z && this.scrollHandle != null && !documentFitsView()) {
+            this.scrollHandle.setScroll(positionOffset);
+        }
+        this.callbacks.callOnPageScroll(getCurrentPage(), positionOffset);
+        redraw();
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */

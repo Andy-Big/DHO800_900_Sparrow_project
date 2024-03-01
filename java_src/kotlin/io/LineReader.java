@@ -1,5 +1,6 @@
 package kotlin.io;
 
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -49,14 +50,61 @@ public final class LineReader {
      */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public final synchronized java.lang.String readLine(java.io.InputStream r10, java.nio.charset.Charset r11) {
-        /*
-            Method dump skipped, instructions count: 222
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlin.io.LineReader.readLine(java.io.InputStream, java.nio.charset.Charset):java.lang.String");
+    public final synchronized String readLine(InputStream inputStream, Charset charset) {
+        int decodeEndOfInput;
+        Intrinsics.checkNotNullParameter(inputStream, "inputStream");
+        Intrinsics.checkNotNullParameter(charset, "charset");
+        boolean z = true;
+        if (decoder != null) {
+            if (decoder == null) {
+                Intrinsics.throwUninitializedPropertyAccessException("decoder");
+            }
+        }
+        updateCharset(charset);
+        int i = 0;
+        int i2 = 0;
+        while (true) {
+            int read = inputStream.read();
+            if (read == -1) {
+                if ((sb.length() == 0) && i == 0 && i2 == 0) {
+                    return null;
+                }
+                decodeEndOfInput = decodeEndOfInput(i, i2);
+            } else {
+                int i3 = i + 1;
+                bytes[i] = (byte) read;
+                if (read != 10 && i3 != 32 && directEOL) {
+                    i = i3;
+                }
+                byteBuf.limit(i3);
+                charBuf.position(i2);
+                i2 = decode(false);
+                if (i2 > 0 && chars[i2 - 1] == '\n') {
+                    byteBuf.position(0);
+                    decodeEndOfInput = i2;
+                    break;
+                }
+                i = compactBytes();
+            }
+        }
+        if (decodeEndOfInput > 0 && chars[decodeEndOfInput - 1] == '\n' && decodeEndOfInput - 1 > 0 && chars[decodeEndOfInput - 1] == '\r') {
+            decodeEndOfInput--;
+        }
+        if (sb.length() != 0) {
+            z = false;
+        }
+        if (z) {
+            return new String(chars, 0, decodeEndOfInput);
+        }
+        sb.append(chars, 0, decodeEndOfInput);
+        String sb2 = sb.toString();
+        Intrinsics.checkNotNullExpressionValue(sb2, "sb.toString()");
+        if (sb.length() > 32) {
+            trimStringBuilder();
+        }
+        sb.setLength(0);
+        return sb2;
     }
 
     private final int decode(boolean z) {

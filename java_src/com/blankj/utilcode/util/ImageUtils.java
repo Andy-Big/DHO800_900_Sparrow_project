@@ -1,5 +1,6 @@
 package com.blankj.utilcode.util;
 
+import android.content.ContentValues;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,7 +21,10 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
@@ -38,6 +42,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Array;
 /* loaded from: classes.dex */
 public final class ImageUtils {
@@ -1038,14 +1043,89 @@ public final class ImageUtils {
     /* JADX WARN: Removed duplicated region for block: B:59:0x012f A[EXC_TOP_SPLITTER, SYNTHETIC] */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public static java.io.File save2Album(android.graphics.Bitmap r7, android.graphics.Bitmap.CompressFormat r8, int r9, boolean r10) {
-        /*
-            Method dump skipped, instructions count: 312
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.blankj.utilcode.util.ImageUtils.save2Album(android.graphics.Bitmap, android.graphics.Bitmap$CompressFormat, int, boolean):java.io.File");
+    public static File save2Album(Bitmap bitmap, Bitmap.CompressFormat compressFormat, int i, boolean z) {
+        Uri uri;
+        OutputStream outputStream;
+        String str = System.currentTimeMillis() + "_" + i + "." + (Bitmap.CompressFormat.JPEG.equals(compressFormat) ? "JPG" : compressFormat.name());
+        OutputStream outputStream2 = null;
+        if (Build.VERSION.SDK_INT < 29) {
+            if (!UtilsBridge.isGranted("android.permission.WRITE_EXTERNAL_STORAGE")) {
+                Log.e("ImageUtils", "save to album need storage permission");
+                return null;
+            }
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), Utils.getApp().getPackageName() + "/" + str);
+            if (save(bitmap, file, compressFormat, i, z)) {
+                UtilsBridge.notifySystemToScan(file);
+                return file;
+            }
+            return null;
+        }
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("_display_name", str);
+        contentValues.put("mime_type", "image/*");
+        if (Environment.getExternalStorageState().equals("mounted")) {
+            uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        } else {
+            uri = MediaStore.Images.Media.INTERNAL_CONTENT_URI;
+        }
+        contentValues.put("relative_path", Environment.DIRECTORY_DCIM + "/" + Utils.getApp().getPackageName());
+        contentValues.put("is_pending", (Integer) 1);
+        Uri insert = Utils.getApp().getContentResolver().insert(uri, contentValues);
+        if (insert == null) {
+            return null;
+        }
+        try {
+            outputStream = Utils.getApp().getContentResolver().openOutputStream(insert);
+            try {
+                try {
+                    bitmap.compress(compressFormat, i, outputStream);
+                    contentValues.clear();
+                    contentValues.put("is_pending", (Integer) 0);
+                    Utils.getApp().getContentResolver().update(insert, contentValues, null, null);
+                    File uri2File = UtilsBridge.uri2File(insert);
+                    if (outputStream != null) {
+                        try {
+                            outputStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    return uri2File;
+                } catch (Exception e2) {
+                    e = e2;
+                    Utils.getApp().getContentResolver().delete(insert, null, null);
+                    e.printStackTrace();
+                    if (outputStream != null) {
+                        try {
+                            outputStream.close();
+                        } catch (IOException e3) {
+                            e3.printStackTrace();
+                        }
+                    }
+                    return null;
+                }
+            } catch (Throwable th) {
+                th = th;
+                outputStream2 = outputStream;
+                if (outputStream2 != null) {
+                    try {
+                        outputStream2.close();
+                    } catch (IOException e4) {
+                        e4.printStackTrace();
+                    }
+                }
+                throw th;
+            }
+        } catch (Exception e5) {
+            e = e5;
+            outputStream = null;
+        } catch (Throwable th2) {
+            th = th2;
+            if (outputStream2 != null) {
+            }
+            throw th;
+        }
     }
 
     public static boolean isImage(File file) {

@@ -2,7 +2,9 @@ package kotlinx.coroutines.sync;
 
 import androidx.exifinterface.media.ExifInterface;
 import kotlin.Metadata;
+import kotlin.ResultKt;
 import kotlin.coroutines.Continuation;
+import kotlin.coroutines.intrinsics.IntrinsicsKt;
 import kotlin.jvm.functions.Function0;
 import kotlin.jvm.internal.InlineMarker;
 import kotlinx.coroutines.internal.Symbol;
@@ -39,66 +41,48 @@ public final class SemaphoreKt {
     /* JADX WARN: Removed duplicated region for block: B:14:0x003b  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public static final <T> java.lang.Object withPermit(kotlinx.coroutines.sync.Semaphore r4, kotlin.jvm.functions.Function0<? extends T> r5, kotlin.coroutines.Continuation<? super T> r6) {
-        /*
-            boolean r0 = r6 instanceof kotlinx.coroutines.sync.SemaphoreKt$withPermit$1
-            if (r0 == 0) goto L14
-            r0 = r6
-            kotlinx.coroutines.sync.SemaphoreKt$withPermit$1 r0 = (kotlinx.coroutines.sync.SemaphoreKt$withPermit$1) r0
-            int r1 = r0.label
-            r2 = -2147483648(0xffffffff80000000, float:-0.0)
-            r1 = r1 & r2
-            if (r1 == 0) goto L14
-            int r6 = r0.label
-            int r6 = r6 - r2
-            r0.label = r6
-            goto L19
-        L14:
-            kotlinx.coroutines.sync.SemaphoreKt$withPermit$1 r0 = new kotlinx.coroutines.sync.SemaphoreKt$withPermit$1
-            r0.<init>(r6)
-        L19:
-            java.lang.Object r6 = r0.result
-            java.lang.Object r1 = kotlin.coroutines.intrinsics.IntrinsicsKt.getCOROUTINE_SUSPENDED()
-            int r2 = r0.label
-            r3 = 1
-            if (r2 == 0) goto L3b
-            if (r2 != r3) goto L33
-            java.lang.Object r4 = r0.L$1
-            r5 = r4
-            kotlin.jvm.functions.Function0 r5 = (kotlin.jvm.functions.Function0) r5
-            java.lang.Object r4 = r0.L$0
-            kotlinx.coroutines.sync.Semaphore r4 = (kotlinx.coroutines.sync.Semaphore) r4
-            kotlin.ResultKt.throwOnFailure(r6)
-            goto L4b
-        L33:
-            java.lang.IllegalStateException r4 = new java.lang.IllegalStateException
-            java.lang.String r5 = "call to 'resume' before 'invoke' with coroutine"
-            r4.<init>(r5)
-            throw r4
-        L3b:
-            kotlin.ResultKt.throwOnFailure(r6)
-            r0.L$0 = r4
-            r0.L$1 = r5
-            r0.label = r3
-            java.lang.Object r6 = r4.acquire(r0)
-            if (r6 != r1) goto L4b
-            return r1
-        L4b:
-            java.lang.Object r5 = r5.invoke()     // Catch: java.lang.Throwable -> L59
-            kotlin.jvm.internal.InlineMarker.finallyStart(r3)
-            r4.release()
-            kotlin.jvm.internal.InlineMarker.finallyEnd(r3)
-            return r5
-        L59:
-            r5 = move-exception
-            kotlin.jvm.internal.InlineMarker.finallyStart(r3)
-            r4.release()
-            kotlin.jvm.internal.InlineMarker.finallyEnd(r3)
-            throw r5
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.sync.SemaphoreKt.withPermit(kotlinx.coroutines.sync.Semaphore, kotlin.jvm.functions.Function0, kotlin.coroutines.Continuation):java.lang.Object");
+    public static final <T> Object withPermit(Semaphore semaphore, Function0<? extends T> function0, Continuation<? super T> continuation) {
+        SemaphoreKt$withPermit$1 semaphoreKt$withPermit$1;
+        int i;
+        try {
+            if (continuation instanceof SemaphoreKt$withPermit$1) {
+                semaphoreKt$withPermit$1 = (SemaphoreKt$withPermit$1) continuation;
+                if ((semaphoreKt$withPermit$1.label & Integer.MIN_VALUE) != 0) {
+                    semaphoreKt$withPermit$1.label -= Integer.MIN_VALUE;
+                    Object obj = semaphoreKt$withPermit$1.result;
+                    Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+                    i = semaphoreKt$withPermit$1.label;
+                    if (i != 0) {
+                        ResultKt.throwOnFailure(obj);
+                        semaphoreKt$withPermit$1.L$0 = semaphore;
+                        semaphoreKt$withPermit$1.L$1 = function0;
+                        semaphoreKt$withPermit$1.label = 1;
+                        if (semaphore.acquire(semaphoreKt$withPermit$1) == coroutine_suspended) {
+                            return coroutine_suspended;
+                        }
+                    } else if (i != 1) {
+                        throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+                    } else {
+                        function0 = (Function0) semaphoreKt$withPermit$1.L$1;
+                        semaphore = (Semaphore) semaphoreKt$withPermit$1.L$0;
+                        ResultKt.throwOnFailure(obj);
+                    }
+                    return function0.invoke();
+                }
+            }
+            return function0.invoke();
+        } finally {
+            InlineMarker.finallyStart(1);
+            semaphore.release();
+            InlineMarker.finallyEnd(1);
+        }
+        semaphoreKt$withPermit$1 = new SemaphoreKt$withPermit$1(continuation);
+        Object obj2 = semaphoreKt$withPermit$1.result;
+        Object coroutine_suspended2 = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+        i = semaphoreKt$withPermit$1.label;
+        if (i != 0) {
+        }
     }
 
     private static final Object withPermit$$forInline(Semaphore semaphore, Function0 function0, Continuation continuation) {

@@ -2,6 +2,7 @@ package com.blankj.utilcode.util;
 
 import android.util.Log;
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -234,67 +235,60 @@ public final class ZipUtils {
     /* JADX WARN: Removed duplicated region for block: B:30:0x0056  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    private static boolean unzipChildFile(java.io.File r1, java.util.List<java.io.File> r2, java.util.zip.ZipFile r3, java.util.zip.ZipEntry r4, java.lang.String r5) throws java.io.IOException {
-        /*
-            java.io.File r0 = new java.io.File
-            r0.<init>(r1, r5)
-            r2.add(r0)
-            boolean r1 = r4.isDirectory()
-            if (r1 == 0) goto L13
-            boolean r1 = com.blankj.utilcode.util.UtilsBridge.createOrExistsDir(r0)
-            return r1
-        L13:
-            boolean r1 = com.blankj.utilcode.util.UtilsBridge.createOrExistsFile(r0)
-            r2 = 0
-            if (r1 != 0) goto L1b
-            return r2
-        L1b:
-            r1 = 0
-            java.io.BufferedInputStream r5 = new java.io.BufferedInputStream     // Catch: java.lang.Throwable -> L4b
-            java.io.InputStream r3 = r3.getInputStream(r4)     // Catch: java.lang.Throwable -> L4b
-            r5.<init>(r3)     // Catch: java.lang.Throwable -> L4b
-            java.io.BufferedOutputStream r3 = new java.io.BufferedOutputStream     // Catch: java.lang.Throwable -> L48
-            java.io.FileOutputStream r4 = new java.io.FileOutputStream     // Catch: java.lang.Throwable -> L48
-            r4.<init>(r0)     // Catch: java.lang.Throwable -> L48
-            r3.<init>(r4)     // Catch: java.lang.Throwable -> L48
-            r1 = 8192(0x2000, float:1.14794E-41)
-            byte[] r1 = new byte[r1]     // Catch: java.lang.Throwable -> L46
-        L33:
-            int r4 = r5.read(r1)     // Catch: java.lang.Throwable -> L46
-            r0 = -1
-            if (r4 == r0) goto L3e
-            r3.write(r1, r2, r4)     // Catch: java.lang.Throwable -> L46
-            goto L33
-        L3e:
-            r5.close()
-            r3.close()
-            r1 = 1
-            return r1
-        L46:
-            r1 = move-exception
-            goto L4f
-        L48:
-            r2 = move-exception
-            r3 = r1
-            goto L4e
-        L4b:
-            r2 = move-exception
-            r3 = r1
-            r5 = r3
-        L4e:
-            r1 = r2
-        L4f:
-            if (r5 == 0) goto L54
-            r5.close()
-        L54:
-            if (r3 == 0) goto L59
-            r3.close()
-        L59:
-            throw r1
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.blankj.utilcode.util.ZipUtils.unzipChildFile(java.io.File, java.util.List, java.util.zip.ZipFile, java.util.zip.ZipEntry, java.lang.String):boolean");
+    private static boolean unzipChildFile(File file, List<File> list, ZipFile zipFile, ZipEntry zipEntry, String str) throws IOException {
+        BufferedOutputStream bufferedOutputStream;
+        BufferedInputStream bufferedInputStream;
+        Throwable th;
+        File file2 = new File(file, str);
+        list.add(file2);
+        if (zipEntry.isDirectory()) {
+            return UtilsBridge.createOrExistsDir(file2);
+        }
+        if (!UtilsBridge.createOrExistsFile(file2)) {
+            return false;
+        }
+        try {
+            bufferedInputStream = new BufferedInputStream(zipFile.getInputStream(zipEntry));
+            try {
+                bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file2));
+                try {
+                    byte[] bArr = new byte[8192];
+                    while (true) {
+                        int read = bufferedInputStream.read(bArr);
+                        if (read != -1) {
+                            bufferedOutputStream.write(bArr, 0, read);
+                        } else {
+                            bufferedInputStream.close();
+                            bufferedOutputStream.close();
+                            return true;
+                        }
+                    }
+                } catch (Throwable th2) {
+                    th = th2;
+                    if (bufferedInputStream != null) {
+                        bufferedInputStream.close();
+                    }
+                    if (bufferedOutputStream != null) {
+                        bufferedOutputStream.close();
+                    }
+                    throw th;
+                }
+            } catch (Throwable th3) {
+                th = th3;
+                bufferedOutputStream = null;
+                th = th;
+                if (bufferedInputStream != null) {
+                }
+                if (bufferedOutputStream != null) {
+                }
+                throw th;
+            }
+        } catch (Throwable th4) {
+            th = th4;
+            bufferedOutputStream = null;
+            bufferedInputStream = null;
+        }
     }
 
     public static List<String> getFilesPath(String str) throws IOException {

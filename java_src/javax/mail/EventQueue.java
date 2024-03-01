@@ -100,7 +100,6 @@ public class EventQueue implements Runnable {
     @Override // java.lang.Runnable
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
     public void run() {
         /*

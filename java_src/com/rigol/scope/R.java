@@ -2139,6 +2139,9 @@ public final class R {
         public static final int yellow = 0x7f060187;
         public static final int yellow_green = 0x7f060188;
 
+
+        public static final int probe_atten_color = 0x7f061000;
+
         private color() {
         }
     }
@@ -6655,6 +6658,8 @@ public final class R {
         public static final int nothing_text21 = 0x7f0a0696;
         public static final int nothing_text6 = 0x7f0a0697;
         public static final int nothing_view = 0x7f0a0698;
+        public static final int nothing_view1 = 0x7f0a1001;
+        public static final int nothing_view2 = 0x7f0a1002;
         public static final int notice = 0x7f0a0699;
         public static final int notice_content = 0x7f0a069a;
         public static final int notification_background = 0x7f0a069b;
@@ -6791,6 +6796,7 @@ public final class R {
         public static final int prefix = 0x7f0a071e;
         public static final int prefix_edit_text = 0x7f0a071f;
         public static final int preset_btn = 0x7f0a0720;
+        public static final int probe_atten = 0x7f0a1000;
         public static final int probe_bias = 0x7f0a0721;
         public static final int probe_bias_edit_text = 0x7f0a0722;
         public static final int probe_cal = 0x7f0a0723;
@@ -8348,10 +8354,10 @@ public final class R {
         public static final int G = 0x7f10001e;
 
         /* renamed from: GΙ */
-        public static final int jadx_deobf_0x00001cdf = 0x7f10001f;
+        public static final int jadx_deobf_0x00001ce2 = 0x7f10001f;
 
         /* renamed from: GΙΙ */
-        public static final int jadx_deobf_0x00001ce0 = 0x7f100020;
+        public static final int jadx_deobf_0x00001ce3 = 0x7f100020;
         public static final int H = 0x7f100021;
         public static final int Horizontal = 0x7f100022;
         public static final int I = 0x7f100023;
@@ -16246,12 +16252,12 @@ public final class R {
         public static final int zonetrigger_string_wave_zoom_out = 0x7f101ef4;
         /* JADX INFO: Added by JADX */
 
-        /* renamed from: jadx_deobf_0x00001cdf  reason: collision with other field name */
-        public static final int f0jadx_deobf_0x00001cdf = 0x7f10001f;
+        /* renamed from: jadx_deobf_0x00001ce2  reason: collision with other field name */
+        public static final int f0jadx_deobf_0x00001ce2 = 0x7f10001f;
         /* JADX INFO: Added by JADX */
 
-        /* renamed from: jadx_deobf_0x00001ce0  reason: collision with other field name */
-        public static final int f1jadx_deobf_0x00001ce0 = 0x7f100020;
+        /* renamed from: jadx_deobf_0x00001ce3  reason: collision with other field name */
+        public static final int f1jadx_deobf_0x00001ce3 = 0x7f100020;
 
         private string() {
         }

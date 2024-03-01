@@ -24,11 +24,11 @@ class TypefaceCompatApi21Impl extends TypefaceCompatBaseImpl {
     private static final String CREATE_FROM_FAMILIES_WITH_DEFAULT_METHOD = "createFromFamiliesWithDefault";
     private static final String FONT_FAMILY_CLASS = "android.graphics.FontFamily";
     private static final String TAG = "TypefaceCompatApi21Impl";
-    private static Method sAddFontWeightStyle = null;
-    private static Method sCreateFromFamiliesWithDefault = null;
-    private static Class<?> sFontFamily = null;
-    private static Constructor<?> sFontFamilyCtor = null;
-    private static boolean sHasInitBeenCalled = false;
+    private static Method sAddFontWeightStyle;
+    private static Method sCreateFromFamiliesWithDefault;
+    private static Class<?> sFontFamily;
+    private static Constructor<?> sFontFamilyCtor;
+    private static boolean sHasInitBeenCalled;
 
     private static void init() {
         Method method;

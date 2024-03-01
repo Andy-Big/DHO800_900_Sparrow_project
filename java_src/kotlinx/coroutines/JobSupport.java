@@ -648,112 +648,53 @@ public class JobSupport implements Job, ChildJob, ParentJob, SelectClause0 {
      */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    private final boolean makeCancelling(java.lang.Object r8) {
-        /*
-            r7 = this;
-            r0 = 0
-            r1 = r0
-            java.lang.Throwable r1 = (java.lang.Throwable) r1
-        L4:
-            java.lang.Object r2 = r7.getState$kotlinx_coroutines_core()
-            boolean r3 = r2 instanceof kotlinx.coroutines.JobSupport.Finishing
-            r4 = 0
-            r5 = 1
-            if (r3 == 0) goto L4c
-            monitor-enter(r2)
-            r3 = r2
-            kotlinx.coroutines.JobSupport$Finishing r3 = (kotlinx.coroutines.JobSupport.Finishing) r3     // Catch: java.lang.Throwable -> L49
-            boolean r3 = r3.isSealed()     // Catch: java.lang.Throwable -> L49
-            if (r3 == 0) goto L1a
-            monitor-exit(r2)
-            return r4
-        L1a:
-            r3 = r2
-            kotlinx.coroutines.JobSupport$Finishing r3 = (kotlinx.coroutines.JobSupport.Finishing) r3     // Catch: java.lang.Throwable -> L49
-            boolean r3 = r3.isCancelling()     // Catch: java.lang.Throwable -> L49
-            if (r8 != 0) goto L25
-            if (r3 != 0) goto L32
-        L25:
-            if (r1 == 0) goto L28
-            goto L2c
-        L28:
-            java.lang.Throwable r1 = r7.createCauseException(r8)     // Catch: java.lang.Throwable -> L49
-        L2c:
-            r8 = r2
-            kotlinx.coroutines.JobSupport$Finishing r8 = (kotlinx.coroutines.JobSupport.Finishing) r8     // Catch: java.lang.Throwable -> L49
-            r8.addExceptionLocked(r1)     // Catch: java.lang.Throwable -> L49
-        L32:
-            r8 = r2
-            kotlinx.coroutines.JobSupport$Finishing r8 = (kotlinx.coroutines.JobSupport.Finishing) r8     // Catch: java.lang.Throwable -> L49
-            java.lang.Throwable r8 = r8.rootCause     // Catch: java.lang.Throwable -> L49
-            r1 = r3 ^ 1
-            if (r1 == 0) goto L3c
-            r0 = r8
-        L3c:
-            monitor-exit(r2)
-            if (r0 == 0) goto L48
-            kotlinx.coroutines.JobSupport$Finishing r2 = (kotlinx.coroutines.JobSupport.Finishing) r2
-            kotlinx.coroutines.NodeList r8 = r2.getList()
-            r7.notifyCancelling(r8, r0)
-        L48:
-            return r5
-        L49:
-            r8 = move-exception
-            monitor-exit(r2)
-            throw r8
-        L4c:
-            boolean r3 = r2 instanceof kotlinx.coroutines.Incomplete
-            if (r3 == 0) goto La7
-            if (r1 == 0) goto L53
-            goto L57
-        L53:
-            java.lang.Throwable r1 = r7.createCauseException(r8)
-        L57:
-            r3 = r2
-            kotlinx.coroutines.Incomplete r3 = (kotlinx.coroutines.Incomplete) r3
-            boolean r6 = r3.isActive()
-            if (r6 == 0) goto L67
-            boolean r2 = r7.tryMakeCancelling(r3, r1)
-            if (r2 == 0) goto L4
-            return r5
-        L67:
-            kotlinx.coroutines.CompletedExceptionally r3 = new kotlinx.coroutines.CompletedExceptionally
-            r6 = 2
-            r3.<init>(r1, r4, r6, r0)
-            int r3 = r7.tryMakeCompleting(r2, r3, r4)
-            if (r3 == 0) goto L8a
-            if (r3 == r5) goto L89
-            if (r3 == r6) goto L89
-            r2 = 3
-            if (r3 != r2) goto L7b
-            goto L4
-        L7b:
-            java.lang.String r8 = "unexpected result"
-            java.lang.IllegalStateException r0 = new java.lang.IllegalStateException
-            java.lang.String r8 = r8.toString()
-            r0.<init>(r8)
-            java.lang.Throwable r0 = (java.lang.Throwable) r0
-            throw r0
-        L89:
-            return r5
-        L8a:
-            java.lang.StringBuilder r8 = new java.lang.StringBuilder
-            r8.<init>()
-            java.lang.String r0 = "Cannot happen in "
-            r8.append(r0)
-            r8.append(r2)
-            java.lang.String r8 = r8.toString()
-            java.lang.IllegalStateException r0 = new java.lang.IllegalStateException
-            java.lang.String r8 = r8.toString()
-            r0.<init>(r8)
-            java.lang.Throwable r0 = (java.lang.Throwable) r0
-            throw r0
-        La7:
-            return r4
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.JobSupport.makeCancelling(java.lang.Object):boolean");
+    private final boolean makeCancelling(Object obj) {
+        Throwable th = null;
+        while (true) {
+            Object state$kotlinx_coroutines_core = getState$kotlinx_coroutines_core();
+            if (!(state$kotlinx_coroutines_core instanceof Finishing)) {
+                if (!(state$kotlinx_coroutines_core instanceof Incomplete)) {
+                    return false;
+                }
+                if (th == null) {
+                    th = createCauseException(obj);
+                }
+                Incomplete incomplete = (Incomplete) state$kotlinx_coroutines_core;
+                if (incomplete.isActive()) {
+                    if (tryMakeCancelling(incomplete, th)) {
+                        return true;
+                    }
+                } else {
+                    int tryMakeCompleting = tryMakeCompleting(state$kotlinx_coroutines_core, new CompletedExceptionally(th, false, 2, null), 0);
+                    if (tryMakeCompleting == 0) {
+                        throw new IllegalStateException(("Cannot happen in " + state$kotlinx_coroutines_core).toString());
+                    } else if (tryMakeCompleting == 1 || tryMakeCompleting == 2) {
+                        break;
+                    } else if (tryMakeCompleting != 3) {
+                        throw new IllegalStateException("unexpected result".toString());
+                    }
+                }
+            } else {
+                synchronized (state$kotlinx_coroutines_core) {
+                    if (((Finishing) state$kotlinx_coroutines_core).isSealed()) {
+                        return false;
+                    }
+                    boolean isCancelling = ((Finishing) state$kotlinx_coroutines_core).isCancelling();
+                    if (obj != null || !isCancelling) {
+                        if (th == null) {
+                            th = createCauseException(obj);
+                        }
+                        ((Finishing) state$kotlinx_coroutines_core).addExceptionLocked(th);
+                    }
+                    Throwable th2 = isCancelling ^ true ? ((Finishing) state$kotlinx_coroutines_core).rootCause : null;
+                    if (th2 != null) {
+                        notifyCancelling(((Finishing) state$kotlinx_coroutines_core).getList(), th2);
+                    }
+                    return true;
+                }
+            }
+        }
     }
 
     private final NodeList getOrPromoteCancellingList(Incomplete incomplete) {

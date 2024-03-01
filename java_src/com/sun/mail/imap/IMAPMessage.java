@@ -904,102 +904,51 @@ public class IMAPMessage extends MimeMessage implements ReadableMime {
         @Override // com.sun.mail.imap.Utility.Condition
         /*
             Code decompiled incorrectly, please refer to instructions dump.
-            To view partially-correct add '--show-bad-code' argument
         */
-        public boolean test(com.sun.mail.imap.IMAPMessage r7) {
-            /*
-                r6 = this;
-                boolean r0 = r6.needEnvelope
-                r1 = 1
-                if (r0 == 0) goto L12
-                com.sun.mail.imap.protocol.ENVELOPE r0 = com.sun.mail.imap.IMAPMessage.access$000(r7)
-                if (r0 != 0) goto L12
-                boolean r0 = com.sun.mail.imap.IMAPMessage.access$100(r7)
-                if (r0 != 0) goto L12
-                return r1
-            L12:
-                boolean r0 = r6.needFlags
-                if (r0 == 0) goto L1d
-                javax.mail.Flags r0 = com.sun.mail.imap.IMAPMessage.access$200(r7)
-                if (r0 != 0) goto L1d
-                return r1
-            L1d:
-                boolean r0 = r6.needBodyStructure
-                if (r0 == 0) goto L2e
-                com.sun.mail.imap.protocol.BODYSTRUCTURE r0 = com.sun.mail.imap.IMAPMessage.access$300(r7)
-                if (r0 != 0) goto L2e
-                boolean r0 = com.sun.mail.imap.IMAPMessage.access$100(r7)
-                if (r0 != 0) goto L2e
-                return r1
-            L2e:
-                boolean r0 = r6.needUID
-                r2 = -1
-                if (r0 == 0) goto L3d
-                long r4 = r7.getUID()
-                int r0 = (r4 > r2 ? 1 : (r4 == r2 ? 0 : -1))
-                if (r0 != 0) goto L3d
-                return r1
-            L3d:
-                boolean r0 = r6.needHeaders
-                if (r0 == 0) goto L48
-                boolean r0 = com.sun.mail.imap.IMAPMessage.access$400(r7)
-                if (r0 != 0) goto L48
-                return r1
-            L48:
-                boolean r0 = r6.needSize
-                if (r0 == 0) goto L5b
-                long r4 = com.sun.mail.imap.IMAPMessage.access$500(r7)
-                int r0 = (r4 > r2 ? 1 : (r4 == r2 ? 0 : -1))
-                if (r0 != 0) goto L5b
-                boolean r0 = com.sun.mail.imap.IMAPMessage.access$100(r7)
-                if (r0 != 0) goto L5b
-                return r1
-            L5b:
-                boolean r0 = r6.needMessage
-                if (r0 == 0) goto L66
-                boolean r0 = com.sun.mail.imap.IMAPMessage.access$100(r7)
-                if (r0 != 0) goto L66
-                return r1
-            L66:
-                boolean r0 = r6.needRDate
-                if (r0 == 0) goto L71
-                java.util.Date r0 = com.sun.mail.imap.IMAPMessage.access$600(r7)
-                if (r0 != 0) goto L71
-                return r1
-            L71:
-                r0 = 0
-                r2 = r0
-            L73:
-                java.lang.String[] r3 = r6.hdrs
-                int r4 = r3.length
-                if (r2 >= r4) goto L84
-                r3 = r3[r2]
-                boolean r3 = com.sun.mail.imap.IMAPMessage.access$700(r7, r3)
-                if (r3 != 0) goto L81
-                return r1
-            L81:
-                int r2 = r2 + 1
-                goto L73
-            L84:
-                java.util.Set<com.sun.mail.imap.protocol.FetchItem> r2 = r6.need
-                java.util.Iterator r2 = r2.iterator()
-            L8a:
-                boolean r3 = r2.hasNext()
-                if (r3 == 0) goto La7
-                java.lang.Object r3 = r2.next()
-                com.sun.mail.imap.protocol.FetchItem r3 = (com.sun.mail.imap.protocol.FetchItem) r3
-                java.util.Map<java.lang.String, java.lang.Object> r4 = r7.items
-                if (r4 == 0) goto La6
-                java.util.Map<java.lang.String, java.lang.Object> r4 = r7.items
-                java.lang.String r3 = r3.getName()
-                java.lang.Object r3 = r4.get(r3)
-                if (r3 != 0) goto L8a
-            La6:
-                return r1
-            La7:
-                return r0
-            */
-            throw new UnsupportedOperationException("Method not decompiled: com.sun.mail.imap.IMAPMessage.FetchProfileCondition.test(com.sun.mail.imap.IMAPMessage):boolean");
+        public boolean test(IMAPMessage iMAPMessage) {
+            if (this.needEnvelope && iMAPMessage._getEnvelope() == null && !iMAPMessage.bodyLoaded) {
+                return true;
+            }
+            if (this.needFlags && iMAPMessage._getFlags() == null) {
+                return true;
+            }
+            if (this.needBodyStructure && iMAPMessage._getBodyStructure() == null && !iMAPMessage.bodyLoaded) {
+                return true;
+            }
+            if (this.needUID && iMAPMessage.getUID() == -1) {
+                return true;
+            }
+            if (this.needHeaders && !iMAPMessage.areHeadersLoaded()) {
+                return true;
+            }
+            if (this.needSize && iMAPMessage.size == -1 && !iMAPMessage.bodyLoaded) {
+                return true;
+            }
+            if (this.needMessage && !iMAPMessage.bodyLoaded) {
+                return true;
+            }
+            if (this.needRDate && iMAPMessage.receivedDate == null) {
+                return true;
+            }
+            int i = 0;
+            while (true) {
+                String[] strArr = this.hdrs;
+                if (i < strArr.length) {
+                    if (!iMAPMessage.isHeaderLoaded(strArr[i])) {
+                        return true;
+                    }
+                    i++;
+                } else {
+                    for (FetchItem fetchItem : this.need) {
+                        if (iMAPMessage.items == null || iMAPMessage.items.get(fetchItem.getName()) == null) {
+                            return true;
+                        }
+                        while (r2.hasNext()) {
+                        }
+                    }
+                    return false;
+                }
+            }
         }
     }
 

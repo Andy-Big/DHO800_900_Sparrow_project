@@ -13,9 +13,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 /* loaded from: classes.dex */
 public class KeyEventDispatcher {
-    private static boolean sActionBarFieldsFetched = false;
-    private static Method sActionBarOnMenuKeyMethod = null;
-    private static boolean sDialogFieldsFetched = false;
+    private static boolean sActionBarFieldsFetched;
+    private static Method sActionBarOnMenuKeyMethod;
+    private static boolean sDialogFieldsFetched;
     private static Field sDialogKeyListenerField;
 
     /* loaded from: classes.dex */

@@ -2,8 +2,10 @@ package kotlinx.coroutines.channels;
 
 import androidx.exifinterface.media.ExifInterface;
 import kotlin.Metadata;
+import kotlin.ResultKt;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
+import kotlin.coroutines.intrinsics.IntrinsicsKt;
 import kotlin.coroutines.jvm.internal.DebugMetadata;
 import kotlin.coroutines.jvm.internal.SuspendLambda;
 import kotlin.jvm.functions.Function2;
@@ -57,13 +59,153 @@ public final class ChannelsKt__Channels_commonKt$drop$1<E> extends SuspendLambda
     @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public final java.lang.Object invokeSuspend(java.lang.Object r10) {
-        /*
-            Method dump skipped, instructions count: 257
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.channels.ChannelsKt__Channels_commonKt$drop$1.invokeSuspend(java.lang.Object):java.lang.Object");
+    public final Object invokeSuspend(Object obj) {
+        ProducerScope producerScope;
+        int i;
+        Object obj2;
+        ChannelsKt__Channels_commonKt$drop$1<E> channelsKt__Channels_commonKt$drop$1;
+        ProducerScope producerScope2;
+        ChannelsKt__Channels_commonKt$drop$1<E> channelsKt__Channels_commonKt$drop$12;
+        ChannelIterator<E> it;
+        int i2;
+        ChannelIterator<E> it2;
+        Object hasNext;
+        ProducerScope producerScope3;
+        Object hasNext2;
+        Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+        int i3 = this.label;
+        if (i3 == 0) {
+            ResultKt.throwOnFailure(obj);
+            producerScope = this.p$;
+            if (!(this.$n >= 0)) {
+                throw new IllegalArgumentException(("Requested element count " + this.$n + " is less than zero.").toString());
+            }
+            int i4 = this.$n;
+            if (i4 > 0) {
+                producerScope2 = producerScope;
+                channelsKt__Channels_commonKt$drop$12 = this;
+                it = this.$this_drop.iterator();
+                i2 = i4;
+                ChannelIterator<E> channelIterator = it;
+                channelsKt__Channels_commonKt$drop$12.L$0 = producerScope2;
+                channelsKt__Channels_commonKt$drop$12.I$0 = i2;
+                channelsKt__Channels_commonKt$drop$12.L$1 = channelIterator;
+                channelsKt__Channels_commonKt$drop$12.label = 1;
+                hasNext = channelIterator.hasNext(channelsKt__Channels_commonKt$drop$12);
+                if (hasNext != coroutine_suspended) {
+                }
+            } else {
+                i = i4;
+                obj2 = coroutine_suspended;
+                channelsKt__Channels_commonKt$drop$1 = this;
+                it2 = channelsKt__Channels_commonKt$drop$1.$this_drop.iterator();
+                channelsKt__Channels_commonKt$drop$1.L$0 = producerScope;
+                channelsKt__Channels_commonKt$drop$1.I$0 = i;
+                channelsKt__Channels_commonKt$drop$1.L$1 = it2;
+                channelsKt__Channels_commonKt$drop$1.label = 2;
+                hasNext2 = it2.hasNext(channelsKt__Channels_commonKt$drop$1);
+                if (hasNext2 != obj2) {
+                }
+            }
+        } else if (i3 == 1) {
+            int i5 = this.I$0;
+            ResultKt.throwOnFailure(obj);
+            ProducerScope producerScope4 = (ProducerScope) this.L$0;
+            i = i5;
+            ChannelIterator<E> channelIterator2 = (ChannelIterator) this.L$1;
+            obj2 = coroutine_suspended;
+            channelsKt__Channels_commonKt$drop$1 = this;
+            if (((Boolean) obj).booleanValue()) {
+                channelIterator2.next();
+                int i6 = i - 1;
+                if (i6 == 0) {
+                    i = i6;
+                } else {
+                    producerScope2 = producerScope4;
+                    it = channelIterator2;
+                    i2 = i6;
+                    channelsKt__Channels_commonKt$drop$12 = channelsKt__Channels_commonKt$drop$1;
+                    coroutine_suspended = obj2;
+                    ChannelIterator<E> channelIterator3 = it;
+                    channelsKt__Channels_commonKt$drop$12.L$0 = producerScope2;
+                    channelsKt__Channels_commonKt$drop$12.I$0 = i2;
+                    channelsKt__Channels_commonKt$drop$12.L$1 = channelIterator3;
+                    channelsKt__Channels_commonKt$drop$12.label = 1;
+                    hasNext = channelIterator3.hasNext(channelsKt__Channels_commonKt$drop$12);
+                    if (hasNext != coroutine_suspended) {
+                        return coroutine_suspended;
+                    }
+                    Object obj3 = coroutine_suspended;
+                    channelsKt__Channels_commonKt$drop$1 = channelsKt__Channels_commonKt$drop$12;
+                    obj = hasNext;
+                    producerScope4 = producerScope2;
+                    i = i2;
+                    channelIterator2 = channelIterator3;
+                    obj2 = obj3;
+                    if (((Boolean) obj).booleanValue()) {
+                    }
+                }
+            }
+            producerScope = producerScope4;
+            it2 = channelsKt__Channels_commonKt$drop$1.$this_drop.iterator();
+            channelsKt__Channels_commonKt$drop$1.L$0 = producerScope;
+            channelsKt__Channels_commonKt$drop$1.I$0 = i;
+            channelsKt__Channels_commonKt$drop$1.L$1 = it2;
+            channelsKt__Channels_commonKt$drop$1.label = 2;
+            hasNext2 = it2.hasNext(channelsKt__Channels_commonKt$drop$1);
+            if (hasNext2 != obj2) {
+            }
+        } else if (i3 == 2) {
+            int i7 = this.I$0;
+            producerScope3 = (ProducerScope) this.L$0;
+            ResultKt.throwOnFailure(obj);
+            i = i7;
+            it2 = (ChannelIterator) this.L$1;
+            obj2 = coroutine_suspended;
+            channelsKt__Channels_commonKt$drop$1 = this;
+            if (((Boolean) obj).booleanValue()) {
+            }
+        } else if (i3 != 3) {
+            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+        } else {
+            int i8 = this.I$0;
+            ResultKt.throwOnFailure(obj);
+            i = i8;
+            producerScope = (ProducerScope) this.L$0;
+            it2 = (ChannelIterator) this.L$2;
+            obj2 = coroutine_suspended;
+            channelsKt__Channels_commonKt$drop$1 = this;
+            channelsKt__Channels_commonKt$drop$1.L$0 = producerScope;
+            channelsKt__Channels_commonKt$drop$1.I$0 = i;
+            channelsKt__Channels_commonKt$drop$1.L$1 = it2;
+            channelsKt__Channels_commonKt$drop$1.label = 2;
+            hasNext2 = it2.hasNext(channelsKt__Channels_commonKt$drop$1);
+            if (hasNext2 != obj2) {
+                return obj2;
+            }
+            producerScope3 = producerScope;
+            obj = hasNext2;
+            if (((Boolean) obj).booleanValue()) {
+                return Unit.INSTANCE;
+            }
+            E next = it2.next();
+            channelsKt__Channels_commonKt$drop$1.L$0 = producerScope3;
+            channelsKt__Channels_commonKt$drop$1.I$0 = i;
+            channelsKt__Channels_commonKt$drop$1.L$1 = next;
+            channelsKt__Channels_commonKt$drop$1.L$2 = it2;
+            channelsKt__Channels_commonKt$drop$1.label = 3;
+            if (producerScope3.send(next, channelsKt__Channels_commonKt$drop$1) == obj2) {
+                return obj2;
+            }
+            producerScope = producerScope3;
+            channelsKt__Channels_commonKt$drop$1.L$0 = producerScope;
+            channelsKt__Channels_commonKt$drop$1.I$0 = i;
+            channelsKt__Channels_commonKt$drop$1.L$1 = it2;
+            channelsKt__Channels_commonKt$drop$1.label = 2;
+            hasNext2 = it2.hasNext(channelsKt__Channels_commonKt$drop$1);
+            if (hasNext2 != obj2) {
+            }
+        }
     }
 }

@@ -3,7 +3,6 @@ package com.rigol.scope.data;
 import android.text.TextUtils;
 import androidx.databinding.Bindable;
 import com.blankj.utilcode.constant.CacheConstants;
-import com.rigol.scope.BuildConfig;
 import com.rigol.scope.cil.API;
 import com.rigol.scope.cil.MessageID;
 import com.rigol.scope.cil.ServiceEnum;
@@ -66,7 +65,7 @@ public final class UtilityParam extends BaseParam {
         this.serial = "";
         this.softVersion = "";
         this.hardVersion = "";
-        this.miscBuild = BuildConfig.releaseTime;
+        this.miscBuild = "2024/02/28 20:10:46";
         ServiceEnum.UtilityQuickOperationType utilityQuickOperationTypeFromValue1 = ServiceEnum.getUtilityQuickOperationTypeFromValue1(0);
         Intrinsics.checkNotNullExpressionValue(utilityQuickOperationTypeFromValue1, "ServiceEnum.getUtilityQu…Value1(DEFAULT_QUICKOPER)");
         this.quickOper = utilityQuickOperationTypeFromValue1;

@@ -11,9 +11,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.databinding.DataBindingComponent;
 import androidx.databinding.ViewDataBinding;
+import androidx.databinding.adapters.CompoundButtonBindingAdapter;
+import androidx.databinding.adapters.TextViewBindingAdapter;
 import com.rigol.scope.R;
+import com.rigol.scope.cil.ServiceEnum;
 import com.rigol.scope.data.MappingObject;
 import com.rigol.scope.data.StorageSaveParam;
+import com.rigol.scope.utilities.ViewUtil;
 import com.rigol.scope.views.SwitchButton;
 /* loaded from: classes2.dex */
 public class AdapterStorageSaveBindingImpl extends AdapterStorageSaveBinding {
@@ -303,13 +307,293 @@ public class AdapterStorageSaveBindingImpl extends AdapterStorageSaveBinding {
     @Override // androidx.databinding.ViewDataBinding
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
     protected void executeBindings() {
-        /*
-            Method dump skipped, instructions count: 837
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.rigol.scope.databinding.AdapterStorageSaveBindingImpl.executeBindings():void");
+        long j;
+        String str;
+        String str2;
+        String str3;
+        String str4;
+        String str5;
+        String str6;
+        String str7;
+        boolean z;
+        boolean z2;
+        boolean z3;
+        boolean z4;
+        int i;
+        int i2;
+        boolean z5;
+        int i3;
+        boolean z6;
+        boolean z7;
+        boolean z8;
+        boolean z9;
+        String str8;
+        int i4;
+        String str9;
+        String str10;
+        int i5;
+        String str11;
+        String str12;
+        synchronized (this) {
+            j = this.mDirtyFlags;
+            this.mDirtyFlags = 0L;
+        }
+        StorageSaveParam storageSaveParam = this.mParam;
+        String str13 = null;
+        if ((134217727 & j) != 0) {
+            z4 = ((j & 67239944) == 0 || storageSaveParam == null) ? false : storageSaveParam.isChan2();
+            boolean isChan4 = ((j & 67633160) == 0 || storageSaveParam == null) ? false : storageSaveParam.isChan4();
+            if ((j & 83886616) != 0) {
+                ServiceEnum.StorageOperationChoose choose = storageSaveParam != null ? storageSaveParam.getChoose() : null;
+                int i6 = ((j & 67109384) > 0L ? 1 : ((j & 67109384) == 0L ? 0 : -1));
+                if (i6 != 0) {
+                    boolean z10 = choose == ServiceEnum.StorageOperationChoose.IMAGE;
+                    boolean z11 = choose == ServiceEnum.StorageOperationChoose.WAVE;
+                    boolean z12 = choose == ServiceEnum.StorageOperationChoose.SETUP;
+                    if (i6 != 0) {
+                        j |= z10 ? 268435456L : 134217728L;
+                    }
+                    if ((j & 67109384) != 0) {
+                        j |= z11 ? 4294967296L : 2147483648L;
+                    }
+                    if ((j & 67109384) != 0) {
+                        j |= z12 ? 1073741824L : 536870912L;
+                    }
+                    i3 = 8;
+                    i = z10 ? 0 : 8;
+                    i4 = z11 ? 0 : 8;
+                    if (z12) {
+                        i3 = 0;
+                    }
+                } else {
+                    i = 0;
+                    i3 = 0;
+                    i4 = 0;
+                }
+                MappingObject mappingObject = ViewUtil.getMappingObject(R.array.msg_storage_save_option, choose != null ? choose.value1 : 0);
+                updateRegistration(4, mappingObject);
+                str8 = mappingObject != null ? mappingObject.getStr() : null;
+            } else {
+                str8 = null;
+                i = 0;
+                i3 = 0;
+                i4 = 0;
+            }
+            if ((j & 75497480) != 0) {
+                str9 = ViewUtil.getDiskUIPathName(storageSaveParam != null ? storageSaveParam.getPathName() : null);
+            } else {
+                str9 = null;
+            }
+            boolean isChan1 = ((j & 67174408) == 0 || storageSaveParam == null) ? false : storageSaveParam.isChan1();
+            boolean isChan3 = ((j & 67371016) == 0 || storageSaveParam == null) ? false : storageSaveParam.isChan3();
+            boolean isImageInvert = ((j & 67110920) == 0 || storageSaveParam == null) ? false : storageSaveParam.isImageInvert();
+            boolean isImageHeader = ((j & 67117064) == 0 || storageSaveParam == null) ? false : storageSaveParam.isImageHeader();
+            if ((j & 100696104) != 0) {
+                MappingObject mappingObject2 = ViewUtil.getMappingObject(R.array.msg_storage_wave_format, storageSaveParam != null ? storageSaveParam.getWaveFileType() : 0);
+                updateRegistration(5, mappingObject2);
+                if (mappingObject2 != null) {
+                    str10 = mappingObject2.getStr();
+                    boolean isAutoName = ((j & 71303176) != 0 || storageSaveParam == null) ? false : storageSaveParam.isAutoName();
+                    boolean isImageColor = ((j & 67112968) != 0 || storageSaveParam == null) ? false : storageSaveParam.isImageColor();
+                    String prefix = ((j & 69206024) != 0 || storageSaveParam == null) ? null : storageSaveParam.getPrefix();
+                    if ((j & 68157513) == 0) {
+                        MappingObject mappingObject3 = ViewUtil.getMappingObject(R.array.msg_storage_setup_format, storageSaveParam != null ? storageSaveParam.getSetupFileType() : 0);
+                        i5 = 0;
+                        updateRegistration(0, mappingObject3);
+                        if (mappingObject3 != null) {
+                            str11 = mappingObject3.getStr();
+                            if ((j & 67125516) != 0) {
+                                if (storageSaveParam != null) {
+                                    i5 = storageSaveParam.getWaveDepth();
+                                }
+                                MappingObject mappingObject4 = ViewUtil.getMappingObject(R.array.msg_storage_wave_depth, i5);
+                                updateRegistration(2, mappingObject4);
+                                if (mappingObject4 != null) {
+                                    str12 = mappingObject4.getStr();
+                                    if ((j & 67110026) != 0) {
+                                        MappingObject mappingObject5 = ViewUtil.getMappingObject(R.array.msg_storage_image_format, storageSaveParam != null ? storageSaveParam.getImageFileType() : 0);
+                                        updateRegistration(1, mappingObject5);
+                                        if (mappingObject5 != null) {
+                                            str13 = mappingObject5.getStr();
+                                        }
+                                    }
+                                    str6 = str12;
+                                    str3 = str9;
+                                    str5 = str11;
+                                    str7 = str10;
+                                    z3 = isChan4;
+                                    z = isChan1;
+                                    z2 = isChan3;
+                                    z7 = isImageInvert;
+                                    z6 = isImageHeader;
+                                    z5 = isImageColor;
+                                    str4 = prefix;
+                                    str = str8;
+                                    i2 = i4;
+                                    z8 = isAutoName;
+                                    str2 = str13;
+                                }
+                            }
+                            str12 = null;
+                            if ((j & 67110026) != 0) {
+                            }
+                            str6 = str12;
+                            str3 = str9;
+                            str5 = str11;
+                            str7 = str10;
+                            z3 = isChan4;
+                            z = isChan1;
+                            z2 = isChan3;
+                            z7 = isImageInvert;
+                            z6 = isImageHeader;
+                            z5 = isImageColor;
+                            str4 = prefix;
+                            str = str8;
+                            i2 = i4;
+                            z8 = isAutoName;
+                            str2 = str13;
+                        }
+                    } else {
+                        i5 = 0;
+                    }
+                    str11 = null;
+                    if ((j & 67125516) != 0) {
+                    }
+                    str12 = null;
+                    if ((j & 67110026) != 0) {
+                    }
+                    str6 = str12;
+                    str3 = str9;
+                    str5 = str11;
+                    str7 = str10;
+                    z3 = isChan4;
+                    z = isChan1;
+                    z2 = isChan3;
+                    z7 = isImageInvert;
+                    z6 = isImageHeader;
+                    z5 = isImageColor;
+                    str4 = prefix;
+                    str = str8;
+                    i2 = i4;
+                    z8 = isAutoName;
+                    str2 = str13;
+                }
+            }
+            str10 = null;
+            if ((j & 71303176) != 0) {
+            }
+            if ((j & 67112968) != 0) {
+            }
+            if ((j & 69206024) != 0) {
+            }
+            if ((j & 68157513) == 0) {
+            }
+            str11 = null;
+            if ((j & 67125516) != 0) {
+            }
+            str12 = null;
+            if ((j & 67110026) != 0) {
+            }
+            str6 = str12;
+            str3 = str9;
+            str5 = str11;
+            str7 = str10;
+            z3 = isChan4;
+            z = isChan1;
+            z2 = isChan3;
+            z7 = isImageInvert;
+            z6 = isImageHeader;
+            z5 = isImageColor;
+            str4 = prefix;
+            str = str8;
+            i2 = i4;
+            z8 = isAutoName;
+            str2 = str13;
+        } else {
+            str = null;
+            str2 = null;
+            str3 = null;
+            str4 = null;
+            str5 = null;
+            str6 = null;
+            str7 = null;
+            z = false;
+            z2 = false;
+            z3 = false;
+            z4 = false;
+            i = 0;
+            i2 = 0;
+            z5 = false;
+            i3 = 0;
+            z6 = false;
+            z7 = false;
+            z8 = false;
+        }
+        if ((j & 71303176) != 0) {
+            z9 = z7;
+            CompoundButtonBindingAdapter.setChecked(this.autoNameSwitch, z8);
+        } else {
+            z9 = z7;
+        }
+        if ((j & 67174408) != 0) {
+            CompoundButtonBindingAdapter.setChecked(this.checkBoxCH1, z);
+        }
+        if ((j & 67239944) != 0) {
+            CompoundButtonBindingAdapter.setChecked(this.checkBoxCH2, z4);
+        }
+        if ((j & 67371016) != 0) {
+            CompoundButtonBindingAdapter.setChecked(this.checkBoxCH3, z2);
+        }
+        if ((j & 67633160) != 0) {
+            CompoundButtonBindingAdapter.setChecked(this.checkBoxCH4, z3);
+        }
+        if ((j & 83886616) != 0) {
+            TextViewBindingAdapter.setText(this.chooseSpinnerSave, str);
+        }
+        if ((j & 67109384) != 0) {
+            this.imageColor.setVisibility(i);
+            this.imageColorSwitch.setVisibility(i);
+            this.imageFormat.setVisibility(i);
+            this.imageFormatSpinner.setVisibility(i);
+            this.imageHeader.setVisibility(i);
+            this.imageHeaderSwitch.setVisibility(i);
+            this.imageInvert.setVisibility(i);
+            this.imageInvertSwitch.setVisibility(i);
+            this.setupFormat.setVisibility(i3);
+            this.setupFormatSpinner.setVisibility(i3);
+            this.waveDepth.setVisibility(i2);
+            this.waveDepthSpinner.setVisibility(i2);
+            this.waveFormat.setVisibility(i2);
+            this.waveFormatSpinner.setVisibility(i2);
+        }
+        if ((j & 67112968) != 0) {
+            CompoundButtonBindingAdapter.setChecked(this.imageColorSwitch, z5);
+        }
+        if ((67110026 & j) != 0) {
+            TextViewBindingAdapter.setText(this.imageFormatSpinner, str2);
+        }
+        if ((j & 67117064) != 0) {
+            CompoundButtonBindingAdapter.setChecked(this.imageHeaderSwitch, z6);
+        }
+        if ((j & 67110920) != 0) {
+            CompoundButtonBindingAdapter.setChecked(this.imageInvertSwitch, z9);
+        }
+        if ((j & 75497480) != 0) {
+            TextViewBindingAdapter.setText(this.pathNameEditText, str3);
+        }
+        if ((69206024 & j) != 0) {
+            TextViewBindingAdapter.setText(this.prefixEditText, str4);
+        }
+        if ((68157513 & j) != 0) {
+            TextViewBindingAdapter.setText(this.setupFormatSpinner, str5);
+        }
+        if ((67125516 & j) != 0) {
+            TextViewBindingAdapter.setText(this.waveDepthSpinner, str6);
+        }
+        if ((j & 100696104) != 0) {
+            TextViewBindingAdapter.setText(this.waveFormatSpinner, str7);
+        }
     }
 }

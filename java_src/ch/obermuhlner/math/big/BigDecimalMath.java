@@ -549,14 +549,130 @@ public class BigDecimalMath {
     /* JADX WARN: Removed duplicated region for block: B:68:0x017d  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    private static java.math.BigDecimal logUsingTwoThree(java.math.BigDecimal r22, java.math.MathContext r23) {
-        /*
-            Method dump skipped, instructions count: 399
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: ch.obermuhlner.math.big.BigDecimalMath.logUsingTwoThree(java.math.BigDecimal, java.math.MathContext):java.math.BigDecimal");
+    private static BigDecimal logUsingTwoThree(BigDecimal bigDecimal, MathContext mathContext) {
+        BigDecimal bigDecimal2;
+        BigDecimal bigDecimal3;
+        int i;
+        int i2 = 1;
+        MathContext mathContext2 = new MathContext(mathContext.getPrecision() << 1, mathContext.getRoundingMode());
+        int i3 = 4;
+        MathContext mathContext3 = new MathContext(mathContext.getPrecision() + 4, mathContext.getRoundingMode());
+        double doubleValue = bigDecimal.doubleValue();
+        int i4 = 0;
+        int i5 = 3;
+        int i6 = 2;
+        if (doubleValue >= 0.01d) {
+            if (doubleValue >= 0.1d) {
+                if (doubleValue < 0.115d) {
+                    i6 = 1;
+                    i5 = 9;
+                    i2 = 0;
+                    i4 = -2;
+                } else if (doubleValue < 0.14d) {
+                    i5 = 1;
+                    i2 = -3;
+                    i6 = 8;
+                } else {
+                    if (doubleValue < 0.2d) {
+                        i2 = -1;
+                    } else if (doubleValue < 0.3d) {
+                        i5 = 1;
+                        i6 = 4;
+                        i2 = -2;
+                    } else if (doubleValue < 0.42d) {
+                        i6 = 1;
+                        i2 = 0;
+                        i4 = -1;
+                    } else if (doubleValue < 0.7d) {
+                        i5 = 1;
+                        i2 = -1;
+                    } else if (doubleValue >= 1.4d) {
+                        if (doubleValue < 2.5d) {
+                            i5 = 1;
+                        } else if (doubleValue < 3.5d) {
+                            i6 = 1;
+                            i2 = 0;
+                            i4 = 1;
+                        } else if (doubleValue < 5.0d) {
+                            i5 = 1;
+                            i2 = 2;
+                            i6 = i3;
+                        } else if (doubleValue >= 7.0d) {
+                            if (doubleValue < 8.5d) {
+                                i6 = 8;
+                                i5 = 1;
+                                i2 = 3;
+                            } else if (doubleValue < 10.0d) {
+                                i5 = 9;
+                                i6 = 1;
+                                i2 = 0;
+                                i4 = 2;
+                            } else {
+                                i3 = 1;
+                                i = 0;
+                                while (doubleValue > 1.4d) {
+                                    doubleValue /= 2.0d;
+                                    i++;
+                                    i3 <<= 1;
+                                }
+                            }
+                        }
+                    }
+                    i4 = i2;
+                }
+                bigDecimal2 = BigDecimal.ZERO;
+                if (i2 > 0) {
+                    bigDecimal3 = bigDecimal.divide(BigDecimal.valueOf(i6), mathContext3);
+                    bigDecimal2 = bigDecimal2.add(logTwo(mathContext2).multiply(BigDecimal.valueOf(i2), mathContext3));
+                } else if (i2 < 0) {
+                    bigDecimal3 = bigDecimal.multiply(BigDecimal.valueOf(i6), mathContext3);
+                    bigDecimal2 = bigDecimal2.subtract(logTwo(mathContext2).multiply(BigDecimal.valueOf(-i2), mathContext3));
+                } else {
+                    bigDecimal3 = bigDecimal;
+                }
+                if (i4 > 0) {
+                    bigDecimal3 = bigDecimal3.divide(BigDecimal.valueOf(i5), mathContext3);
+                    bigDecimal2 = bigDecimal2.add(logThree(mathContext2).multiply(BigDecimal.valueOf(i4), mathContext3));
+                } else if (i4 < 0) {
+                    bigDecimal3 = bigDecimal3.multiply(BigDecimal.valueOf(i5), mathContext3);
+                    bigDecimal2 = bigDecimal2.subtract(logThree(mathContext2).multiply(BigDecimal.valueOf(-i4), mathContext3));
+                }
+                if (bigDecimal != bigDecimal3 && bigDecimal2 == BigDecimal.ZERO) {
+                    return logUsingNewton(bigDecimal, mathContext);
+                }
+                return bigDecimal2.add(logUsingNewton(bigDecimal3, mathContext3), mathContext3);
+            }
+            i3 = 1;
+            i = 0;
+            while (doubleValue < 0.6d) {
+                doubleValue *= 2.0d;
+                i--;
+                i3 <<= 1;
+            }
+            i5 = 1;
+            i2 = i;
+            i6 = i3;
+            bigDecimal2 = BigDecimal.ZERO;
+            if (i2 > 0) {
+            }
+            if (i4 > 0) {
+            }
+            if (bigDecimal != bigDecimal3) {
+            }
+            return bigDecimal2.add(logUsingNewton(bigDecimal3, mathContext3), mathContext3);
+        }
+        i5 = 1;
+        i6 = 1;
+        i2 = 0;
+        bigDecimal2 = BigDecimal.ZERO;
+        if (i2 > 0) {
+        }
+        if (i4 > 0) {
+        }
+        if (bigDecimal != bigDecimal3) {
+        }
+        return bigDecimal2.add(logUsingNewton(bigDecimal3, mathContext3), mathContext3);
     }
 
     public static BigDecimal pi(MathContext mathContext) {

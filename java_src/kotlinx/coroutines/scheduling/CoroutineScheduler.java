@@ -251,116 +251,63 @@ public final class CoroutineScheduler implements Executor, Closeable {
      */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public final void shutdown(long r9) {
-        /*
-            r8 = this;
-            java.util.concurrent.atomic.AtomicIntegerFieldUpdater r0 = kotlinx.coroutines.scheduling.CoroutineScheduler._isTerminated$FU
-            r1 = 0
-            r2 = 1
-            boolean r0 = r0.compareAndSet(r8, r1, r2)
-            if (r0 != 0) goto Lb
-            return
-        Lb:
-            kotlinx.coroutines.scheduling.CoroutineScheduler$Worker r0 = r8.currentWorker()
-            kotlinx.coroutines.scheduling.CoroutineScheduler$Worker[] r3 = r8.workers
-            monitor-enter(r3)
-            long r4 = r8.controlState     // Catch: java.lang.Throwable -> La8
-            r6 = 2097151(0x1fffff, double:1.0361303E-317)
-            long r4 = r4 & r6
-            int r4 = (int) r4
-            monitor-exit(r3)
-            if (r2 > r4) goto L62
-            r3 = r2
-        L1d:
-            kotlinx.coroutines.scheduling.CoroutineScheduler$Worker[] r5 = r8.workers
-            r5 = r5[r3]
-            if (r5 != 0) goto L26
-            kotlin.jvm.internal.Intrinsics.throwNpe()
-        L26:
-            if (r5 == r0) goto L5d
-        L28:
-            boolean r6 = r5.isAlive()
-            if (r6 == 0) goto L38
-            r6 = r5
-            java.lang.Thread r6 = (java.lang.Thread) r6
-            java.util.concurrent.locks.LockSupport.unpark(r6)
-            r5.join(r9)
-            goto L28
-        L38:
-            kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState r6 = r5.getState()
-            boolean r7 = kotlinx.coroutines.DebugKt.getASSERTIONS_ENABLED()
-            if (r7 == 0) goto L54
-            kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState r7 = kotlinx.coroutines.scheduling.CoroutineScheduler.WorkerState.TERMINATED
-            if (r6 != r7) goto L48
-            r6 = r2
-            goto L49
-        L48:
-            r6 = r1
-        L49:
-            if (r6 == 0) goto L4c
-            goto L54
-        L4c:
-            java.lang.AssertionError r9 = new java.lang.AssertionError
-            r9.<init>()
-            java.lang.Throwable r9 = (java.lang.Throwable) r9
-            throw r9
-        L54:
-            kotlinx.coroutines.scheduling.WorkQueue r5 = r5.getLocalQueue()
-            kotlinx.coroutines.scheduling.GlobalQueue r6 = r8.globalQueue
-            r5.offloadAllWork$kotlinx_coroutines_core(r6)
-        L5d:
-            if (r3 == r4) goto L62
-            int r3 = r3 + 1
-            goto L1d
-        L62:
-            kotlinx.coroutines.scheduling.GlobalQueue r9 = r8.globalQueue
-            r9.close()
-        L67:
-            if (r0 == 0) goto L70
-            kotlinx.coroutines.scheduling.Task r9 = r0.findTask$kotlinx_coroutines_core()
-            if (r9 == 0) goto L70
-            goto L78
-        L70:
-            kotlinx.coroutines.scheduling.GlobalQueue r9 = r8.globalQueue
-            java.lang.Object r9 = r9.removeFirstOrNull()
-            kotlinx.coroutines.scheduling.Task r9 = (kotlinx.coroutines.scheduling.Task) r9
-        L78:
-            if (r9 == 0) goto L7e
-            r8.runSafely(r9)
-            goto L67
-        L7e:
-            if (r0 == 0) goto L85
-            kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState r9 = kotlinx.coroutines.scheduling.CoroutineScheduler.WorkerState.TERMINATED
-            r0.tryReleaseCpu$kotlinx_coroutines_core(r9)
-        L85:
-            boolean r9 = kotlinx.coroutines.DebugKt.getASSERTIONS_ENABLED()
-            if (r9 == 0) goto La1
-            java.util.concurrent.Semaphore r9 = r8.cpuPermits
-            int r9 = r9.availablePermits()
-            int r10 = r8.corePoolSize
-            if (r9 != r10) goto L96
-            r1 = r2
-        L96:
-            if (r1 == 0) goto L99
-            goto La1
-        L99:
-            java.lang.AssertionError r9 = new java.lang.AssertionError
-            r9.<init>()
-            java.lang.Throwable r9 = (java.lang.Throwable) r9
-            throw r9
-        La1:
-            r9 = 0
-            r8.parkedWorkersStack = r9
-            r8.controlState = r9
-            return
-        La8:
-            r9 = move-exception
-            monitor-exit(r3)
-            throw r9
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.scheduling.CoroutineScheduler.shutdown(long):void");
+    public final void shutdown(long j) {
+        int i;
+        Task removeFirstOrNull;
+        if (_isTerminated$FU.compareAndSet(this, 0, 1)) {
+            Worker currentWorker = currentWorker();
+            synchronized (this.workers) {
+                i = (int) (this.controlState & 2097151);
+            }
+            if (1 <= i) {
+                int i2 = 1;
+                while (true) {
+                    Worker worker = this.workers[i2];
+                    if (worker == null) {
+                        Intrinsics.throwNpe();
+                    }
+                    if (worker != currentWorker) {
+                        while (worker.isAlive()) {
+                            LockSupport.unpark(worker);
+                            worker.join(j);
+                        }
+                        WorkerState state = worker.getState();
+                        if (DebugKt.getASSERTIONS_ENABLED()) {
+                            if (!(state == WorkerState.TERMINATED)) {
+                                throw new AssertionError();
+                            }
+                        }
+                        worker.getLocalQueue().offloadAllWork$kotlinx_coroutines_core(this.globalQueue);
+                    }
+                    if (i2 == i) {
+                        break;
+                    }
+                    i2++;
+                }
+            }
+            this.globalQueue.close();
+            while (true) {
+                if (currentWorker != null) {
+                    removeFirstOrNull = currentWorker.findTask$kotlinx_coroutines_core();
+                }
+                removeFirstOrNull = this.globalQueue.removeFirstOrNull();
+                if (removeFirstOrNull == null) {
+                    break;
+                }
+                runSafely(removeFirstOrNull);
+            }
+            if (currentWorker != null) {
+                currentWorker.tryReleaseCpu$kotlinx_coroutines_core(WorkerState.TERMINATED);
+            }
+            if (DebugKt.getASSERTIONS_ENABLED()) {
+                if (!(this.cpuPermits.availablePermits() == this.corePoolSize)) {
+                    throw new AssertionError();
+                }
+            }
+            this.parkedWorkersStack = 0L;
+            this.controlState = 0L;
+        }
     }
 
     public static /* synthetic */ void dispatch$default(CoroutineScheduler coroutineScheduler, Runnable runnable, TaskContext taskContext, boolean z, int i, Object obj) {

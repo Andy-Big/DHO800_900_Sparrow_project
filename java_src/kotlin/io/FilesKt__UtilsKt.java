@@ -5,9 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import kotlin.Deprecated;
 import kotlin.Metadata;
+import kotlin.Unit;
 import kotlin.collections.CollectionsKt;
 import kotlin.jvm.functions.Function2;
 import kotlin.jvm.internal.Intrinsics;
@@ -228,14 +230,77 @@ class FilesKt__UtilsKt extends FilesKt__FileTreeWalkKt {
     /* JADX WARN: Removed duplicated region for block: B:58:0x00a2 A[SYNTHETIC] */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public static final boolean copyRecursively(java.io.File r11, java.io.File r12, boolean r13, final kotlin.jvm.functions.Function2<? super java.io.File, ? super java.io.IOException, ? extends kotlin.io.OnErrorAction> r14) {
-        /*
-            Method dump skipped, instructions count: 231
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlin.io.FilesKt__UtilsKt.copyRecursively(java.io.File, java.io.File, boolean, kotlin.jvm.functions.Function2):boolean");
+    public static final boolean copyRecursively(File copyRecursively, File target, boolean z, final Function2<? super File, ? super IOException, ? extends OnErrorAction> onError) {
+        boolean z2;
+        Intrinsics.checkNotNullParameter(copyRecursively, "$this$copyRecursively");
+        Intrinsics.checkNotNullParameter(target, "target");
+        Intrinsics.checkNotNullParameter(onError, "onError");
+        if (!copyRecursively.exists()) {
+            return onError.invoke(copyRecursively, new NoSuchFileException(copyRecursively, null, "The source file doesn't exist.", 2, null)) != OnErrorAction.TERMINATE;
+        }
+        try {
+            Iterator<File> it = FilesKt.walkTopDown(copyRecursively).onFail(new Function2<File, IOException, Unit>() { // from class: kotlin.io.FilesKt__UtilsKt$copyRecursively$2
+                /* JADX INFO: Access modifiers changed from: package-private */
+                {
+                    super(2);
+                }
+
+                @Override // kotlin.jvm.functions.Function2
+                public /* bridge */ /* synthetic */ Unit invoke(File file, IOException iOException) {
+                    invoke2(file, iOException);
+                    return Unit.INSTANCE;
+                }
+
+                /* renamed from: invoke  reason: avoid collision after fix types in other method */
+                public final void invoke2(File f, IOException e) {
+                    Intrinsics.checkNotNullParameter(f, "f");
+                    Intrinsics.checkNotNullParameter(e, "e");
+                    if (((OnErrorAction) Function2.this.invoke(f, e)) == OnErrorAction.TERMINATE) {
+                        throw new TerminateException(f);
+                    }
+                }
+            }).iterator();
+            while (it.hasNext()) {
+                File next = it.next();
+                if (!next.exists()) {
+                    if (onError.invoke(next, new NoSuchFileException(next, null, "The source file doesn't exist.", 2, null)) == OnErrorAction.TERMINATE) {
+                        return false;
+                    }
+                } else {
+                    File file = new File(target, FilesKt.toRelativeString(next, copyRecursively));
+                    if (file.exists() && (!next.isDirectory() || !file.isDirectory())) {
+                        if (z) {
+                            if (file.isDirectory()) {
+                                if (!FilesKt.deleteRecursively(file)) {
+                                }
+                                z2 = false;
+                            } else {
+                                if (!file.delete()) {
+                                }
+                                z2 = false;
+                            }
+                            if (!z2) {
+                                if (onError.invoke(file, new FileAlreadyExistsException(next, file, "The destination file already exists.")) == OnErrorAction.TERMINATE) {
+                                    return false;
+                                }
+                            }
+                        }
+                        z2 = true;
+                        if (!z2) {
+                        }
+                    }
+                    if (next.isDirectory()) {
+                        file.mkdirs();
+                    } else if (FilesKt.copyTo$default(next, file, z, 0, 4, null).length() != next.length() && onError.invoke(next, new IOException("Source file wasn't copied completely, length of destination file differs.")) == OnErrorAction.TERMINATE) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        } catch (TerminateException unused) {
+            return false;
+        }
     }
 
     public static final boolean deleteRecursively(File deleteRecursively) {

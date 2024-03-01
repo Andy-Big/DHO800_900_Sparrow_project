@@ -127,74 +127,36 @@ public final class TypeAdapters {
             @Override // com.google.gson.TypeAdapter
             /*
                 Code decompiled incorrectly, please refer to instructions dump.
-                To view partially-correct add '--show-bad-code' argument
             */
-            public java.util.BitSet read(com.google.gson.stream.JsonReader r8) throws java.io.IOException {
-                /*
-                    r7 = this;
-                    java.util.BitSet r0 = new java.util.BitSet
-                    r0.<init>()
-                    r8.beginArray()
-                    com.google.gson.stream.JsonToken r1 = r8.peek()
-                    r2 = 0
-                    r3 = r2
-                Le:
-                    com.google.gson.stream.JsonToken r4 = com.google.gson.stream.JsonToken.END_ARRAY
-                    if (r1 == r4) goto L75
-                    int[] r4 = com.google.gson.internal.bind.TypeAdapters.AnonymousClass36.$SwitchMap$com$google$gson$stream$JsonToken
-                    int r5 = r1.ordinal()
-                    r4 = r4[r5]
-                    r5 = 1
-                    if (r4 == r5) goto L63
-                    r6 = 2
-                    if (r4 == r6) goto L5e
-                    r6 = 3
-                    if (r4 != r6) goto L47
-                    java.lang.String r1 = r8.nextString()
-                    int r1 = java.lang.Integer.parseInt(r1)     // Catch: java.lang.NumberFormatException -> L30
-                    if (r1 == 0) goto L2e
-                    goto L69
-                L2e:
-                    r5 = r2
-                    goto L69
-                L30:
-                    com.google.gson.JsonSyntaxException r8 = new com.google.gson.JsonSyntaxException
-                    java.lang.StringBuilder r0 = new java.lang.StringBuilder
-                    r0.<init>()
-                    java.lang.String r2 = "Error: Expecting: bitset number value (1, 0), Found: "
-                    r0.append(r2)
-                    r0.append(r1)
-                    java.lang.String r0 = r0.toString()
-                    r8.<init>(r0)
-                    throw r8
-                L47:
-                    com.google.gson.JsonSyntaxException r8 = new com.google.gson.JsonSyntaxException
-                    java.lang.StringBuilder r0 = new java.lang.StringBuilder
-                    r0.<init>()
-                    java.lang.String r2 = "Invalid bitset value type: "
-                    r0.append(r2)
-                    r0.append(r1)
-                    java.lang.String r0 = r0.toString()
-                    r8.<init>(r0)
-                    throw r8
-                L5e:
-                    boolean r5 = r8.nextBoolean()
-                    goto L69
-                L63:
-                    int r1 = r8.nextInt()
-                    if (r1 == 0) goto L2e
-                L69:
-                    if (r5 == 0) goto L6e
-                    r0.set(r3)
-                L6e:
-                    int r3 = r3 + 1
-                    com.google.gson.stream.JsonToken r1 = r8.peek()
-                    goto Le
-                L75:
-                    r8.endArray()
-                    return r0
-                */
-                throw new UnsupportedOperationException("Method not decompiled: com.google.gson.internal.bind.TypeAdapters.AnonymousClass2.read(com.google.gson.stream.JsonReader):java.util.BitSet");
+            public BitSet read(JsonReader jsonReader) throws IOException {
+                BitSet bitSet = new BitSet();
+                jsonReader.beginArray();
+                JsonToken peek = jsonReader.peek();
+                int i = 0;
+                while (peek != JsonToken.END_ARRAY) {
+                    int i2 = AnonymousClass36.$SwitchMap$com$google$gson$stream$JsonToken[peek.ordinal()];
+                    boolean z = true;
+                    if (i2 != 1) {
+                        if (i2 == 2) {
+                            z = jsonReader.nextBoolean();
+                        } else if (i2 == 3) {
+                            String nextString = jsonReader.nextString();
+                            try {
+                            } catch (NumberFormatException unused) {
+                                throw new JsonSyntaxException("Error: Expecting: bitset number value (1, 0), Found: " + nextString);
+                            }
+                        } else {
+                            throw new JsonSyntaxException("Invalid bitset value type: " + peek);
+                        }
+                        if (z) {
+                            bitSet.set(i);
+                        }
+                        i++;
+                        peek = jsonReader.peek();
+                    }
+                }
+                jsonReader.endArray();
+                return bitSet;
             }
 
             @Override // com.google.gson.TypeAdapter

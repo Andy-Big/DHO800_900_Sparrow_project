@@ -6,6 +6,7 @@ import kotlin.Metadata;
 import kotlin.Unit;
 import kotlin.jvm.internal.Intrinsics;
 import kotlinx.coroutines.DebugKt;
+import kotlinx.coroutines.channels.AbstractChannel;
 import kotlinx.coroutines.channels.AbstractSendChannel;
 import kotlinx.coroutines.selects.SelectInstance;
 import kotlinx.coroutines.selects.SelectKt;
@@ -246,14 +247,86 @@ public class ArrayChannel<E> extends AbstractChannel<E> {
     @Override // kotlinx.coroutines.channels.AbstractChannel
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    protected java.lang.Object pollSelectInternal(kotlinx.coroutines.selects.SelectInstance<?> r11) {
-        /*
-            Method dump skipped, instructions count: 256
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.channels.ArrayChannel.pollSelectInternal(kotlinx.coroutines.selects.SelectInstance):java.lang.Object");
+    protected Object pollSelectInternal(SelectInstance<?> select) {
+        Object obj;
+        Intrinsics.checkParameterIsNotNull(select, "select");
+        Send send = null;
+        ReentrantLock reentrantLock = this.lock;
+        reentrantLock.lock();
+        try {
+            int i = this.size;
+            if (i == 0) {
+                Object closedForSend = getClosedForSend();
+                if (closedForSend == null) {
+                    closedForSend = AbstractChannelKt.POLL_FAILED;
+                }
+                return closedForSend;
+            }
+            Object obj2 = this.buffer[this.head];
+            this.buffer[this.head] = null;
+            this.size = i - 1;
+            Object obj3 = AbstractChannelKt.POLL_FAILED;
+            if (i == this.capacity) {
+                AbstractChannel.TryPollDesc<E> describeTryPoll = describeTryPoll();
+                Object performAtomicTrySelect = select.performAtomicTrySelect(describeTryPoll);
+                if (performAtomicTrySelect == null) {
+                    send = describeTryPoll.getResult();
+                    Object obj4 = describeTryPoll.resumeToken;
+                    if (DebugKt.getASSERTIONS_ENABLED()) {
+                        if (!(obj4 != null)) {
+                            throw new AssertionError();
+                        }
+                    }
+                    if (send == null) {
+                        Intrinsics.throwNpe();
+                    }
+                    obj = obj4;
+                    obj3 = send.getPollResult();
+                } else if (performAtomicTrySelect != AbstractChannelKt.POLL_FAILED) {
+                    if (performAtomicTrySelect == SelectKt.getALREADY_SELECTED()) {
+                        this.size = i;
+                        this.buffer[this.head] = obj2;
+                        return performAtomicTrySelect;
+                    } else if (performAtomicTrySelect instanceof Closed) {
+                        send = (Send) performAtomicTrySelect;
+                        obj = ((Closed) performAtomicTrySelect).tryResumeSend(null);
+                        obj3 = performAtomicTrySelect;
+                    } else {
+                        throw new IllegalStateException(("performAtomicTrySelect(describeTryOffer) returned " + performAtomicTrySelect).toString());
+                    }
+                }
+                if (obj3 == AbstractChannelKt.POLL_FAILED && !(obj3 instanceof Closed)) {
+                    this.size = i;
+                    this.buffer[(this.head + i) % this.buffer.length] = obj3;
+                } else if (!select.trySelect(null)) {
+                    this.size = i;
+                    this.buffer[this.head] = obj2;
+                    return SelectKt.getALREADY_SELECTED();
+                }
+                this.head = (this.head + 1) % this.buffer.length;
+                Unit unit = Unit.INSTANCE;
+                if (obj != null) {
+                    if (send == null) {
+                        Intrinsics.throwNpe();
+                    }
+                    send.completeResumeSend(obj);
+                }
+                return obj2;
+            }
+            obj = null;
+            if (obj3 == AbstractChannelKt.POLL_FAILED) {
+            }
+            if (!select.trySelect(null)) {
+            }
+            this.head = (this.head + 1) % this.buffer.length;
+            Unit unit2 = Unit.INSTANCE;
+            if (obj != null) {
+            }
+            return obj2;
+        } finally {
+            reentrantLock.unlock();
+        }
     }
 
     /* JADX INFO: Access modifiers changed from: protected */

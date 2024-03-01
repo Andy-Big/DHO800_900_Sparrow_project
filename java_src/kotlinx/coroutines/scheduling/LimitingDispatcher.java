@@ -69,39 +69,17 @@ final class LimitingDispatcher extends ExecutorCoroutineDispatcher implements Ta
     /* JADX WARN: Removed duplicated region for block: B:6:0x0013  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    private final void dispatch(java.lang.Runnable r3, boolean r4) {
-        /*
-            r2 = this;
-        L0:
-            java.util.concurrent.atomic.AtomicIntegerFieldUpdater r0 = kotlinx.coroutines.scheduling.LimitingDispatcher.inFlightTasks$FU
-            int r0 = r0.incrementAndGet(r2)
-            int r1 = r2.parallelism
-            if (r0 > r1) goto L13
-            kotlinx.coroutines.scheduling.ExperimentalCoroutineDispatcher r0 = r2.dispatcher
-            r1 = r2
-            kotlinx.coroutines.scheduling.TaskContext r1 = (kotlinx.coroutines.scheduling.TaskContext) r1
-            r0.dispatchWithContext$kotlinx_coroutines_core(r3, r1, r4)
-            return
-        L13:
-            java.util.concurrent.ConcurrentLinkedQueue<java.lang.Runnable> r0 = r2.queue
-            r0.add(r3)
-            java.util.concurrent.atomic.AtomicIntegerFieldUpdater r3 = kotlinx.coroutines.scheduling.LimitingDispatcher.inFlightTasks$FU
-            int r3 = r3.decrementAndGet(r2)
-            int r0 = r2.parallelism
-            if (r3 < r0) goto L23
-            return
-        L23:
-            java.util.concurrent.ConcurrentLinkedQueue<java.lang.Runnable> r3 = r2.queue
-            java.lang.Object r3 = r3.poll()
-            java.lang.Runnable r3 = (java.lang.Runnable) r3
-            if (r3 == 0) goto L2e
-            goto L0
-        L2e:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.scheduling.LimitingDispatcher.dispatch(java.lang.Runnable, boolean):void");
+    private final void dispatch(Runnable runnable, boolean z) {
+        while (inFlightTasks$FU.incrementAndGet(this) > this.parallelism) {
+            this.queue.add(runnable);
+            if (inFlightTasks$FU.decrementAndGet(this) >= this.parallelism || (runnable = this.queue.poll()) == null) {
+                return;
+            }
+            while (inFlightTasks$FU.incrementAndGet(this) > this.parallelism) {
+            }
+        }
+        this.dispatcher.dispatchWithContext$kotlinx_coroutines_core(runnable, this, z);
     }
 
     @Override // kotlinx.coroutines.CoroutineDispatcher

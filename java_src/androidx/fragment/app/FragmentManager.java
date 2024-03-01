@@ -615,14 +615,164 @@ public abstract class FragmentManager {
     /* JADX WARN: Removed duplicated region for block: B:52:0x0107  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public void moveToState(androidx.fragment.app.Fragment r13, int r14) {
-        /*
-            Method dump skipped, instructions count: 572
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: androidx.fragment.app.FragmentManager.moveToState(androidx.fragment.app.Fragment, int):void");
+    public void moveToState(Fragment fragment, int i) {
+        Fragment findActiveFragment;
+        FragmentStateManager fragmentStateManager = this.mFragmentStore.getFragmentStateManager(fragment.mWho);
+        int i2 = 1;
+        if (fragmentStateManager == null) {
+            fragmentStateManager = new FragmentStateManager(this.mLifecycleCallbacksDispatcher, fragment);
+            fragmentStateManager.setFragmentManagerState(1);
+        }
+        int min = Math.min(i, fragmentStateManager.computeMaxState());
+        FragmentAnim.AnimationOrAnimator animationOrAnimator = null;
+        if (fragment.mState <= min) {
+            if (fragment.mState < min && !this.mExitAnimationCancellationSignals.isEmpty()) {
+                cancelExitAnimation(fragment);
+            }
+            int i3 = fragment.mState;
+            if (i3 != -1) {
+                if (i3 != 0) {
+                    if (i3 != 1) {
+                        if (i3 != 2) {
+                        }
+                        if (min > 2) {
+                            fragmentStateManager.start();
+                        }
+                        if (min > 3) {
+                            fragmentStateManager.resume();
+                        }
+                    }
+                    if (min > -1) {
+                        fragmentStateManager.ensureInflatedView();
+                    }
+                    if (min > 1) {
+                        fragmentStateManager.createView(this.mContainer);
+                        fragmentStateManager.activityCreated();
+                        fragmentStateManager.restoreViewState();
+                    }
+                    if (min > 2) {
+                    }
+                    if (min > 3) {
+                    }
+                }
+            } else if (min > -1) {
+                if (isLoggingEnabled(3)) {
+                    Log.d(TAG, "moveto ATTACHED: " + fragment);
+                }
+                if (fragment.mTarget != null) {
+                    if (!fragment.mTarget.equals(findActiveFragment(fragment.mTarget.mWho))) {
+                        throw new IllegalStateException("Fragment " + fragment + " declared target fragment " + fragment.mTarget + " that does not belong to this FragmentManager!");
+                    }
+                    if (fragment.mTarget.mState < 1) {
+                        moveToState(fragment.mTarget, 1);
+                    }
+                    fragment.mTargetWho = fragment.mTarget.mWho;
+                    fragment.mTarget = null;
+                }
+                if (fragment.mTargetWho != null) {
+                    Fragment findActiveFragment2 = findActiveFragment(fragment.mTargetWho);
+                    if (findActiveFragment2 == null) {
+                        throw new IllegalStateException("Fragment " + fragment + " declared target fragment " + fragment.mTargetWho + " that does not belong to this FragmentManager!");
+                    } else if (findActiveFragment2.mState < 1) {
+                        moveToState(findActiveFragment2, 1);
+                    }
+                }
+                fragmentStateManager.attach(this.mHost, this, this.mParent);
+            }
+            if (min > 0) {
+                fragmentStateManager.create();
+            }
+            if (min > -1) {
+            }
+            if (min > 1) {
+            }
+            if (min > 2) {
+            }
+            if (min > 3) {
+            }
+        } else if (fragment.mState > min) {
+            int i4 = fragment.mState;
+            if (i4 != 0) {
+                boolean z = false;
+                if (i4 != 1) {
+                    if (i4 != 2) {
+                        if (i4 != 3) {
+                            if (i4 == 4) {
+                                if (min < 4) {
+                                    fragmentStateManager.pause();
+                                }
+                            }
+                        }
+                        if (min < 3) {
+                            fragmentStateManager.stop();
+                        }
+                    }
+                    if (min < 2) {
+                        if (isLoggingEnabled(3)) {
+                            Log.d(TAG, "movefrom ACTIVITY_CREATED: " + fragment);
+                        }
+                        if (fragment.mView != null && this.mHost.onShouldSaveFragmentState(fragment) && fragment.mSavedViewState == null) {
+                            fragmentStateManager.saveViewState();
+                        }
+                        if (fragment.mView != null && fragment.mContainer != null) {
+                            fragment.mContainer.endViewTransition(fragment.mView);
+                            fragment.mView.clearAnimation();
+                            if (!fragment.isRemovingParent()) {
+                                if (this.mCurState > -1 && !this.mDestroyed && fragment.mView.getVisibility() == 0 && fragment.mPostponedAlpha >= 0.0f) {
+                                    animationOrAnimator = FragmentAnim.loadAnimation(this.mHost.getContext(), this.mContainer, fragment, false);
+                                }
+                                fragment.mPostponedAlpha = 0.0f;
+                                ViewGroup viewGroup = fragment.mContainer;
+                                View view = fragment.mView;
+                                if (animationOrAnimator != null) {
+                                    fragment.setStateAfterAnimating(min);
+                                    FragmentAnim.animateRemoveFragment(fragment, animationOrAnimator, this.mFragmentTransitionCallback);
+                                }
+                                viewGroup.removeView(view);
+                                if (viewGroup != fragment.mContainer) {
+                                    return;
+                                }
+                            }
+                        }
+                        if (this.mExitAnimationCancellationSignals.get(fragment) == null) {
+                            destroyFragmentView(fragment);
+                        } else {
+                            fragment.setStateAfterAnimating(min);
+                        }
+                    }
+                }
+                if (min < 1) {
+                    if (fragment.mRemoving && !fragment.isInBackStack()) {
+                        z = true;
+                    }
+                    if (z || this.mNonConfig.shouldDestroy(fragment)) {
+                        makeInactive(fragmentStateManager);
+                    } else if (fragment.mTargetWho != null && (findActiveFragment = findActiveFragment(fragment.mTargetWho)) != null && findActiveFragment.getRetainInstance()) {
+                        fragment.mTarget = findActiveFragment;
+                    }
+                    if (this.mExitAnimationCancellationSignals.get(fragment) != null) {
+                        fragment.setStateAfterAnimating(min);
+                        if (i2 < 0) {
+                            fragmentStateManager.detach(this.mNonConfig);
+                        }
+                        min = i2;
+                    } else {
+                        fragmentStateManager.destroy(this.mHost, this.mNonConfig);
+                    }
+                }
+            }
+            i2 = min;
+            if (i2 < 0) {
+            }
+            min = i2;
+        }
+        if (fragment.mState != min) {
+            if (isLoggingEnabled(3)) {
+                Log.d(TAG, "moveToState: Fragment state for " + fragment + " not updated inline; expected state " + min + " found " + fragment.mState);
+            }
+            fragment.mState = min;
+        }
     }
 
     private void cancelExitAnimation(Fragment fragment) {

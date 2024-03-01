@@ -6,15 +6,18 @@ import kotlin.Deprecated;
 import kotlin.DeprecationLevel;
 import kotlin.Metadata;
 import kotlin.ReplaceWith;
+import kotlin.ResultKt;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
 import kotlin.coroutines.CoroutineContext;
+import kotlin.coroutines.intrinsics.IntrinsicsKt;
 import kotlin.jvm.functions.Function1;
 import kotlin.jvm.functions.Function2;
 import kotlin.jvm.functions.Function3;
 import kotlin.jvm.functions.Function4;
 import kotlin.jvm.internal.Intrinsics;
 import kotlin.jvm.internal.LongCompanionObject;
+import kotlin.jvm.internal.Ref;
 import kotlinx.coroutines.Job;
 import kotlinx.coroutines.internal.StackTraceRecoveryKt;
 /* compiled from: Errors.kt */
@@ -107,87 +110,65 @@ public final /* synthetic */ class FlowKt__ErrorsKt {
     /* JADX WARN: Removed duplicated region for block: B:53:0x0045  */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public static final <T> java.lang.Object catchImpl(kotlinx.coroutines.flow.Flow<? extends T> r5, kotlinx.coroutines.flow.FlowCollector<? super T> r6, kotlin.coroutines.Continuation<? super java.lang.Throwable> r7) {
-        /*
-            boolean r0 = r7 instanceof kotlinx.coroutines.flow.FlowKt__ErrorsKt$catchImpl$1
-            if (r0 == 0) goto L14
-            r0 = r7
-            kotlinx.coroutines.flow.FlowKt__ErrorsKt$catchImpl$1 r0 = (kotlinx.coroutines.flow.FlowKt__ErrorsKt$catchImpl$1) r0
-            int r1 = r0.label
-            r2 = -2147483648(0xffffffff80000000, float:-0.0)
-            r1 = r1 & r2
-            if (r1 == 0) goto L14
-            int r7 = r0.label
-            int r7 = r7 - r2
-            r0.label = r7
-            goto L19
-        L14:
-            kotlinx.coroutines.flow.FlowKt__ErrorsKt$catchImpl$1 r0 = new kotlinx.coroutines.flow.FlowKt__ErrorsKt$catchImpl$1
-            r0.<init>(r7)
-        L19:
-            java.lang.Object r7 = r0.result
-            java.lang.Object r1 = kotlin.coroutines.intrinsics.IntrinsicsKt.getCOROUTINE_SUSPENDED()
-            int r2 = r0.label
-            r3 = 0
-            r4 = 1
-            if (r2 == 0) goto L45
-            if (r2 != r4) goto L3d
-            java.lang.Object r5 = r0.L$3
-            kotlinx.coroutines.flow.Flow r5 = (kotlinx.coroutines.flow.Flow) r5
-            java.lang.Object r5 = r0.L$2
-            kotlin.jvm.internal.Ref$ObjectRef r5 = (kotlin.jvm.internal.Ref.ObjectRef) r5
-            java.lang.Object r6 = r0.L$1
-            kotlinx.coroutines.flow.FlowCollector r6 = (kotlinx.coroutines.flow.FlowCollector) r6
-            java.lang.Object r6 = r0.L$0
-            kotlinx.coroutines.flow.Flow r6 = (kotlinx.coroutines.flow.Flow) r6
-            kotlin.ResultKt.throwOnFailure(r7)     // Catch: java.lang.Throwable -> L3b
-            goto L6a
-        L3b:
-            r6 = move-exception
-            goto L6d
-        L3d:
-            java.lang.IllegalStateException r5 = new java.lang.IllegalStateException
-            java.lang.String r6 = "call to 'resume' before 'invoke' with coroutine"
-            r5.<init>(r6)
-            throw r5
-        L45:
-            kotlin.ResultKt.throwOnFailure(r7)
-            kotlin.jvm.internal.Ref$ObjectRef r7 = new kotlin.jvm.internal.Ref$ObjectRef
-            r7.<init>()
-            r2 = r3
-            java.lang.Throwable r2 = (java.lang.Throwable) r2
-            r7.element = r2
-            kotlinx.coroutines.flow.FlowKt__ErrorsKt$catchImpl$$inlined$collect$1 r2 = new kotlinx.coroutines.flow.FlowKt__ErrorsKt$catchImpl$$inlined$collect$1     // Catch: java.lang.Throwable -> L6b
-            r2.<init>(r6, r7)     // Catch: java.lang.Throwable -> L6b
-            kotlinx.coroutines.flow.FlowCollector r2 = (kotlinx.coroutines.flow.FlowCollector) r2     // Catch: java.lang.Throwable -> L6b
-            r0.L$0 = r5     // Catch: java.lang.Throwable -> L6b
-            r0.L$1 = r6     // Catch: java.lang.Throwable -> L6b
-            r0.L$2 = r7     // Catch: java.lang.Throwable -> L6b
-            r0.L$3 = r5     // Catch: java.lang.Throwable -> L6b
-            r0.label = r4     // Catch: java.lang.Throwable -> L6b
-            java.lang.Object r5 = r5.collect(r2, r0)     // Catch: java.lang.Throwable -> L6b
-            if (r5 != r1) goto L6a
-            return r1
-        L6a:
-            return r3
-        L6b:
-            r6 = move-exception
-            r5 = r7
-        L6d:
-            T r5 = r5.element
-            java.lang.Throwable r5 = (java.lang.Throwable) r5
-            boolean r5 = isSameExceptionAs$FlowKt__ErrorsKt(r6, r5)
-            if (r5 != 0) goto L82
-            kotlin.coroutines.CoroutineContext r5 = r0.getContext()
-            boolean r5 = isCancellationCause$FlowKt__ErrorsKt(r6, r5)
-            if (r5 != 0) goto L82
-            return r6
-        L82:
-            throw r6
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.flow.FlowKt__ErrorsKt.catchImpl(kotlinx.coroutines.flow.Flow, kotlinx.coroutines.flow.FlowCollector, kotlin.coroutines.Continuation):java.lang.Object");
+    public static final <T> Object catchImpl(Flow<? extends T> flow, FlowCollector<? super T> flowCollector, Continuation<? super Throwable> continuation) {
+        FlowKt__ErrorsKt$catchImpl$1 flowKt__ErrorsKt$catchImpl$1;
+        int i;
+        Ref.ObjectRef objectRef;
+        if (continuation instanceof FlowKt__ErrorsKt$catchImpl$1) {
+            flowKt__ErrorsKt$catchImpl$1 = (FlowKt__ErrorsKt$catchImpl$1) continuation;
+            if ((flowKt__ErrorsKt$catchImpl$1.label & Integer.MIN_VALUE) != 0) {
+                flowKt__ErrorsKt$catchImpl$1.label -= Integer.MIN_VALUE;
+                Object obj = flowKt__ErrorsKt$catchImpl$1.result;
+                Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+                i = flowKt__ErrorsKt$catchImpl$1.label;
+                if (i != 0) {
+                    ResultKt.throwOnFailure(obj);
+                    Ref.ObjectRef objectRef2 = new Ref.ObjectRef();
+                    objectRef2.element = (T) null;
+                    try {
+                        flowKt__ErrorsKt$catchImpl$1.L$0 = flow;
+                        flowKt__ErrorsKt$catchImpl$1.L$1 = flowCollector;
+                        flowKt__ErrorsKt$catchImpl$1.L$2 = objectRef2;
+                        flowKt__ErrorsKt$catchImpl$1.L$3 = flow;
+                        flowKt__ErrorsKt$catchImpl$1.label = 1;
+                        if (flow.collect(new FlowKt__ErrorsKt$catchImpl$$inlined$collect$1<>(flowCollector, objectRef2), flowKt__ErrorsKt$catchImpl$1) == coroutine_suspended) {
+                            return coroutine_suspended;
+                        }
+                    } catch (Throwable th) {
+                        th = th;
+                        objectRef = objectRef2;
+                        if (!isSameExceptionAs$FlowKt__ErrorsKt(th, (Throwable) objectRef.element) || isCancellationCause$FlowKt__ErrorsKt(th, flowKt__ErrorsKt$catchImpl$1.getContext())) {
+                            throw th;
+                        }
+                        return th;
+                    }
+                } else if (i == 1) {
+                    Flow flow2 = (Flow) flowKt__ErrorsKt$catchImpl$1.L$3;
+                    objectRef = (Ref.ObjectRef) flowKt__ErrorsKt$catchImpl$1.L$2;
+                    FlowCollector flowCollector2 = (FlowCollector) flowKt__ErrorsKt$catchImpl$1.L$1;
+                    Flow flow3 = (Flow) flowKt__ErrorsKt$catchImpl$1.L$0;
+                    try {
+                        ResultKt.throwOnFailure(obj);
+                    } catch (Throwable th2) {
+                        th = th2;
+                        if (isSameExceptionAs$FlowKt__ErrorsKt(th, (Throwable) objectRef.element)) {
+                        }
+                        throw th;
+                    }
+                } else {
+                    throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+                }
+                return null;
+            }
+        }
+        flowKt__ErrorsKt$catchImpl$1 = new FlowKt__ErrorsKt$catchImpl$1(continuation);
+        Object obj2 = flowKt__ErrorsKt$catchImpl$1.result;
+        Object coroutine_suspended2 = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+        i = flowKt__ErrorsKt$catchImpl$1.label;
+        if (i != 0) {
+        }
+        return null;
     }
 
     private static final boolean isCancellationCause$FlowKt__ErrorsKt(Throwable th, CoroutineContext coroutineContext) {

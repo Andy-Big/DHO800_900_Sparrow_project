@@ -2,9 +2,14 @@ package com.rigol.scope.adapters;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.collection.SimpleArrayMap;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.view.ViewCompat;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
@@ -155,14 +160,110 @@ public class TableAdapter extends RecyclerView.Adapter<TableHolder> {
     @Override // androidx.recyclerview.widget.RecyclerView.Adapter
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    public com.rigol.scope.adapters.TableHolder onCreateViewHolder(android.view.ViewGroup r17, int r18) {
-        /*
-            Method dump skipped, instructions count: 504
-            To view this dump add '--comments-level debug' option
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.rigol.scope.adapters.TableAdapter.onCreateViewHolder(android.view.ViewGroup, int):com.rigol.scope.adapters.TableHolder");
+    public TableHolder onCreateViewHolder(ViewGroup parent, int i) {
+        ArrayList<String> arrayList;
+        int size;
+        int i2;
+        Intrinsics.checkNotNullParameter(parent, "parent");
+        View view = null;
+        ConstraintLayout constraintLayout = new ConstraintLayout(parent.getContext(), null);
+        constraintLayout.setLayoutParams(new ConstraintLayout.LayoutParams(-1, this.rowHeight));
+        int i3 = 1;
+        if (this.data.size() <= 1) {
+            return new TableHolder(new TextView(parent.getContext()));
+        }
+        ArrayList<String> arrayList2 = this.headerInfo;
+        if (arrayList2 == null || arrayList2.isEmpty()) {
+            return new TableHolder(new TextView(parent.getContext()));
+        }
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        SimpleArrayMap simpleArrayMap = new SimpleArrayMap();
+        float[] fArr = this.cellPercents;
+        if (fArr != null) {
+            Intrinsics.checkNotNull(fArr);
+            int length = fArr.length;
+            ArrayList<String> arrayList3 = this.headerInfo;
+            Intrinsics.checkNotNull(arrayList3);
+            if (length == arrayList3.size()) {
+                float[] fArr2 = this.cellPercents;
+                Intrinsics.checkNotNull(fArr2);
+                int length2 = fArr2.length;
+                for (int i4 = 0; i4 < length2; i4++) {
+                    TextView textView = new TextView(parent.getContext());
+                    textView.setId(View.generateViewId());
+                    textView.setGravity(17);
+                    textView.setSingleLine(true);
+                    textView.setEllipsize(TextUtils.TruncateAt.MIDDLE);
+                    constraintLayout.addView(textView);
+                    int id = textView.getId();
+                    float[] fArr3 = this.cellPercents;
+                    Intrinsics.checkNotNull(fArr3);
+                    constraintSet.constrainPercentWidth(id, fArr3[i4]);
+                    simpleArrayMap.put(Integer.valueOf(i4), textView);
+                }
+                ArrayList<String> arrayList4 = this.headerInfo;
+                Intrinsics.checkNotNull(arrayList4);
+                size = arrayList4.size();
+                i2 = 0;
+                while (i2 < size) {
+                    View view2 = i2 == 0 ? view : (View) simpleArrayMap.get(Integer.valueOf(i2 - 1));
+                    View view3 = (View) simpleArrayMap.get(Integer.valueOf(i2));
+                    ArrayList<String> arrayList5 = this.headerInfo;
+                    Intrinsics.checkNotNull(arrayList5);
+                    View view4 = i2 == arrayList5.size() - i3 ? view : (View) simpleArrayMap.get(Integer.valueOf(i2 + 1));
+                    if (view3 != null) {
+                        constraintSet.connect(view3.getId(), 6, view2 != null ? view2.getId() : 0, view2 == null ? 6 : 7);
+                        constraintSet.connect(view3.getId(), 7, view4 != null ? view4.getId() : 0, view4 == null ? 7 : 6);
+                        constraintSet.connect(view3.getId(), 3, 0, 3);
+                        constraintSet.connect(view3.getId(), 4, 0, 4);
+                        ArrayList<String> arrayList6 = this.headerInfo;
+                        Intrinsics.checkNotNull(arrayList6);
+                        if (i2 != arrayList6.size() - i3 && this.divider != null) {
+                            ImageView imageView = new ImageView(parent.getContext());
+                            imageView.setBackgroundResource(R.drawable.divider);
+                            imageView.setId(View.generateViewId());
+                            constraintLayout.addView(imageView);
+                            constraintSet.constrainWidth(imageView.getId(), -2);
+                            constraintSet.constrainHeight(imageView.getId(), 0);
+                            constraintSet.connect(imageView.getId(), 7, view3.getId(), 7);
+                            constraintSet.connect(imageView.getId(), 6, view3.getId(), 7);
+                            constraintSet.connect(imageView.getId(), 3, 0, 3);
+                            constraintSet.connect(imageView.getId(), 4, 0, 4);
+                        }
+                    }
+                    i2++;
+                    view = null;
+                    i3 = 1;
+                }
+                constraintSet.applyTo(constraintLayout);
+                return new TableHolder(constraintLayout);
+            }
+        }
+        Intrinsics.checkNotNull(this.headerInfo);
+        float size2 = 1.0f / arrayList.size();
+        ArrayList<String> arrayList7 = this.headerInfo;
+        Intrinsics.checkNotNull(arrayList7);
+        int size3 = arrayList7.size();
+        for (int i5 = 0; i5 < size3; i5++) {
+            TextView textView2 = new TextView(parent.getContext());
+            textView2.setId(View.generateViewId());
+            textView2.setGravity(17);
+            textView2.setSingleLine(true);
+            textView2.setEllipsize(TextUtils.TruncateAt.MIDDLE);
+            constraintLayout.addView(textView2);
+            constraintSet.constrainPercentWidth(textView2.getId(), size2);
+            simpleArrayMap.put(Integer.valueOf(i5), textView2);
+        }
+        ArrayList<String> arrayList42 = this.headerInfo;
+        Intrinsics.checkNotNull(arrayList42);
+        size = arrayList42.size();
+        i2 = 0;
+        while (i2 < size) {
+        }
+        constraintSet.applyTo(constraintLayout);
+        return new TableHolder(constraintLayout);
     }
 
     @Override // androidx.recyclerview.widget.RecyclerView.Adapter

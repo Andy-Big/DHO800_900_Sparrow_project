@@ -169,121 +169,77 @@ public final class ArrayBroadcastChannel<E> extends AbstractSendChannel<E> imple
      */
     /*
         Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct add '--show-bad-code' argument
     */
-    private final void updateHead(kotlinx.coroutines.channels.ArrayBroadcastChannel.Subscriber<E> r12, kotlinx.coroutines.channels.ArrayBroadcastChannel.Subscriber<E> r13) {
-        /*
-            r11 = this;
-            r0 = 0
-        L1:
-            r1 = r0
-            kotlinx.coroutines.channels.Send r1 = (kotlinx.coroutines.channels.Send) r1
-            java.util.concurrent.locks.ReentrantLock r1 = r11.bufferLock
-            java.util.concurrent.locks.Lock r1 = (java.util.concurrent.locks.Lock) r1
-            r1.lock()
-            if (r12 == 0) goto L25
-            long r2 = r11.tail     // Catch: java.lang.Throwable -> L22
-            r12.subHead = r2     // Catch: java.lang.Throwable -> L22
-            java.util.List<kotlinx.coroutines.channels.ArrayBroadcastChannel$Subscriber<E>> r2 = r11.subscribers     // Catch: java.lang.Throwable -> L22
-            boolean r2 = r2.isEmpty()     // Catch: java.lang.Throwable -> L22
-            java.util.List<kotlinx.coroutines.channels.ArrayBroadcastChannel$Subscriber<E>> r3 = r11.subscribers     // Catch: java.lang.Throwable -> L22
-            r3.add(r12)     // Catch: java.lang.Throwable -> L22
-            if (r2 != 0) goto L25
-            r1.unlock()
-            return
-        L22:
-            r12 = move-exception
-            goto Lbb
-        L25:
-            if (r13 == 0) goto L38
-            java.util.List<kotlinx.coroutines.channels.ArrayBroadcastChannel$Subscriber<E>> r12 = r11.subscribers     // Catch: java.lang.Throwable -> L22
-            r12.remove(r13)     // Catch: java.lang.Throwable -> L22
-            long r2 = r11.head     // Catch: java.lang.Throwable -> L22
-            long r12 = r13.subHead     // Catch: java.lang.Throwable -> L22
-            int r12 = (r2 > r12 ? 1 : (r2 == r12 ? 0 : -1))
-            if (r12 == 0) goto L38
-            r1.unlock()
-            return
-        L38:
-            long r12 = r11.computeMinHead()     // Catch: java.lang.Throwable -> L22
-            long r2 = r11.tail     // Catch: java.lang.Throwable -> L22
-            long r4 = r11.head     // Catch: java.lang.Throwable -> L22
-            long r12 = kotlin.ranges.RangesKt.coerceAtMost(r12, r2)     // Catch: java.lang.Throwable -> L22
-            int r6 = (r12 > r4 ? 1 : (r12 == r4 ? 0 : -1))
-            if (r6 > 0) goto L4c
-            r1.unlock()
-            return
-        L4c:
-            int r6 = r11.size     // Catch: java.lang.Throwable -> L22
-        L4e:
-            int r7 = (r4 > r12 ? 1 : (r4 == r12 ? 0 : -1))
-            if (r7 >= 0) goto Lb7
-            java.lang.Object[] r7 = r11.buffer     // Catch: java.lang.Throwable -> L22
-            int r8 = r11.capacity     // Catch: java.lang.Throwable -> L22
-            long r8 = (long) r8     // Catch: java.lang.Throwable -> L22
-            long r8 = r4 % r8
-            int r8 = (int) r8     // Catch: java.lang.Throwable -> L22
-            r7[r8] = r0     // Catch: java.lang.Throwable -> L22
-            int r7 = r11.capacity     // Catch: java.lang.Throwable -> L22
-            if (r6 < r7) goto L62
-            r7 = 1
-            goto L63
-        L62:
-            r7 = 0
-        L63:
-            r8 = 1
-            long r4 = r4 + r8
-            r11.head = r4     // Catch: java.lang.Throwable -> L22
-            int r6 = r6 + (-1)
-            r11.size = r6     // Catch: java.lang.Throwable -> L22
-            if (r7 == 0) goto L4e
-        L6e:
-            kotlinx.coroutines.channels.Send r7 = r11.takeFirstSendOrPeekClosed()     // Catch: java.lang.Throwable -> L22
-            if (r7 == 0) goto L4e
-            boolean r10 = r7 instanceof kotlinx.coroutines.channels.Closed     // Catch: java.lang.Throwable -> L22
-            if (r10 == 0) goto L79
-            goto L4e
-        L79:
-            if (r7 != 0) goto L7e
-            kotlin.jvm.internal.Intrinsics.throwNpe()     // Catch: java.lang.Throwable -> L22
-        L7e:
-            java.lang.Object r10 = r7.tryResumeSend(r0)     // Catch: java.lang.Throwable -> L22
-            if (r10 == 0) goto L6e
-            java.lang.Object[] r12 = r11.buffer     // Catch: java.lang.Throwable -> L22
-            int r13 = r11.capacity     // Catch: java.lang.Throwable -> L22
-            long r4 = (long) r13     // Catch: java.lang.Throwable -> L22
-            long r4 = r2 % r4
-            int r13 = (int) r4     // Catch: java.lang.Throwable -> L22
-            if (r7 == 0) goto Laf
-            java.lang.Object r4 = r7.getPollResult()     // Catch: java.lang.Throwable -> L22
-            r12[r13] = r4     // Catch: java.lang.Throwable -> L22
-            int r6 = r6 + 1
-            r11.size = r6     // Catch: java.lang.Throwable -> L22
-            long r2 = r2 + r8
-            r11.tail = r2     // Catch: java.lang.Throwable -> L22
-            kotlin.Unit r12 = kotlin.Unit.INSTANCE     // Catch: java.lang.Throwable -> L22
-            r1.unlock()
-            if (r7 != 0) goto La5
-            kotlin.jvm.internal.Intrinsics.throwNpe()
-        La5:
-            r7.completeResumeSend(r10)
-            r11.checkSubOffers()
-            r12 = r0
-            r13 = r12
-            goto L1
-        Laf:
-            kotlin.TypeCastException r12 = new kotlin.TypeCastException     // Catch: java.lang.Throwable -> L22
-            java.lang.String r13 = "null cannot be cast to non-null type kotlinx.coroutines.channels.Send"
-            r12.<init>(r13)     // Catch: java.lang.Throwable -> L22
-            throw r12     // Catch: java.lang.Throwable -> L22
-        Lb7:
-            r1.unlock()
-            return
-        Lbb:
-            r1.unlock()
-            throw r12
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.channels.ArrayBroadcastChannel.updateHead(kotlinx.coroutines.channels.ArrayBroadcastChannel$Subscriber, kotlinx.coroutines.channels.ArrayBroadcastChannel$Subscriber):void");
+    private final void updateHead(Subscriber<E> subscriber, Subscriber<E> subscriber2) {
+        Send takeFirstSendOrPeekClosed;
+        Object tryResumeSend;
+        while (true) {
+            ReentrantLock reentrantLock = this.bufferLock;
+            reentrantLock.lock();
+            if (subscriber != null) {
+                try {
+                    subscriber.subHead = this.tail;
+                    boolean isEmpty = this.subscribers.isEmpty();
+                    this.subscribers.add(subscriber);
+                    if (!isEmpty) {
+                        return;
+                    }
+                } finally {
+                    reentrantLock.unlock();
+                }
+            }
+            if (subscriber2 != null) {
+                this.subscribers.remove(subscriber2);
+                if (this.head != subscriber2.subHead) {
+                    return;
+                }
+            }
+            long computeMinHead = computeMinHead();
+            long j = this.tail;
+            long j2 = this.head;
+            long coerceAtMost = RangesKt.coerceAtMost(computeMinHead, j);
+            if (coerceAtMost <= j2) {
+                return;
+            }
+            int i = this.size;
+            while (j2 < coerceAtMost) {
+                this.buffer[(int) (j2 % this.capacity)] = null;
+                boolean z = i >= this.capacity;
+                j2++;
+                this.head = j2;
+                i--;
+                this.size = i;
+                if (z) {
+                    do {
+                        takeFirstSendOrPeekClosed = takeFirstSendOrPeekClosed();
+                        if (takeFirstSendOrPeekClosed != null && !(takeFirstSendOrPeekClosed instanceof Closed)) {
+                            if (takeFirstSendOrPeekClosed == null) {
+                                Intrinsics.throwNpe();
+                            }
+                            tryResumeSend = takeFirstSendOrPeekClosed.tryResumeSend(null);
+                        }
+                    } while (tryResumeSend == null);
+                    Object[] objArr = this.buffer;
+                    int i2 = (int) (j % this.capacity);
+                    if (takeFirstSendOrPeekClosed == null) {
+                        break;
+                    }
+                    objArr[i2] = takeFirstSendOrPeekClosed.getPollResult();
+                    this.size = i + 1;
+                    this.tail = j + 1;
+                    Unit unit = Unit.INSTANCE;
+                    reentrantLock.unlock();
+                    if (takeFirstSendOrPeekClosed == null) {
+                        Intrinsics.throwNpe();
+                    }
+                    takeFirstSendOrPeekClosed.completeResumeSend(tryResumeSend);
+                    checkSubOffers();
+                    subscriber = null;
+                    subscriber2 = null;
+                }
+            }
+            return;
+        }
     }
 
     private final long computeMinHead() {
@@ -401,64 +357,39 @@ public final class ArrayBroadcastChannel<E> extends AbstractSendChannel<E> imple
         @Override // kotlinx.coroutines.channels.AbstractChannel
         /*
             Code decompiled incorrectly, please refer to instructions dump.
-            To view partially-correct add '--show-bad-code' argument
         */
-        protected java.lang.Object pollInternal() {
-            /*
-                r8 = this;
-                java.util.concurrent.locks.ReentrantLock r0 = r8.subLock
-                java.util.concurrent.locks.Lock r0 = (java.util.concurrent.locks.Lock) r0
-                r0.lock()
-                java.lang.Object r1 = r8.peekUnderLock()     // Catch: java.lang.Throwable -> L44
-                boolean r2 = r1 instanceof kotlinx.coroutines.channels.Closed     // Catch: java.lang.Throwable -> L44
-                r3 = 1
-                if (r2 == 0) goto L11
-                goto L15
-            L11:
-                java.lang.Object r2 = kotlinx.coroutines.channels.AbstractChannelKt.POLL_FAILED     // Catch: java.lang.Throwable -> L44
-                if (r1 != r2) goto L17
-            L15:
-                r2 = 0
-                goto L1f
-            L17:
-                long r4 = r8.subHead     // Catch: java.lang.Throwable -> L44
-                r6 = 1
-                long r4 = r4 + r6
-                r8.subHead = r4     // Catch: java.lang.Throwable -> L44
-                r2 = r3
-            L1f:
-                r0.unlock()
-                boolean r0 = r1 instanceof kotlinx.coroutines.channels.Closed
-                r4 = 0
-                if (r0 != 0) goto L29
-                r0 = r4
-                goto L2a
-            L29:
-                r0 = r1
-            L2a:
-                kotlinx.coroutines.channels.Closed r0 = (kotlinx.coroutines.channels.Closed) r0
-                if (r0 == 0) goto L33
-                java.lang.Throwable r0 = r0.closeCause
-                r8.close(r0)
-            L33:
-                boolean r0 = r8.checkOffer()
-                if (r0 == 0) goto L3a
-                goto L3b
-            L3a:
-                r3 = r2
-            L3b:
-                if (r3 == 0) goto L43
-                kotlinx.coroutines.channels.ArrayBroadcastChannel<E> r0 = r8.broadcastChannel
-                r2 = 3
-                kotlinx.coroutines.channels.ArrayBroadcastChannel.updateHead$default(r0, r4, r4, r2, r4)
-            L43:
-                return r1
-            L44:
-                r1 = move-exception
-                r0.unlock()
-                throw r1
-            */
-            throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.channels.ArrayBroadcastChannel.Subscriber.pollInternal():java.lang.Object");
+        protected Object pollInternal() {
+            boolean z;
+            Closed closed;
+            ReentrantLock reentrantLock = this.subLock;
+            reentrantLock.lock();
+            try {
+                Object peekUnderLock = peekUnderLock();
+                if (!(peekUnderLock instanceof Closed) && peekUnderLock != AbstractChannelKt.POLL_FAILED) {
+                    this.subHead++;
+                    z = true;
+                    reentrantLock.unlock();
+                    closed = (Closed) (peekUnderLock instanceof Closed ? null : peekUnderLock);
+                    if (closed != null) {
+                        close(closed.closeCause);
+                    }
+                    if (checkOffer() ? true : z) {
+                        ArrayBroadcastChannel.updateHead$default(this.broadcastChannel, null, null, 3, null);
+                    }
+                    return peekUnderLock;
+                }
+                z = false;
+                reentrantLock.unlock();
+                closed = (Closed) (peekUnderLock instanceof Closed ? null : peekUnderLock);
+                if (closed != null) {
+                }
+                if (checkOffer() ? true : z) {
+                }
+                return peekUnderLock;
+            } catch (Throwable th) {
+                reentrantLock.unlock();
+                throw th;
+            }
         }
 
         @Override // kotlinx.coroutines.channels.AbstractChannel
