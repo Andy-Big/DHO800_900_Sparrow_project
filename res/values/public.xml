@@ -16167,4 +16167,6 @@
 
     <public type="color" name="probe_atten_color" id="0x7f061000" />
 
+    <public type="drawable" name="bg_item_vertical_act" id="0x7f081000" />
+
 </resources>

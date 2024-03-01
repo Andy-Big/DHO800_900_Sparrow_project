@@ -1697,9 +1697,17 @@
 # /changed
 
     :goto_2a
+# java 515
     if-eqz v16, :cond_34
 
-    move-object/from16 v16, v19
+# changed added
+    const v16, 0x7f081000
+    invoke-static/range {v16 .. v16}, Lcom/rigol/scope/utilities/ContextUtil;->getDrawable(I)Landroid/graphics/drawable/Drawable;
+    move-result-object v16
+# /added
+
+# changed removed
+#    move-object/from16 v16, v19
 
     goto :goto_2b
 
