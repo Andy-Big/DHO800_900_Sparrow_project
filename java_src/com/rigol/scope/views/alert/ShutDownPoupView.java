@@ -19,6 +19,7 @@ public final class ShutDownPoupView extends AlertPopupView {
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
                 API.getInstance().UI_PostInt32(11, MessageID.MSG_HARDWARE_POWERDOWN, 1);
+                
             }
         });
         setCancelListener(new View.OnClickListener() { // from class: com.rigol.scope.views.alert.ShutDownPoupView.2
