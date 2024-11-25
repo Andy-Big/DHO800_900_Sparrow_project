@@ -2854,7 +2854,7 @@
     if-ne v6, v4, :cond_9
 
     .line 3942
-    sget-object v4, Lcom/rigol/scope/cil/ServiceEnum$AcquireDepth;->Acquire_Depth_50M:Lcom/rigol/scope/cil/ServiceEnum$AcquireDepth;
+    sget-object v4, Lcom/rigol/scope/cil/ServiceEnum$AcquireDepth;->Acquire_Depth_100M:Lcom/rigol/scope/cil/ServiceEnum$AcquireDepth;
 
     iget v9, v4, Lcom/rigol/scope/cil/ServiceEnum$AcquireDepth;->value1:I
 
@@ -2896,7 +2896,7 @@
     if-ne v6, v4, :cond_17
 
     .line 3949
-    sget-object v4, Lcom/rigol/scope/cil/ServiceEnum$AcquireDepth;->Acquire_Depth_50M:Lcom/rigol/scope/cil/ServiceEnum$AcquireDepth;
+    sget-object v4, Lcom/rigol/scope/cil/ServiceEnum$AcquireDepth;->Acquire_Depth_100M:Lcom/rigol/scope/cil/ServiceEnum$AcquireDepth;
 
     iget v9, v4, Lcom/rigol/scope/cil/ServiceEnum$AcquireDepth;->value1:I
 
@@ -3106,7 +3106,7 @@
     if-ne v6, v4, :cond_17
 
     .line 3987
-    sget-object v4, Lcom/rigol/scope/cil/ServiceEnum$AcquireDepth;->Acquire_Depth_50M:Lcom/rigol/scope/cil/ServiceEnum$AcquireDepth;
+    sget-object v4, Lcom/rigol/scope/cil/ServiceEnum$AcquireDepth;->Acquire_Depth_100M:Lcom/rigol/scope/cil/ServiceEnum$AcquireDepth;
 
     iget v9, v4, Lcom/rigol/scope/cil/ServiceEnum$AcquireDepth;->value1:I
 
